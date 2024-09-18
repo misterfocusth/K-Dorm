@@ -2,7 +2,7 @@ import { initContract } from "@ts-rest/core";
 import { z } from "zod";
 
 // Task Schema
-import { taskSchema } from "@/schemas/task";
+import { newTaskSchema, taskSchema } from "@/schemas/task";
 
 const c = initContract();
 
@@ -29,7 +29,7 @@ export const taskContract = c.router({
   createTask: {
     method: "POST",
     path: "/tasks",
-    body: taskSchema,
+    body: newTaskSchema,
     responses: {
       201: taskSchema,
     },

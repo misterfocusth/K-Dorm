@@ -7,3 +7,9 @@ export const taskSchema = z.object({
   date_created: z.string(),
   complete: z.boolean(),
 });
+
+export const newTaskSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  complete: z.boolean().default(false),
+});
