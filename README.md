@@ -9,17 +9,8 @@ Intelligence Dormitory Management System for King Mongkut's Institute of Technol
 docker-compose up -d
 ```
 
-## Start Project in Development (Backend)
+## Start Project in Development (Backend & Frontend)
 
 ```shell
-# Activate virtual environment
-source ./myvenv/bin/activate
-
-# Install python packages from requirements.txt
-pip install -r requirements.txt
-
-# Start django server
-python manage.py runserver
+npm run start
 ```
-
-## Start App in Development (Frontend)
