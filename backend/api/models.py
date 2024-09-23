@@ -135,7 +135,8 @@ class Residence(MyBaseModel):
     room = models.ForeignKey(
         'Room',
         on_delete=models.CASCADE,
-        related_name='residences'
+        related_name='residences',
+        null=True,
     )
     recruitmentWave = models.ForeignKey(
         'RecruitmentWave',
@@ -147,7 +148,7 @@ class Residence(MyBaseModel):
 class UsageBilling(MyBaseModel):
     cycle = models.DateTimeField()
 
-    deadline = models.DateTimeField()
+    deadline = models.DateTimeField(null=True, default=None)
     fineRate = models.FloatField()
 
     # Usage unit
@@ -181,7 +182,7 @@ class RentBilling(MyBaseModel):
     isPaid = models.BooleanField(default=False)
     paidDate = models.DateTimeField(null=True, default=None)
 
-    deadline = models.DateTimeField()
+    deadline = models.DateTimeField(null=True, default=None)
     fineRate = models.FloatField()
 
     rentCost = models.FloatField()
