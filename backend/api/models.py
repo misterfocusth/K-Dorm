@@ -161,7 +161,7 @@ class UsageBilling(MyBaseModel):
 
     fineCost = models.FloatField()
     extraCost = models.FloatField()
-    extraCostNote = models.TextField()
+    extraCostNote = models.TextField(null=True, default=None)
 
     # Stripe reference
     ref = models.TextField(null=True, default=None)
@@ -188,13 +188,13 @@ class RentBilling(MyBaseModel):
     rentCost = models.FloatField()
     fineCost = models.FloatField()
     extraCost = models.FloatField()
-    extraCostNote = models.TextField()
+    extraCostNote = models.TextField(null=True, default=None)
 
     # Stripe reference
     ref = models.TextField(null=True, default=None)
 
-    room = models.ForeignKey(
-        'Room',
+    residence = models.ForeignKey(
+        'Residence',
         on_delete=models.CASCADE,
         related_name='rentBillings'
     )
