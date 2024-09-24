@@ -4,6 +4,12 @@ import { z } from "zod";
 // Task Schema
 import { newTaskSchema, taskSchema } from "@/schemas/task";
 
+// API Response Schema
+import { ErrorResponse, Response } from "@/interface/api-response";
+
+// Zod Infered Type
+type Task = z.infer<typeof taskSchema>;
+
 const c = initContract();
 
 export const taskContract = c.router({
@@ -11,7 +17,8 @@ export const taskContract = c.router({
     method: "GET",
     path: "/tasks",
     responses: {
-      200: z.array(taskSchema),
+      200: c.type<Response<Task[]>>(),
+      400: c.type<ErrorResponse>(),
     },
     summary: "Get all tasks",
   },
@@ -22,7 +29,8 @@ export const taskContract = c.router({
       id: z.string(),
     }),
     responses: {
-      200: taskSchema,
+      200: c.type<Response<Task>>(),
+      404: c.type<ErrorResponse>(),
     },
     summary: "Get a task by id",
   },
@@ -31,7 +39,8 @@ export const taskContract = c.router({
     path: "/tasks",
     body: newTaskSchema,
     responses: {
-      201: taskSchema,
+      201: c.type<Response<Task>>(),
+      400: c.type<ErrorResponse>(),
     },
     summary: "Create a task",
   },
@@ -43,7 +52,8 @@ export const taskContract = c.router({
     }),
     body: taskSchema,
     responses: {
-      200: taskSchema,
+      200: c.type<Response<Task>>(),
+      400: c.type<ErrorResponse>(),
     },
     summary: "Update a task",
   },
