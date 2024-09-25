@@ -234,6 +234,9 @@ class Activity(MyBaseModel):
     date = models.DateTimeField()
     location = models.TextField()
 
+    # Volunteering Activity Earned Hours
+    earnedVolunteerHours = models.FloatField(null=True, default=None)
+
     student = models.ForeignKey(
         'Student',
         on_delete=models.CASCADE,
