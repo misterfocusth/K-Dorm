@@ -255,6 +255,8 @@ class MaintenanceTicket(MyBaseModel):
     title = models.TextField()
     description = models.TextField()
 
+    location = models.TextField(null=True, default=None)
+
     resolvedAt = models.DateTimeField(null=True, default=None)
     isResolved = models.BooleanField(default=False)
 
