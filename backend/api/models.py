@@ -90,6 +90,7 @@ class File(MyBaseModel):
 
 class Student(MyBaseModel):
     studentId = models.CharField(max_length=255)
+    isOnBoarded = models.BooleanField(default=False)
     account = models.OneToOneField(
         'Account',
         on_delete=models.CASCADE,
