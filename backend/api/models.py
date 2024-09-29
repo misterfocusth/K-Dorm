@@ -90,6 +90,7 @@ class File(MyBaseModel):
 
 class Student(MyBaseModel):
     studentId = models.CharField(max_length=255)
+    isOnBoarded = models.BooleanField(default=False)
     account = models.OneToOneField(
         'Account',
         on_delete=models.CASCADE,
@@ -234,6 +235,9 @@ class Activity(MyBaseModel):
     date = models.DateTimeField()
     location = models.TextField()
 
+    # Volunteering Activity Earned Hours
+    earnedVolunteerHours = models.FloatField(null=True, default=None)
+
     student = models.ForeignKey(
         'Student',
         on_delete=models.CASCADE,
@@ -250,6 +254,8 @@ class Activity(MyBaseModel):
 class MaintenanceTicket(MyBaseModel):
     title = models.TextField()
     description = models.TextField()
+
+    location = models.TextField(null=True, default=None)
 
     resolvedAt = models.DateTimeField(null=True, default=None)
     isResolved = models.BooleanField(default=False)
