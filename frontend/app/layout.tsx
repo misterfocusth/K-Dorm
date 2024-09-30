@@ -3,6 +3,13 @@ import "./globals.css";
 
 // React Query
 import RQClientProvider from "@/providers/RQClientProvider";
+import Header from "@/components/headers";
+
+// Next
+import { cookies } from "next/headers";
+
+// Constants
+import { SESSION_COOKIE_NAME } from "@/constants";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,10 +21,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = cookies().get(SESSION_COOKIE_NAME)?.value || null;
+
   return (
     <html lang="en">
       <body>
-        <RQClientProvider>{children}</RQClientProvider>
+        <RQClientProvider>
+          <Header session={session} />
+          {children}
+        </RQClientProvider>
       </body>
     </html>
   );
