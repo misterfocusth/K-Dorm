@@ -13,9 +13,20 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from datetime import timedelta
 from pathlib import Path
 
+import environ
+import os
+
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load .env file
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
+environ.Env.read_env(os.path.join(ROOT_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -51,6 +62,7 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
 
     # Django REST Auth
     "dj_rest_auth",
@@ -63,6 +75,25 @@ INSTALLED_APPS = [
     # "authentication.apps.AuthenticationConfig",
     "authentication"
 ]
+
+# Social Auth Config
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "APP": {
+            "client_id": env('GOOGLE_OAUTH_CLIENT_ID'),
+            "secret": env('GOOGLE_OAUTH_SECRET'),
+            "key": "",  # leave empty
+        },
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+        },
+        "VERIFIED_EMAIL": True,
+    },
+}
 
 # All Auth Config
 SITE_ID = 1
@@ -84,7 +115,7 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": False,
     "UPDATE_LAST_LOGIN": True,
-    "SIGNING_KEY": "PORNHUB",  # TODO: Change this to env variable.
+    "SIGNING_KEY": env('JWT_SIGNING_KEY'),
     "ALGORITHM": "HS512",
 }
 
