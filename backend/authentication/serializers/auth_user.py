@@ -1,0 +1,35 @@
+# Django REST Framework
+from rest_framework import serializers
+from rest_framework.generics import GenericAPIView
+
+# Models
+from api.models import Account
+
+# Serializers
+from api.serializers.account import MaintenanceStaffSerializer, SecurityStaffSerializer, StaffSerializer, StudentSerializer
+
+
+class AuthUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = '__all__'
+
+    id = serializers.IntegerField(read_only=True)
+    email = serializers.EmailField(read_only=True)
+    secret = serializers.CharField(read_only=True)
+    salt = serializers.CharField(read_only=True)
+    firstName = serializers.CharField(read_only=True)
+    lastName = serializers.CharField(read_only=True)
+    isDisabled = serializers.BooleanField(required=False)
+
+    student = StudentSerializer(many=False, read_only=True)
+    staff = StaffSerializer(many=False, read_only=True)
+    maintenance_staff = MaintenanceStaffSerializer(many=False, read_only=True)
+    security_staff = SecurityStaffSerializer(many=False, read_only=True)
+
+    # STUDENT, STAFF, MAINTENANCE_STAFF, SECURITY_STAFF
+    role = serializers.CharField(read_only=True)
+
+
+class PostAuthUserSerializer(serializers.Serializer):
+    session_token = serializers.CharField(required=True)
