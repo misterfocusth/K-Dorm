@@ -10,3 +10,4 @@ django-cors-headers
 whitenoise
 drf-yasg
 setuptools
+django-environ
