@@ -81,13 +81,61 @@ INSTALLED_APPS = [
     "authentication"
 ]
 
+# Social Auth Config
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "APP": {
+            "client_id": env('GOOGLE_OAUTH_CLIENT_ID'),
+            "secret": env('GOOGLE_OAUTH_SECRET'),
+            "key": "",  # leave empty
+        },
+        "SCOPE": [
+            "profile",
+            "email",
+        ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+        },
+        "VERIFIED_EMAIL": True,
+    },
+}
+
+# All Auth Config
+SITE_ID = 1
+ACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = "none"
+
+# Django Rest Auth Config
+# USE_JWT is required because we're using djangorestframework-simplejwt.
+# JWT_AUTH_HTTPONLY should be off, otherwise dj-rest-auth won't send out refresh tokens.
+REST_AUTH = {
+    "USE_JWT": True,
+    "JWT_AUTH_HTTPONLY": False,
+}
+
+# Simple JWT Config
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": False,
+    "UPDATE_LAST_LOGIN": True,
+    "SIGNING_KEY": env('JWT_SIGNING_KEY'),
+    "ALGORITHM": "HS512",
+}
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ]
+}
+
 MIDDLEWARE = [
     # Cors
     'corsheaders.middleware.CorsMiddleware',
 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -97,7 +145,7 @@ MIDDLEWARE = [
 # CORS CONFIG
 ALLOWED_HOSTS = ['*', 'localhost:3000']
 
-CORS_ORIGIN_ALLOW_ALL = True
+APPEND_SLASH = False
 
 CORS_ALLOW_CREDENTIALS = True
 
