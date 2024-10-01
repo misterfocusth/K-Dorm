@@ -293,4 +293,4 @@ cython_debug/
 #.idea/
 
 # Ignore firebase service account file
-./backend/firebase/k-dorm-745f0-firebase-adminsdk-vpaem-d5767b8d82.json
+backend/firebase/
