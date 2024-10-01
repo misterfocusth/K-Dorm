@@ -14,14 +14,6 @@ class AuthUserSerializer(serializers.ModelSerializer):
         model = Account
         fields = '__all__'
 
-    id = serializers.IntegerField(read_only=True)
-    email = serializers.EmailField(read_only=True)
-    secret = serializers.CharField(read_only=True)
-    salt = serializers.CharField(read_only=True)
-    firstName = serializers.CharField(read_only=True)
-    lastName = serializers.CharField(read_only=True)
-    isDisabled = serializers.BooleanField(required=False)
-
     student = StudentSerializer(many=False, read_only=True)
     staff = StaffSerializer(many=False, read_only=True)
     maintenanceStaff = MaintenanceStaffSerializer(many=False, read_only=True)
