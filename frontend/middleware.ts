@@ -1,7 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
 import {
-  STUDENT_HOME_ROUTE,
-  ROOT_ROUTE,
   SESSION_UID_COOKIE_NAME,
   SESSION_ID_TOKEN_COOKIE_NAME,
   STUDENT_LOGIN_ROUTE,

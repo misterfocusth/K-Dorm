@@ -8,6 +8,8 @@ from firebase_admin import auth
 # Models
 from api.models import Account
 
+# TODO: Fix this, idk why it's not working properly :(
+
 
 def authenticated_user_only(view_func):
     @wraps(view_func)
