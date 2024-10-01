@@ -10,6 +10,7 @@ import { cookies } from "next/headers";
 
 // Constants
 import { SESSION_UID_COOKIE_NAME, SESSION_ID_TOKEN_COOKIE_NAME } from "@/constants";
+import AuthContextProviders from "@/contexts/AuthContext";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,6 +22,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // TODO: Remove it after implementing login page
   const uid = cookies().get(SESSION_UID_COOKIE_NAME)?.value || null;
   const sessionIdToken = cookies().get(SESSION_ID_TOKEN_COOKIE_NAME)?.value || null;
 
@@ -28,8 +30,11 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <RQClientProvider>
-          <Header uid={uid} sessionIdToken={sessionIdToken} />
-          {children}
+          <AuthContextProviders>
+            {/* TODO: Remove it after implementing login page */}
+            <Header uid={uid} sessionIdToken={sessionIdToken} />
+            {children}
+          </AuthContextProviders>
         </RQClientProvider>
       </body>
     </html>

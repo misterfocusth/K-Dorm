@@ -13,17 +13,16 @@ import { ErrorResponse, Response } from "@/interface/api-response";
 import { studentSchema } from "@/schemas/student";
 
 const signInResultSchema = baseSchema.extend({
-  accountId: z.string(),
-  account: accountSchema,
+  user: accountSchema.extend({
+    // User Data based on role
+    student: studentSchema.optional(),
+  }),
 
-  // User Role: STUDENT, STAFF,
+  // User Role: STUDENT, STAFF, MAINTENANCE_STAFF, SECURITY_STAFF
   role: z.string(),
-
-  // User Data based on role
-  student: studentSchema.optional(),
 });
 
-type SignInResult = z.infer<typeof signInResultSchema>;
+export type SignInResult = z.infer<typeof signInResultSchema>;
 
 const c = initContract();
 
@@ -37,5 +36,14 @@ export const authenticationContract = c.router({
       400: c.type<ErrorResponse<{ code: string; message: string }>>(),
     },
     summary: "Sign-In then create user if not exist, or get user data if user already exist",
+  },
+  getMe: {
+    method: "GET",
+    path: "/auth/me",
+    responses: {
+      200: c.type<Response<SignInResult>>(),
+      400: c.type<ErrorResponse<{ code: string; message: string }>>(),
+    },
+    summary: "Get current logged in user's data",
   },
 });

@@ -8,8 +8,6 @@ import {
   STAFF_LOGIN_ROUTE,
 } from "./constants";
 
-const protectedRoutes = [STUDENT_HOME_ROUTE];
-
 export default function middleware(request: NextRequest) {
   const session = request.cookies.get(SESSION_ID_TOKEN_COOKIE_NAME)?.value || "";
   const uid = request.cookies.get(SESSION_UID_COOKIE_NAME)?.value || "";

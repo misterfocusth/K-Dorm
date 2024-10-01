@@ -5,9 +5,9 @@ import { redirect } from "next/navigation";
 
 import {
   STUDENT_HOME_ROUTE,
-  ROOT_ROUTE,
   SESSION_ID_TOKEN_COOKIE_NAME,
   SESSION_UID_COOKIE_NAME,
+  STAFF_HOME_ROUTE,
 } from "@/constants";
 
 export async function createSession(uid: string, sessionIdToken: string) {
@@ -24,13 +24,9 @@ export async function createSession(uid: string, sessionIdToken: string) {
     maxAge: 60 * 60 * 24, // One day
     path: "/",
   });
-
-  redirect(STUDENT_HOME_ROUTE);
 }
 
 export async function removeSession() {
   cookies().delete(SESSION_UID_COOKIE_NAME);
   cookies().delete(SESSION_ID_TOKEN_COOKIE_NAME);
-
-  redirect(ROOT_ROUTE);
 }

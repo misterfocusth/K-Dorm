@@ -1,16 +1,17 @@
 "use client";
 
-import { signInWithGoogle, signOutWithGoogle } from "@/libs/firebase/auth";
-import { removeSession } from "@/actions/authActions";
+import { AuthContext } from "@/contexts/AuthContext";
+import { useContext } from "react";
 
 export function Header(props: { uid: string | null; sessionIdToken: string | null }) {
+  const { login, logout, role, currentUser } = useContext(AuthContext);
+
   const handleSignIn = async () => {
-    await signInWithGoogle();
+    await login();
   };
 
   const handleSignOut = async () => {
-    await signOutWithGoogle();
-    await removeSession();
+    await logout();
   };
 
   if (!props.uid) {
@@ -26,10 +27,10 @@ export function Header(props: { uid: string | null; sessionIdToken: string | nul
       <nav>
         <ul>
           <li>
-            <a href="#">Menu A</a>
+            <a href="#">{JSON.stringify(role)}</a>
           </li>
           <li>
-            <a href="#">Menu B</a>
+            <a href="#">{JSON.stringify(currentUser)}</a>
           </li>
           <li>
             <a href="#">Menu C</a>
