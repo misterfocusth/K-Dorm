@@ -14,7 +14,6 @@ from api.models import Account, Student
 
 # Serializers
 from authentication.serializers.auth_user import AuthUserSerializer
-from authentication.serializers.signin import PostSignInSerializer
 
 # Token Utils
 from authentication.token import get_session_id_token
