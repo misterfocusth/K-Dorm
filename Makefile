@@ -1,5 +1,10 @@
 .PHONY: start backend frontend stop kill_port
 
+ifneq (,$(wildcard ./.env))
+    include .env
+    export
+endif
+
 BACKEND_PORT ?= 8000
 FRONTEND_PORT ?= 3000
 
