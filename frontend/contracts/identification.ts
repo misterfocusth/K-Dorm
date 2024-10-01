@@ -9,7 +9,7 @@ import { baseSchema } from "@/schemas/base-schema";
 import { z } from "zod";
 
 // Interfaces
-import { ErrorResponse, Response } from "@/interface";
+import { ErrorResponse, Response } from "@/interface/api-response";
 
 const getIdentificationSchema = baseSchema.extend({
   accountId: z.string(),

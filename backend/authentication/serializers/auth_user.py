@@ -24,12 +24,5 @@ class AuthUserSerializer(serializers.ModelSerializer):
 
     student = StudentSerializer(many=False, read_only=True)
     staff = StaffSerializer(many=False, read_only=True)
-    maintenance_staff = MaintenanceStaffSerializer(many=False, read_only=True)
-    security_staff = SecurityStaffSerializer(many=False, read_only=True)
-
-    # STUDENT, STAFF, MAINTENANCE_STAFF, SECURITY_STAFF
-    role = serializers.CharField(read_only=True)
-
-
-class PostAuthUserSerializer(serializers.Serializer):
-    session_token = serializers.CharField(required=True)
+    maintenanceStaff = MaintenanceStaffSerializer(many=False, read_only=True)
+    securityStaff = SecurityStaffSerializer(many=False, read_only=True)

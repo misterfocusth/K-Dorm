@@ -9,7 +9,7 @@ import Header from "@/components/headers";
 import { cookies } from "next/headers";
 
 // Constants
-import { SESSION_COOKIE_NAME } from "@/constants";
+import { SESSION_UID_COOKIE_NAME, SESSION_ID_TOKEN_COOKIE_NAME } from "@/constants";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,13 +21,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = cookies().get(SESSION_COOKIE_NAME)?.value || null;
+  const uid = cookies().get(SESSION_UID_COOKIE_NAME)?.value || null;
+  const sessionIdToken = cookies().get(SESSION_ID_TOKEN_COOKIE_NAME)?.value || null;
 
   return (
     <html lang="en">
       <body>
         <RQClientProvider>
-          <Header session={session} />
+          <Header uid={uid} sessionIdToken={sessionIdToken} />
           {children}
         </RQClientProvider>
       </body>

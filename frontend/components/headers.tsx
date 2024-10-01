@@ -1,17 +1,11 @@
 "use client";
 
-import { useUserSession } from "@/hooks/useUserSession";
 import { signInWithGoogle, signOutWithGoogle } from "@/libs/firebase/auth";
-import { createSession, removeSession } from "@/actions/authActions";
+import { removeSession } from "@/actions/authActions";
 
-export function Header({ session }: { session: string | null }) {
-  const userSessionId = useUserSession(session);
-
+export function Header(props: { uid: string | null; sessionIdToken: string | null }) {
   const handleSignIn = async () => {
-    const userUid = await signInWithGoogle();
-    if (userUid) {
-      await createSession(userUid);
-    }
+    await signInWithGoogle();
   };
 
   const handleSignOut = async () => {
@@ -19,7 +13,7 @@ export function Header({ session }: { session: string | null }) {
     await removeSession();
   };
 
-  if (!userSessionId) {
+  if (!props.uid) {
     return (
       <header>
         <button onClick={handleSignIn}>Sign In</button>

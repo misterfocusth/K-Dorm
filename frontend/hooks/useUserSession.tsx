@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 
 import { onAuthStateChanged } from "../libs/firebase/auth";
 
-export function useUserSession(InitSession: string | null) {
-  const [userUid, setUserUid] = useState<string | null>(InitSession);
+export function useUserSession() {
+  const [userUid, setUserUid] = useState<string | null>(null);
+  const [sessionIdToken, setSessionIdToken] = useState<string | null>(null);
 
-  // Listen for changes to the user session
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(async (authUser) => {
       if (authUser) {
+        const idToken = await authUser.getIdToken();
+        setSessionIdToken(idToken);
         setUserUid(authUser.uid);
       } else {
         setUserUid(null);
@@ -18,5 +20,5 @@ export function useUserSession(InitSession: string | null) {
     return () => unsubscribe();
   }, []);
 
-  return userUid;
+  return { userUid, sessionIdToken };
 }

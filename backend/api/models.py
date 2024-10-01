@@ -43,6 +43,7 @@ class RecruitmentWave(MyBaseModel):
 
 
 class Account(MyBaseModel):
+    uid = models.TextField(unique=True)
     email = models.EmailField(unique=True)
     secret = models.TextField()
     salt = models.TextField()

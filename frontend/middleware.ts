@@ -1,10 +1,10 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { STUDENT_HOME_ROUTE, ROOT_ROUTE, SESSION_COOKIE_NAME } from "./constants";
+import { STUDENT_HOME_ROUTE, ROOT_ROUTE, SESSION_UID_COOKIE_NAME } from "./constants";
 
 const protectedRoutes = [STUDENT_HOME_ROUTE];
 
 export default function middleware(request: NextRequest) {
-  const session = request.cookies.get(SESSION_COOKIE_NAME)?.value || "";
+  const session = request.cookies.get(SESSION_UID_COOKIE_NAME)?.value || "";
 
   // Redirect to login if session is not set
   if (!session && protectedRoutes.includes(request.nextUrl.pathname)) {

@@ -7,18 +7,9 @@ from rest_framework import status
 from api.models import Account
 
 # Serializers
-from authentication.serializers.auth_user import AuthUserSerializer, PostAuthUserSerializer
+from authentication.serializers.auth_user import AuthUserSerializer
 
 # Create your views here.
-
-
-class AuthUserView(APIView):
-    def post(self, request):
-        serializer = PostAuthUserSerializer(data=request.data)
-        if (serializer.is_valid()):
-            # TODO: Implement decode user data from session token
-            return Response(status=200, data={"result": "USER_DATA"})
-        return Response(status=400, data={"error": "serializer.errors", "messsage": serializer.errors})
 
 
 class AuthUserDetailView(APIView):
