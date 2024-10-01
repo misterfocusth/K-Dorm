@@ -16,7 +16,6 @@ from pathlib import Path
 
 import pyrebase
 import firebase_admin
-from firebase_admin import credentials
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,7 +40,7 @@ DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
 
-# Firebase
+# Firebase ========================
 try:
     config = {
         "apiKey": env('FIREBASE_API_KEY'),
@@ -57,6 +56,8 @@ try:
 except Exception:
     raise Exception(
         "Firebase configuration credentials not found. Please add the configuration to the environment variables.")
+
+# ================================
 
 # Application definition
 
@@ -81,55 +82,6 @@ INSTALLED_APPS = [
     "authentication"
 ]
 
-# Social Auth Config
-SOCIALACCOUNT_PROVIDERS = {
-    "google": {
-        "APP": {
-            "client_id": env('GOOGLE_OAUTH_CLIENT_ID'),
-            "secret": env('GOOGLE_OAUTH_SECRET'),
-            "key": "",  # leave empty
-        },
-        "SCOPE": [
-            "profile",
-            "email",
-        ],
-        "AUTH_PARAMS": {
-            "access_type": "online",
-        },
-        "VERIFIED_EMAIL": True,
-    },
-}
-
-# All Auth Config
-SITE_ID = 1
-ACCOUNT_EMAIL_REQUIRED = False
-ACCOUNT_EMAIL_VERIFICATION = "none"
-
-# Django Rest Auth Config
-# USE_JWT is required because we're using djangorestframework-simplejwt.
-# JWT_AUTH_HTTPONLY should be off, otherwise dj-rest-auth won't send out refresh tokens.
-REST_AUTH = {
-    "USE_JWT": True,
-    "JWT_AUTH_HTTPONLY": False,
-}
-
-# Simple JWT Config
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
-    "ROTATE_REFRESH_TOKENS": False,
-    "BLACKLIST_AFTER_ROTATION": False,
-    "UPDATE_LAST_LOGIN": True,
-    "SIGNING_KEY": env('JWT_SIGNING_KEY'),
-    "ALGORITHM": "HS512",
-}
-
-REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ]
-}
-
 MIDDLEWARE = [
     # Cors
     'corsheaders.middleware.CorsMiddleware',
@@ -142,12 +94,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# CORS CONFIG
-ALLOWED_HOSTS = ['*', 'localhost:3000']
-
-APPEND_SLASH = False
+# CORS CONFIG ============
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
 
 CORS_ALLOW_CREDENTIALS = True
+
+# ========================
 
 APPEND_SLASH = False
 
