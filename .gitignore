@@ -294,3 +294,6 @@ cython_debug/
 
 # Ignore firebase service account file
 backend/firebase/
+
+# Ignore myvenv 
+myvenv/
