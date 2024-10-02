@@ -1,4 +1,10 @@
-.PHONY: start backend frontend stop kill_port
+.PHONY: start backend frontend stop kill_ports
+
+# Load the .env file
+ifneq (,$(wildcard ./.env))
+    include .env
+    export
+endif
 
 BACKEND_PORT ?= 8000
 FRONTEND_PORT ?= 3000
@@ -7,6 +13,12 @@ start: backend frontend
 
 backend:
 	@echo "Starting backend"
+	@if [ ! -d "./myvenv" ]; then \
+		echo "myvenv not found, creating virtual environment..."; \
+		python3 -m venv myvenv && source ./myvenv/bin/activate && pip install -r requirements.txt; \
+	else \
+		echo "myvenv found, activating virtual environment..."; \
+	fi
 	source ./myvenv/bin/activate && cd ./backend && python manage.py runserver &
 
 frontend:

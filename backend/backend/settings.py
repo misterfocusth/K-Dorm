@@ -10,23 +10,54 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import environ
+import os
 from pathlib import Path
+
+import pyrebase
+import firebase_admin
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# LOAD ENV
+ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
+environ.Env.read_env(os.path.join(ROOT_DIR, '.env'))
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-pt20t3iqm588!h&w=y@bs=l*#$z*klc9q=9#2cx=h%@#=0hjc%'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
 
+# Firebase ========================
+try:
+    config = {
+        "apiKey": env('FIREBASE_API_KEY'),
+        "authDomain": env('FIREBASE_AUTH_DOMAIN'),
+        "databaseURL": env('FIREBASE_DATABASE_URL'),
+        "storageBucket": env('FIREBASE_STORAGE_BUCKET'),
+    }
+
+    firebase = pyrebase.initialize_app(config)
+    auth = firebase.auth()
+
+    default_app = firebase_admin.initialize_app()
+except Exception:
+    raise Exception(
+        "Firebase configuration credentials not found. Please add the configuration to the environment variables.")
+
+# ================================
 
 # Application definition
 
@@ -37,52 +68,42 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Cors
     'corsheaders',
+
+    # Rest Framework
     'rest_framework',
+
+    # Apps
     'api',
+
+    # Authentication
+    "authentication"
 ]
 
 MIDDLEWARE = [
+    # Cors
+    'corsheaders.middleware.CorsMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
-# CORS CONFIG
-ALLOWED_HOSTS=['*', 'localhost:3000']
-
-CORS_ORIGIN_ALLOW_ALL = True
+# CORS CONFIG ============
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
 
 CORS_ALLOW_CREDENTIALS = True
 
+# ========================
 
-CORS_ALLOW_METHODS = [
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-]
-CORS_ALLOW_HEADERS = [
-    "accept",
-    "accept-encoding",
-    "authorization",
-    "content-type",
-    "dnt",
-    "origin",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
-    'Access-Control-Allow-Origin',
-]
-
-APPEND_SLASH=False
+APPEND_SLASH = False
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -104,14 +125,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "kdorm",
+        "USER": "postgres",
+        "PASSWORD": "password",
+        "HOST": "localhost",
+        "PORT": "6969",
     }
 }
 

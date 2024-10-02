@@ -3,3 +3,11 @@ psycopg2
 djangorestframework
 markdown
 django-filter
+python-decouple
+pyrebase4
+firebase-admin
+django-cors-headers
+whitenoise
+drf-yasg
+setuptools
+django-environ

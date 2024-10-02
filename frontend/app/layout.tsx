@@ -3,6 +3,14 @@ import "./globals.css";
 
 // React Query
 import RQClientProvider from "@/providers/RQClientProvider";
+import Header from "@/components/headers";
+
+// Next
+import { cookies } from "next/headers";
+
+// Constants
+import { SESSION_UID_COOKIE_NAME, SESSION_ID_TOKEN_COOKIE_NAME } from "@/constants";
+import AuthContextProviders from "@/contexts/AuthContext";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,10 +22,20 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // TODO: Remove it after implementing login page
+  const uid = cookies().get(SESSION_UID_COOKIE_NAME)?.value || null;
+  const sessionIdToken = cookies().get(SESSION_ID_TOKEN_COOKIE_NAME)?.value || null;
+
   return (
     <html lang="en">
       <body>
-        <RQClientProvider>{children}</RQClientProvider>
+        <RQClientProvider>
+          <AuthContextProviders>
+            {/* TODO: Remove it after implementing login page */}
+            <Header uid={uid} sessionIdToken={sessionIdToken} />
+            {children}
+          </AuthContextProviders>
+        </RQClientProvider>
       </body>
     </html>
   );
