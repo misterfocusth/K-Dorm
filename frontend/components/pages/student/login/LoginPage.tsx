@@ -18,7 +18,7 @@ const LoginPage = () => {
       <div className="flex flex-col items-center justify-center gap-16 w-full">
         <Image src="/assets/login/login.webp" width={325} height={325} alt="Login Logo" />
 
-        <Button className="w-full">เข้าสู่ระบบโดยใช้ Google Account</Button>
+        <Button className="w-full font-bold rounded-xl">เข้าสู่ระบบโดยใช้ Google Account</Button>
       </div>
     </div>
   );
