@@ -10,13 +10,7 @@ const StudentLayout = ({
 }: Readonly<{
   children: ReactNode;
 }>) => {
-  return (
-    <html>
-      <body>
-        <main className={cn("h-[100dvh] max-w-md px-9", notoSansThai.className)}>{children}</main>
-      </body>
-    </html>
-  );
+  return <main className={cn("h-[100dvh] max-w-md px-9", notoSansThai.className)}>{children}</main>;
 };
 
 export default StudentLayout;
