@@ -1,5 +1,10 @@
 import { ReactNode } from "react";
 
+import { Noto_Sans_Thai } from "next/font/google";
+import { cn } from "@/libs/utils";
+
+const notoSansThai = Noto_Sans_Thai({ subsets: ["latin"] });
+
 const StudentLayout = ({
   children,
 }: Readonly<{
@@ -8,7 +13,7 @@ const StudentLayout = ({
   return (
     <html>
       <body>
-        <main className="h-screen max-w-md">{children}</main>
+        <main className={cn("h-screen max-w-md", notoSansThai.className)}>{children}</main>
       </body>
     </html>
   );

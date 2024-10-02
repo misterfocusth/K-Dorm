@@ -29,9 +29,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <RQClientProvider>
-          <AuthContextProviders>{children}</AuthContextProviders>
-        </RQClientProvider>
+        <main>
+          <RQClientProvider>
+            <AuthContextProviders>{children}</AuthContextProviders>
+          </RQClientProvider>
+        </main>
       </body>
     </html>
   );

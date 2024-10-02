@@ -5,7 +5,7 @@ const LoginPage = () => {
   return (
     <div className="px-6 flex flex-col gap-16 items-center h-full justify-center">
       <div>
-        <div className=" text-2xl font-bold">
+        <div className=" text-2xl font-bold flex flex-col gap-1">
           <p>K-Dorm</p>
           <p>ระบบจัดการหอพักนักศึกษาอัจฉริยะ</p>
         </div>
