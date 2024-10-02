@@ -1,9 +1,26 @@
+"use client";
+
+// Components
 import { Button } from "@/components/ui/button";
+
+// Contexts
+import { AuthContext } from "@/contexts/AuthContext";
+
+// Next
 import Image from "next/image";
 
+// React
+import { useCallback, useContext } from "react";
+
 const LoginPage = () => {
+  const { login } = useContext(AuthContext);
+
+  const handleSignIn = useCallback(async () => {
+    await login();
+  }, [login]);
+
   return (
-    <div className="px-6 flex flex-col gap-16 items-center h-full justify-center">
+    <div className="flex flex-col gap-16 items-center h-full justify-center">
       <div>
         <div className=" text-2xl font-bold flex flex-col gap-1">
           <p>K-Dorm</p>
@@ -18,7 +35,9 @@ const LoginPage = () => {
       <div className="flex flex-col items-center justify-center gap-16 w-full">
         <Image src="/assets/login/login.webp" width={325} height={325} alt="Login Logo" />
 
-        <Button className="w-full font-bold rounded-xl">เข้าสู่ระบบโดยใช้ Google Account</Button>
+        <Button className="w-full font-bold rounded-xl" onClick={handleSignIn}>
+          เข้าสู่ระบบโดยใช้ Google Account
+        </Button>
       </div>
     </div>
   );

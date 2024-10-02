@@ -13,7 +13,7 @@ const StudentLayout = ({
   return (
     <html>
       <body>
-        <main className={cn("h-screen max-w-md", notoSansThai.className)}>{children}</main>
+        <main className={cn("h-[100dvh] max-w-md px-9", notoSansThai.className)}>{children}</main>
       </body>
     </html>
   );

@@ -1,5 +1,8 @@
+// Page
+import StudentHome from "@/components/pages/student/home/StudentHome";
+
 const Page = () => {
-  return <div>Page</div>;
+  return <StudentHome />;
 };
 
 export default Page;
