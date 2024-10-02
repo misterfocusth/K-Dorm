@@ -30,11 +30,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <RQClientProvider>
-          <AuthContextProviders>
-            {/* TODO: Remove it after implementing login page */}
-            <Header uid={uid} sessionIdToken={sessionIdToken} />
-            {children}
-          </AuthContextProviders>
+          <AuthContextProviders>{children}</AuthContextProviders>
         </RQClientProvider>
       </body>
     </html>
