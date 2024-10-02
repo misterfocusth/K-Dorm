@@ -40,6 +40,7 @@ class MyBaseModel(models.Model):
 class RecruitmentWave(MyBaseModel):
     name = models.CharField(max_length=255)
     year = models.IntegerField()
+    announcementText = models.TextField(null=True, default=None)
 
 
 class Account(MyBaseModel):
