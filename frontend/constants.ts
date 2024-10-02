@@ -3,6 +3,7 @@ export const ROOT_ROUTE = "/";
 export const STUDENT_ROUTE_PREFIX = "/student";
 export const STAFF_ROUTE_PREFIX = "/staff";
 
+export const STUDENT_ONBOARDING_ROUTE = STUDENT_ROUTE_PREFIX + "/onboarding";
 export const STUDENT_HOME_ROUTE = STUDENT_ROUTE_PREFIX + "/home";
 export const STUDENT_LOGIN_ROUTE = STUDENT_ROUTE_PREFIX + "/login";
 

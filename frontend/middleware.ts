@@ -8,6 +8,7 @@ import {
   STAFF_ROUTE_PREFIX,
   STUDENT_HOME_ROUTE,
   STAFF_HOME_ROUTE,
+  STUDENT_ONBOARDING_ROUTE,
 } from "./constants";
 
 const PUBLIC_STUDENT_ROUTES = ["login", "onboarding"].map(
@@ -26,6 +27,13 @@ export default function middleware(request: NextRequest) {
     request.nextUrl.pathname
   );
 
+  // Redirect to student onboarding page if tyring to access root page.
+  if (request.nextUrl.pathname === "/") {
+    const absoluteURL = new URL(STUDENT_ONBOARDING_ROUTE, request.nextUrl.origin);
+    return NextResponse.redirect(absoluteURL.toString());
+  }
+
+  // Redirect to login page if not logged in based on student or staff pages.
   if (!isLoggedIn) {
     if (prefixRequestUrl === "student" && !isPubicRoute) {
       const absoluteURL = new URL(STUDENT_LOGIN_ROUTE, request.nextUrl.origin);
@@ -38,7 +46,7 @@ export default function middleware(request: NextRequest) {
     }
   }
 
-  // Handle if isLoggedIn but trying to access login page
+  // Handle if isLoggedIn but trying to access login page.
   const isLoginPage = request.nextUrl.pathname.includes("login");
 
   if (isLoggedIn && isLoginPage) {
