@@ -21,7 +21,7 @@ const OnBoardingPage = ({ config }: OnBoardingPageProps) => {
   const [currentStep, setCurrentStep] = useState<number>(0);
 
   return (
-    <div className="h-full flex flex-col justify-center items-center gap-10 pt-60 pb-6">
+    <div className="h-full flex flex-col justify-center items-center gap-10 pt-40 pb-6">
       <Image src={config[currentStep].imageSrc} width={200} height={200} alt="OnBoarding Image" />
 
       <div className="text-center flex flex-col gap-5">
@@ -33,7 +33,7 @@ const OnBoardingPage = ({ config }: OnBoardingPageProps) => {
       <div className="flex justify-between items-center w-full mt-auto">
         {currentStep > 0 ? (
           <Button
-            variant="ghost"
+            variant="link"
             className="flex-1 text-xl text-[#9E9E9E] p-0 flex justify-start"
             onClick={() => setCurrentStep((prev) => prev - 1)}
           >
@@ -41,8 +41,8 @@ const OnBoardingPage = ({ config }: OnBoardingPageProps) => {
           </Button>
         ) : (
           <Button
-            variant="ghost"
-            className="flex-1 text-xl text-[#9E9E9E] p-0 flex justify-start"
+            variant="link"
+            className="flex-1 text-xl text-[#9E9E9E] p-0 flex justify-start   "
             onClick={() => router.push("/student/login")}
           >
             ข้าม
@@ -61,7 +61,7 @@ const OnBoardingPage = ({ config }: OnBoardingPageProps) => {
 
         {currentStep + 1 === config.length ? (
           <Button
-            variant="ghost"
+            variant="link"
             onClick={() => router.push("/student/login")}
             className="flex-1 text-black text-xl flex items-center gap-1 p-0 justify-end"
           >
@@ -69,7 +69,7 @@ const OnBoardingPage = ({ config }: OnBoardingPageProps) => {
           </Button>
         ) : (
           <Button
-            variant="ghost"
+            variant="link"
             onClick={() => setCurrentStep((prev) => prev + 1)}
             className="flex-1 text-black text-xl flex items-center gap-1 p-0 justify-end"
           >
