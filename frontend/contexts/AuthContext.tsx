@@ -35,6 +35,7 @@ import {
   STUDENT_HOME_ROUTE,
   STUDENT_LOGIN_ROUTE,
 } from "@/constants";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 interface IAuthContext {
   currentUser: Account | null;
@@ -138,8 +139,7 @@ const AuthContextProviders = ({ children }: { children: React.ReactNode }) => {
   }, [getUserSession]);
 
   if (isLoading) {
-    // TODO: Implement Loading Backdrop
-    return <></>;
+    return <LoadingSpinner loading={isLoading} />;
   }
 
   return (
