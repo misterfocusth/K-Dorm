@@ -1,16 +1,18 @@
 "use client";
 
+// Components
 import StudentResidenceCard from "@/components/student/Card/StudentResidenceCard";
 import StudentHomeMenu from "@/components/student/menu/StudentHomeMenu";
-import StudentHeader from "@/components/StudentHeader";
 import { Button } from "@/components/ui/button";
+
+// Contexts
 import { AuthContext } from "@/contexts/AuthContext";
-import { Info } from "lucide-react";
-import Image from "next/image";
+
+// React
 import { useCallback, useContext } from "react";
 
 const StudentHome = () => {
-  const { currentUser, role, logout } = useContext(AuthContext);
+  const { currentUser, logout } = useContext(AuthContext);
 
   const handleLogout = useCallback(async () => {
     await logout();
