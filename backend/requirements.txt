@@ -11,3 +11,6 @@ whitenoise
 drf-yasg
 setuptools
 django-environ
+gunicorn
+python-dotenv
+requests
