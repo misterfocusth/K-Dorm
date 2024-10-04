@@ -110,8 +110,7 @@ jobs:
       # Step 5: Build and push the Docker images using docker-compose.dev.yml
       - name: Build and push Docker images
         run: |
-          docker compose -f docker-compose.dev.yml build
-          docker tag k-dorm-backend it65070219/k-dorm-backend:latest
+          docker compose -f docker-compose.dev.yml build --build-arg CONFIG_FILE_PATH=k-dorm-745f0-firebase-adminsdk-vpaem-b89972a630.json
           docker push it65070219/k-dorm-backend
         env:
           FILE_URL: ${{ secrets.FILE_URL }}
