@@ -6,6 +6,9 @@ services:
       context: ./backend
     volumes:
       - ./backend:/app
+      - ./k-dorm-745f0-firebase-adminsdk-vpaem-b89972a630.json.json:/app/k-dorm-745f0-firebase-adminsdk-vpaem-b89972a630.json
+    args:
+      - CONFIG_FILE_PATH=k-dorm-745f0-firebase-adminsdk-vpaem-b89972a630.json
     ports:
       - "8000:8000"
     command: >
@@ -33,3 +36,4 @@ services:
       - NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=${NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET}
       - NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=${NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID}
       - NEXT_PUBLIC_FIREBASE_APP_ID=${NEXT_PUBLIC_FIREBASE_APP_ID}
+      - FIREBASE_ADMIN_CREDENTIALS_JSON=${FIREBASE_ADMIN_CREDENTIALS_JSON}
