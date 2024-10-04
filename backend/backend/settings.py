@@ -18,9 +18,10 @@ from pathlib import Path
 import pyrebase
 import firebase_admin
 
+ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
+
 
 def get_env(key):
-    ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
     if os.path.exists(os.path.join(ROOT_DIR, '.env')):
         environ.Env.read_env(os.path.join(ROOT_DIR, '.env'))
         env = environ.Env(
@@ -32,8 +33,7 @@ def get_env(key):
 
 
 def get_db_config():
-    # Check if the DATABASE_URL is set
-    if get_env("DATABASE_URL"):
+    if not os.path.exists(os.path.join(ROOT_DIR, '.env')):
         tmpPostgres = urlparse(get_env("DATABASE_URL"))
         return {
             'default': {
