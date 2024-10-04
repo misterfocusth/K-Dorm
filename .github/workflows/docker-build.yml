@@ -1,12 +1,85 @@
-# .github/workflows/docker-build.yml
-name: Backend - Build and Push Docker Images to Docker Hub and Trigger Azure Container Apps (Development CI/CD)
+# # .github/workflows/docker-build.yml
+# name: Backend - Build and Push Docker Images to Docker Hub and Trigger Azure Container Apps (Development CI/CD)
 
-# Trigger workflow when changes are pushed to the specified branch
+# # Trigger workflow when changes are pushed to the specified branch
+# on:
+#   push:
+#     branches:
+#       - misterfocusth/development-ci-cd
+#       - main
+
+# jobs:
+#   build_and_push:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       # Step 1: Checkout the repository
+#       - name: Checkout repository
+#         uses: actions/checkout@v2
+
+#       # Step 2: Set up Docker Buildx
+#       - name: Set up Docker Buildx
+#         uses: docker/setup-buildx-action@v2
+
+#       # Step 3: Log in to Docker Hub
+#       - name: Log in to Docker Hub
+#         uses: docker/login-action@v2
+#         with:
+#           username: ${{ secrets.DOCKER_USERNAME }}
+#           password: ${{ secrets.DOCKER_PASSWORD }}
+
+#       # Step 4: Build and push the Docker images using docker-compose.dev.yml
+#       - name: Build and push Docker images
+#         run: |
+# docker compose -f docker-compose.dev.yml build --build-arg FILE_URL={{ secrets.FILE_URL }} -t k-dorm-backend
+# docker tag k-dorm-backend it65070219/k-dorm-backend:latest
+# docker push it65070219/k-dorm-backend:
+# env:
+#   FILE_URL: ${{ secrets.FILE_URL }}
+#   DEBUG: ${{ secrets.DEBUG }}
+#   DATABASE_URL: ${{ secrets.DATABASE_URL }}
+#   JWT_SIGNING_KEY: ${{ secrets.JWT_SIGNING_KEY }}
+#   SECRET_KEY: ${{ secrets.SECRET_KEY }}
+#   GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+#   GOOGLE_OAUTH_CLIENT_ID: ${{ secrets.GOOGLE_OAUTH_CLIENT_ID }}
+#   GOOGLE_OAUTH_SECRET: ${{ secrets.GOOGLE_OAUTH_SECRET }}
+#   FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+#   FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
+#   FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+#   FIREBASE_DATABASE_URL: ${{ secrets.FIREBASE_DATABASE_URL }}
+#   FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
+#   FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
+#   FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+#   NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
+#   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
+#   NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
+#   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}
+#   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}
+#   NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
+
+#     steps:
+#       # Step 5: Log in to Azure
+#       - name: Log in to Azure
+#         uses: azure/login@v1
+#         with:
+#           creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+#       # Step 6: Update Azure Container App services with the new Docker images
+#       - name: Update Azure Container App (Backend)
+#         run: |
+#           az containerapp update \
+#             --name k-dorm-backend \
+#             --resource-group kdorm-rg \
+#             --image it65070219/k-dorm-backend:latest
+
+# .github/workflows/docker-build-azure.yml
+name: Build and Push Docker Images to Docker Hub and Trigger Azure Container Apps
+
+# Trigger the workflow when pushing to the 'misterfocusth/development-ci-cd' branch
 on:
   push:
     branches:
       - misterfocusth/development-ci-cd
-      - main
 
 jobs:
   build_and_push:
@@ -33,7 +106,7 @@ jobs:
         run: |
           docker compose -f docker-compose.dev.yml build --build-arg FILE_URL={{ secrets.FILE_URL }} -t k-dorm-backend
           docker tag k-dorm-backend it65070219/k-dorm-backend:latest
-          docker push it65070219/k-dorm-backend:
+          docker push it65070219/k-dorm-backend
         env:
           FILE_URL: ${{ secrets.FILE_URL }}
           DEBUG: ${{ secrets.DEBUG }}
@@ -57,6 +130,10 @@ jobs:
           NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}
           NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
 
+  deploy_to_azure:
+    runs-on: ubuntu-latest
+    needs: build_and_push
+
     steps:
       # Step 5: Log in to Azure
       - name: Log in to Azure
@@ -65,7 +142,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       # Step 6: Update Azure Container App services with the new Docker images
-      - name: Update Azure Container App (Backend)
+      - name: Update Azure Container App service 1
         run: |
           az containerapp update \
             --name k-dorm-backend \
