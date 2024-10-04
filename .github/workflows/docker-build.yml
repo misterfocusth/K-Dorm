@@ -26,16 +26,26 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Step 4: Create a JSON file from the secret
+      # Step 4: Delete the existing Docker image from Docker Hub using Docker Hub API
+      - name: Delete Existing Docker Image from Docker Hub
+        run: |
+          curl -X DELETE \
+          -u ${{ secrets.DOCKER_USERNAME }}:${{ secrets.DOCKER_PASSWORD }} \
+          https://hub.docker.com/v2/repositories/${{ secrets.DOCKER_USERNAME }}/your-image-name/tags/latest/
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Step 5: Create a JSON file from the secret
       - name: Create JSON file from secret
         run: |
           echo '${{ secrets.FIREBASE_ADMIN_CREDENTIALS_JSON }}' > k-dorm-745f0-firebase-adminsdk-vpaem-b89972a630.json
         shell: bash
 
-      # Step 5: Build and push the Docker images using docker-compose.dev.yml
+      # Step 6: Build and push the Docker images using docker-compose.dev.yml
       - name: Build and push Docker images
         run: |
-          docker compose -f docker-compose.dev.yml build
+          docker compose -f docker-compose.dev.yml build --no-cache
           docker push it65070219/k-dorm-backend
         env:
           FILE_URL: ${{ secrets.FILE_URL }}
@@ -66,14 +76,14 @@ jobs:
     needs: build_and_push
 
     steps:
-      # Step 6: Log in to Azure
+      # Step 7: Log in to Azure
       - name: Log in to Azure
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Step 7: Update Azure Container App services with the new Docker images
-      - name: Update Azure Container App service 1
+      # Step 8: Update Azure Container App services with the new Docker images
+      - name: Re-Deploy Azure Container App Service (Backend)
         run: |
           az containerapp update \
             --name k-dorm-backend \
