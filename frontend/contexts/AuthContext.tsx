@@ -74,6 +74,7 @@ const AuthContextProviders = ({ children }: { children: React.ReactNode }) => {
       setRole(role as Role);
     } catch (error) {
       console.error("Error getting user session", error);
+      await removeSession(); // Remove current session if error occurs
     } finally {
       setIsLoading(false);
     }
