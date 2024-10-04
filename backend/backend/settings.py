@@ -134,8 +134,8 @@ DATABASES = {
         "NAME": "kdorm",
         "USER": "postgres",
         "PASSWORD": "password",
-        "HOST": "localhost",
-        "PORT": "6969",
+        "HOST": env('DB_HOST'),
+        "PORT": env("DB_PORT"),
     }
 }
 
