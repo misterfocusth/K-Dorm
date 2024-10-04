@@ -29,7 +29,5 @@ ENV PYTHONUNBUFFERED=1
 RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
 USER appuser
 
-RUN python manage.py migrate
-
 # Run Django development server
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "backend.wsgi"]
