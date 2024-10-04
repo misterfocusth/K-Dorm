@@ -48,8 +48,9 @@ export default function middleware(request: NextRequest) {
 
   // Handle if isLoggedIn but trying to access login page.
   const isLoginPage = request.nextUrl.pathname.includes("login");
+  const isOnBoardingPage = request.nextUrl.pathname.includes("onboarding");
 
-  if (isLoggedIn && isLoginPage) {
+  if (isLoggedIn && (isLoginPage || isOnBoardingPage)) {
     if (prefixRequestUrl === "student") {
       const absoluteURL = new URL(STUDENT_HOME_ROUTE, request.nextUrl.origin);
       return NextResponse.redirect(absoluteURL.toString());
