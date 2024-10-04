@@ -12,7 +12,7 @@ import {
 
 export async function createSession(uid: string, sessionIdToken: string) {
   cookies().set(SESSION_UID_COOKIE_NAME, uid, {
-    httpOnly: true,
+    httpOnly: false,
     secure: process.env.NODE_ENV === "production",
     sameSite: "none",
     maxAge: 60 * 60 * 24, // One day
@@ -20,7 +20,7 @@ export async function createSession(uid: string, sessionIdToken: string) {
   });
 
   cookies().set(SESSION_ID_TOKEN_COOKIE_NAME, sessionIdToken, {
-    httpOnly: true,
+    httpOnly: false,
     secure: process.env.NODE_ENV === "production",
     sameSite: "none",
     maxAge: 60 * 60 * 24, // One day
