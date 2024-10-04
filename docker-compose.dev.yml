@@ -11,7 +11,7 @@ services:
       - "8000:8000"
     command: >
       sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
-    image: it65070219/kdorm-backend:latest
+    image: it65070219/k-dorm-backend:latest
     environment:
       - FILE_URL=${FILE_URL}
       - DEBUG=${DEBUG}
