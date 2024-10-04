@@ -131,6 +131,8 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     'https://kdorm.vercel.app',
+    'https://kdorm-git-misterfocusth-developm-1b1ec4-misterfocusths-projects.vercel.app/',
+    '*'
 ]
 
 CORS_ALLOW_CREDENTIALS = True
