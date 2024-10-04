@@ -1,4 +1,4 @@
-name: Build and Push Docker Images to Docker Hub and Trigger Azure Container Apps
+name: Build and Push Docker Images to Docker Hub and Trigger Google Cloud Run
 
 # Trigger the workflow when pushing to the 'misterfocusth/development-ci-cd' branch
 on:
