@@ -71,7 +71,7 @@ SECRET_KEY = get_env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = get_env('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Firebase ========================
 try:
@@ -130,6 +130,7 @@ MIDDLEWARE = [
 # CORS CONFIG ============
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    'https://kdorm.vercel.app',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
