@@ -18,36 +18,41 @@ from pathlib import Path
 import pyrebase
 import firebase_admin
 
+
+def get_env(key):
+    ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
+    if os.path.exists(os.path.join(ROOT_DIR, '.env')):
+        environ.Env.read_env(os.path.join(ROOT_DIR, '.env'))
+        env = environ.Env(
+            DEBUG=(bool, False)
+        )
+        return env(key)
+    else:
+        return os.environ.get(key)
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# LOAD ENV
-ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
-environ.Env.read_env(os.path.join(ROOT_DIR, '.env'))
-
-env = environ.Env(
-    # set casting, default value
-    DEBUG=(bool, False)
-)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = get_env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = get_env('DEBUG')
 
 ALLOWED_HOSTS = []
 
 # Firebase ========================
 try:
     config = {
-        "apiKey": env('FIREBASE_API_KEY'),
-        "authDomain": env('FIREBASE_AUTH_DOMAIN'),
-        "databaseURL": env('FIREBASE_DATABASE_URL'),
-        "storageBucket": env('FIREBASE_STORAGE_BUCKET'),
+        "apiKey": get_env('FIREBASE_API_KEY'),
+        "authDomain": get_env('FIREBASE_AUTH_DOMAIN'),
+        "databaseURL": get_env('FIREBASE_DATABASE_URL'),
+        "storageBucket": get_env('FIREBASE_STORAGE_BUCKET'),
     }
 
     firebase = pyrebase.initialize_app(config)
@@ -129,7 +134,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
+tmpPostgres = urlparse(get_env("DATABASE_URL"))
 
 DATABASES = {
     'default': {
