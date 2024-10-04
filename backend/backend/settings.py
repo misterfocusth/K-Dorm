@@ -31,6 +31,33 @@ def get_env(key):
         return os.environ.get(key)
 
 
+def get_db_config():
+    # Check if the DATABASE_URL is set
+    if get_env("DATABASE_URL"):
+        tmpPostgres = urlparse(get_env("DATABASE_URL"))
+        return {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': tmpPostgres.path.replace('/', ''),
+                'USER': tmpPostgres.username,
+                'PASSWORD': tmpPostgres.password,
+                'HOST': tmpPostgres.hostname,
+                'PORT': '5432',
+            }
+        }
+    else:
+        return {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': 'kdorm',
+                'USER': 'postgres',
+                'PASSWORD': 'password',
+                'HOST': '127.0.0.1',
+                'PORT': '6969',
+            }
+        }
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -136,17 +163,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 tmpPostgres = urlparse(get_env("DATABASE_URL"))
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': tmpPostgres.path.replace('/', ''),
-        'USER': tmpPostgres.username,
-        'PASSWORD': tmpPostgres.password,
-        'HOST': tmpPostgres.hostname,
-        'PORT': 5432,
-    }
-}
-
+DATABASES = get_db_config()
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
