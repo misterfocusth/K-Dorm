@@ -65,6 +65,7 @@ const AuthContextProviders = ({ children }: { children: React.ReactNode }) => {
   const [role, setRole] = useState<Role | null>(null);
 
   const getUserSession = useCallback(async () => {
+    console.log(document.cookie);
     try {
       const userData = await api.authentication.getMe.query();
       const userDataResult = userData.body as Response<SignInResult>;
