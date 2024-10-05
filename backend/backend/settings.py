@@ -162,9 +162,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 # Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-tmpPostgres = urlparse(get_env("DATABASE_URL"))
+# https://docs.djangoproject.com/en/5.0/ref/settings/#database
 
 DATABASES = get_db_config()
 
