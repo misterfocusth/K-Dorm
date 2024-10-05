@@ -30,5 +30,4 @@ RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /
 USER appuser
 
 # Run Django development server
-# CMD ["gunicorn", "--bind", "0.0.0.0:8000", "backend.wsgi"]
-CMD [ "/bin/bash" ]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "backend.wsgi"]
