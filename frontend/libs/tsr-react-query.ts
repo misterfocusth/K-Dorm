@@ -1,20 +1,21 @@
+"use client";
+
 import { initTsrReactQuery } from "@ts-rest/react-query/v5";
 import { contract } from "@/contracts";
 
-const getBearerToken = (): string | undefined => {
-  if (typeof document === "undefined") return undefined;
+const getCookie = (name: string): string | undefined => {
+  const cookieValue = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith(`${name}=`))
+    ?.split("=")[1];
 
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; session_id_token=`);
-  if (parts.length === 2) {
-    return parts.pop()?.split(";").shift();
-  }
+  return cookieValue;
 };
 
 export const api = initTsrReactQuery(contract, {
   baseUrl: process.env.NEXT_PUBLIC_BACKEND_BASE_URL || "http://localhost:8000/api",
   credentials: "include",
   baseHeaders: {
-    Authorization: `Bearer ${getBearerToken()}`,
+    Authorization: `Bearer ${getCookie("session_id_token")}`,
   },
 });
