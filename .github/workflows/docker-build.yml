@@ -29,7 +29,7 @@ jobs:
       # Step 5: Create a JSON file from the secret
       - name: Create JSON file from secret
         run: |
-          mkdir firebase && echo '${{ secrets.FIREBASE_ADMIN_CREDENTIALS_JSON }}' > ./firebase/k-dorm-745f0-firebase-adminsdk-vpaem-b89972a630.json && ls -l
+          cd backend && mkdir firebase && echo '${{ secrets.FIREBASE_ADMIN_CREDENTIALS_JSON }}' > ./firebase/k-dorm-745f0-firebase-adminsdk-vpaem-b89972a630.json && ls -l
         shell: bash
 
       # Step 6: Build and push the Docker images using docker-compose.dev.yml
