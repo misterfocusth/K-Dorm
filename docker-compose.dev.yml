@@ -6,7 +6,6 @@ services:
       context: ./backend
     volumes:
       - ./backend:/app
-      - ./k-dorm-745f0-firebase-adminsdk-vpaem-b89972a630.json.json:/app/k-dorm-745f0-firebase-adminsdk-vpaem-b89972a630.json
     ports:
       - "8000:8000"
     command: >
