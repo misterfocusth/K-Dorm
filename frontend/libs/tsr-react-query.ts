@@ -4,6 +4,8 @@ import { initTsrReactQuery } from "@ts-rest/react-query/v5";
 import { contract } from "@/contracts";
 
 const getCookie = (name: string): string | undefined => {
+  if (typeof document === "undefined") return undefined;
+
   const cookieValue = document.cookie
     .split("; ")
     .find((row) => row.startsWith(`${name}=`))
