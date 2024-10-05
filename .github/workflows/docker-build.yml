@@ -39,7 +39,7 @@ jobs:
       - name: Build and push Docker images
         run: |
           ls -l
-          docker compose -f docker-compose.dev.yml build --no-cache --build-arg CONFIG_FILE_PATH=firebase
+          docker compose -f docker-compose.dev.yml build --no-cache
           docker push it65070219/k-dorm-backend
         env:
           FILE_URL: ${{ secrets.FILE_URL }}
