@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Copy Firebase config file
 ARG CONFIG_FILE_PATH
-COPY ${CONFIG_FILE_PATH} /app/firebase
+COPY ${CONFIG_FILE_PATH} /app/k-dorm-745f0-firebase-adminsdk-vpaem-b89972a630.json
 
 # Copy requirements file and install dependencies
 COPY requirements.txt /app/
@@ -30,4 +30,4 @@ RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /
 USER appuser
 
 # Run Django development server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "backend.wsgi"]
