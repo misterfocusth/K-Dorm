@@ -5,18 +5,21 @@ import { Button } from "@/components/ui/button";
 
 // Contexts
 import { AuthContext } from "@/contexts/AuthContext";
+import { Loader2 } from "lucide-react";
 
 // Next
 import Image from "next/image";
 
 // React
-import { useCallback, useContext } from "react";
+import { useCallback, useContext, useTransition } from "react";
 
 const LoginPage = () => {
+  const [isPending, startTransition] = useTransition();
+
   const { login } = useContext(AuthContext);
 
-  const handleSignIn = useCallback(async () => {
-    await login();
+  const handleSignIn = useCallback(() => {
+    startTransition(async () => await login());
   }, [login]);
 
   return (
@@ -35,7 +38,8 @@ const LoginPage = () => {
       <div className="flex flex-col items-center justify-center gap-16 w-full">
         <Image src="/assets/login/login.webp" width={325} height={325} alt="Login Logo" />
 
-        <Button className="w-full font-bold rounded-xl" onClick={handleSignIn}>
+        <Button className="w-full font-bold rounded-xl" onClick={handleSignIn} disabled={isPending}>
+          {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           เข้าสู่ระบบโดยใช้ Google Account
         </Button>
       </div>
