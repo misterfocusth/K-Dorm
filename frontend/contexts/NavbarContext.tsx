@@ -1,4 +1,5 @@
 // Next
+import { BOTTOM_NAVBAR_PATHS } from "@/config/navbar";
 import { usePathname } from "next/navigation";
 
 // React
@@ -9,6 +10,7 @@ interface INavbarContext {
   showHeaderNavbar: boolean;
   showButtonNavbar: boolean;
   headerNavbarTitle: string;
+  currentActiveBottomNavbarIndex: number;
   setShowHeaderNavbar: (show: boolean) => void;
   setShowButtonNavbar: (show: boolean) => void;
   setHeaderNavbarTitle: (title: string) => void;
@@ -20,6 +22,7 @@ const initialState: INavbarContext = {
   showHeaderNavbar: false,
   showButtonNavbar: false,
   headerNavbarTitle: "",
+  currentActiveBottomNavbarIndex: 0,
   setShowHeaderNavbar: () => {},
   setShowButtonNavbar: () => {},
   setHeaderNavbarTitle: () => {},
@@ -34,11 +37,20 @@ export const NavbarContextProvider = ({ children }: { children: React.ReactNode 
   const [showButtonNavbar, setShowButtonNavbar] = useState<boolean>(false);
   const [headerNavbarTitle, setHeaderNavbarTitle] = useState<string>("");
 
+  const [currentActiveBottomNavbarIndex, setCurrentActiveBottomNavbarIndex] = useState<number>(0);
+
   const pathname = usePathname();
 
   useEffect(() => {
     const isStudentHomePath = pathname === "/student/home";
+    const isStudentLoginPath = pathname === "/student/login";
+
     setIsShowStudentHomeNavbar(isStudentHomePath);
+    setShowHeaderNavbar(!isStudentLoginPath);
+    setShowButtonNavbar(!isStudentLoginPath);
+
+    const currentIdx = BOTTOM_NAVBAR_PATHS.findIndex((path) => path.startsWith(pathname));
+    setCurrentActiveBottomNavbarIndex(currentIdx);
   }, [pathname]);
 
   return (
@@ -52,6 +64,7 @@ export const NavbarContextProvider = ({ children }: { children: React.ReactNode 
         setShowButtonNavbar,
         setHeaderNavbarTitle,
         setIsShowStudentHomeNavbar,
+        currentActiveBottomNavbarIndex,
       }}
     >
       {children}

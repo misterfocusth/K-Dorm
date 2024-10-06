@@ -3,23 +3,18 @@
 // Components
 import StudentResidenceCard from "@/components/student/Card/StudentResidenceCard";
 import StudentHomeMenu from "@/components/student/menu/StudentHomeMenu";
-import { Button } from "@/components/ui/button";
 
 // Contexts
 import { AuthContext } from "@/contexts/AuthContext";
 
 // React
-import { useCallback, useContext } from "react";
+import { useContext } from "react";
 
 const StudentHome = () => {
-  const { currentUser, logout } = useContext(AuthContext);
-
-  const handleLogout = useCallback(async () => {
-    await logout();
-  }, [logout]);
+  const { currentUser } = useContext(AuthContext);
 
   return (
-    <div className="py-8 flex flex-col gap-6">
+    <div className="py-8 flex flex-col gap-6 px-9">
       {/* <p>Role: {role}</p> */}
       {/* <p>Current User: {JSON.stringify(currentUser)}</p> */}
 
@@ -58,8 +53,6 @@ const StudentHome = () => {
         <p className="text-xl text-gray-700 mb-4">เมนู</p>
         <StudentHomeMenu />
       </div>
-
-      <Button onClick={handleLogout}>ออกจากระบบ</Button>
     </div>
   );
 };

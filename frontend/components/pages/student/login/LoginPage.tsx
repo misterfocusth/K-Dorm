@@ -23,7 +23,7 @@ const LoginPage = () => {
   }, [login]);
 
   return (
-    <div className="flex flex-col gap-16 items-center h-full justify-center">
+    <div className="flex flex-col gap-16 items-center h-full justify-center px-9">
       <div>
         <div className=" text-2xl font-bold flex flex-col gap-1">
           <p>K-Dorm</p>
