@@ -42,12 +42,12 @@ export const NavbarContextProvider = ({ children }: { children: React.ReactNode 
   const pathname = usePathname();
 
   useEffect(() => {
-    const isStudentHomePath = pathname === "/student/home";
-    const isStudentLoginPath = pathname === "/student/login";
+    // const isStudentHomePath = pathname === "/student/home";
+    // const isStudentLoginPath = pathname === "/student/login";
 
-    setIsShowStudentHomeNavbar(isStudentHomePath);
-    setShowHeaderNavbar(!isStudentLoginPath);
-    setShowButtonNavbar(!isStudentLoginPath);
+    // setIsShowStudentHomeNavbar(isStudentHomePath);
+    // setShowHeaderNavbar(!isStudentLoginPath);
+    // setShowButtonNavbar(!isStudentLoginPath);
 
     const currentIdx = BOTTOM_NAVBAR_PATHS.findIndex((path) => path.startsWith(pathname));
     setCurrentActiveBottomNavbarIndex(currentIdx);
