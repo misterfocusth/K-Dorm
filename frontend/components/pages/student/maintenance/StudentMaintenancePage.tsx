@@ -27,8 +27,10 @@ import { Plus } from "lucide-react";
 
 // Components
 import MaintenanceHistoryList from "@/components/student/list/MaintenanceHistoryList";
+import { useRouter } from "next/navigation";
 
 const StudentMaintenancePage = () => {
+  const router = useRouter();
   const { setShowBottomNavbar, setShowHeaderNavbar } = useContext(NavbarContext);
 
   useEffect(() => {
@@ -78,7 +80,12 @@ const StudentMaintenancePage = () => {
         <div className="flex flex-row items-center justify-between">
           <p className="font-bold">ประวัติย้อนหลัง</p>
 
-          <Button variant="outline" size="icon" className="rounded-full">
+          <Button
+            variant="outline"
+            size="icon"
+            className="rounded-full"
+            onClick={() => router.push("/student/maintenance/new")}
+          >
             <Plus className="h-4 w-4" />
           </Button>
         </div>
