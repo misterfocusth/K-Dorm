@@ -1,7 +1,7 @@
 "use client";
 
 // React
-import { useCallback, useEffect, useState, createContext } from "react";
+import { useCallback, useEffect, useState, createContext, useContext } from "react";
 
 // Firebase
 import {
@@ -36,6 +36,7 @@ import {
   STUDENT_LOGIN_ROUTE,
 } from "@/constants";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { NavbarContext } from "./NavbarContext";
 
 interface IAuthContext {
   currentUser: Account | null;
@@ -134,8 +135,6 @@ const AuthContextProviders = ({ children }: { children: React.ReactNode }) => {
       });
     } catch (error) {
       console.error("Error signing out with Google", error);
-    } finally {
-      setIsLoading(false);
     }
   }, []);
 

@@ -16,10 +16,10 @@ import { useContext } from "react";
 const StudentNavbar = () => {
   const router = useRouter();
 
-  const { showStudentHomeNavbar, showButtonNavbar, currentActiveBottomNavbarIndex } =
+  const { isShowStudentHomeNavbar, isShowBottomNavbar, currentActiveBottomNavbarIndex } =
     useContext(NavbarContext);
 
-  if (showButtonNavbar && !showStudentHomeNavbar) {
+  if (isShowBottomNavbar && !isShowStudentHomeNavbar) {
     return (
       <div className="w-full drop-shadow-lg border rounded-t-3xl py-4 flex flex-row items-center justify-between px-6 pb-6">
         <NavbarItem

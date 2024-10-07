@@ -7,13 +7,16 @@ import { useCallback, useContext, useEffect } from "react";
 
 const StudentProfilePage = () => {
   const { logout } = useContext(AuthContext);
-  const { setShowHeaderNavbar } = useContext(NavbarContext);
+  const { setShowHeaderNavbar, resetNavbarContext, setShowBottomNavbar } =
+    useContext(NavbarContext);
 
   const handleLogout = useCallback(async () => {
     await logout();
+    resetNavbarContext();
   }, [logout]);
 
   useEffect(() => {
+    setShowBottomNavbar(true);
     setShowHeaderNavbar(false);
   }, []);
 
