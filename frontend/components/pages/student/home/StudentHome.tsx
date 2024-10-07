@@ -6,12 +6,19 @@ import StudentHomeMenu from "@/components/student/menu/StudentHomeMenu";
 
 // Contexts
 import { AuthContext } from "@/contexts/AuthContext";
+import { NavbarContext } from "@/contexts/NavbarContext";
 
 // React
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 const StudentHome = () => {
   const { currentUser } = useContext(AuthContext);
+  const { setShowStudentHomeNavbar } = useContext(NavbarContext);
+
+  useEffect(() => {
+    setShowStudentHomeNavbar(true);
+    return () => setShowStudentHomeNavbar(false);
+  }, []);
 
   return (
     <div className="py-8 flex flex-col gap-6 px-9">

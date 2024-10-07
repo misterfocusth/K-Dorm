@@ -14,7 +14,8 @@ interface INavbarContext {
   setShowHeaderNavbar: (show: boolean) => void;
   setShowButtonNavbar: (show: boolean) => void;
   setHeaderNavbarTitle: (title: string) => void;
-  setIsShowStudentHomeNavbar: (show: boolean) => void;
+  setShowStudentHomeNavbar: (show: boolean) => void;
+  resetNavbarContext: () => void;
 }
 
 const initialState: INavbarContext = {
@@ -26,13 +27,14 @@ const initialState: INavbarContext = {
   setShowHeaderNavbar: () => {},
   setShowButtonNavbar: () => {},
   setHeaderNavbarTitle: () => {},
-  setIsShowStudentHomeNavbar: () => {},
+  setShowStudentHomeNavbar: () => {},
+  resetNavbarContext: () => {},
 };
 
 export const NavbarContext = createContext<INavbarContext>(initialState);
 
 export const NavbarContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [showStudentHomeNavbar, setIsShowStudentHomeNavbar] = useState<boolean>(false);
+  const [showStudentHomeNavbar, setShowStudentHomeNavbar] = useState<boolean>(false);
   const [showHeaderNavbar, setShowHeaderNavbar] = useState<boolean>(false);
   const [showButtonNavbar, setShowButtonNavbar] = useState<boolean>(false);
   const [headerNavbarTitle, setHeaderNavbarTitle] = useState<string>("");
@@ -41,17 +43,22 @@ export const NavbarContextProvider = ({ children }: { children: React.ReactNode 
 
   const pathname = usePathname();
 
+  const resetNavbarContext = () => {
+    setShowStudentHomeNavbar(false);
+    setShowHeaderNavbar(false);
+    setShowButtonNavbar(false);
+    setHeaderNavbarTitle("");
+    setCurrentActiveBottomNavbarIndex(0);
+  };
+
   useEffect(() => {
-    // const isStudentHomePath = pathname === "/student/home";
-    // const isStudentLoginPath = pathname === "/student/login";
-
-    // setIsShowStudentHomeNavbar(isStudentHomePath);
-    // setShowHeaderNavbar(!isStudentLoginPath);
-    // setShowButtonNavbar(!isStudentLoginPath);
-
     const currentIdx = BOTTOM_NAVBAR_PATHS.findIndex((path) => path.startsWith(pathname));
     setCurrentActiveBottomNavbarIndex(currentIdx);
   }, [pathname]);
+
+  useEffect(() => {
+    resetNavbarContext();
+  }, []);
 
   return (
     <NavbarContext.Provider
@@ -63,8 +70,9 @@ export const NavbarContextProvider = ({ children }: { children: React.ReactNode 
         setShowHeaderNavbar,
         setShowButtonNavbar,
         setHeaderNavbarTitle,
-        setIsShowStudentHomeNavbar,
+        setShowStudentHomeNavbar,
         currentActiveBottomNavbarIndex,
+        resetNavbarContext,
       }}
     >
       {children}
