@@ -25,4 +25,4 @@ ENV PORT 8000
 EXPOSE 8000
 
 # Run database migrations and start the Gunicorn server
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "backend.wsgi"]
+CMD ["gunicorn", "backend.wsgi"]
