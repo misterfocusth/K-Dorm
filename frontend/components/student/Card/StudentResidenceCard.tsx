@@ -38,6 +38,7 @@ const StudentResidenceCard = ({ room, building }: StudentResidenceCardProps) => 
       }
     };
   }, []);
+
   return (
     <div
       className={`bg-[#FDBA74] w-[210px] flex flex-col gap-4 p-4 rounded-2xl ${

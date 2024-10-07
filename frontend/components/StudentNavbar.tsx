@@ -21,7 +21,7 @@ const StudentNavbar = () => {
 
   if (isShowBottomNavbar && !isShowStudentHomeNavbar) {
     return (
-      <div className="w-full drop-shadow-lg border rounded-t-3xl py-4 flex flex-row items-center justify-between px-6 pb-6">
+      <div className="w-full bg-white drop-shadow-lg border rounded-t-3xl py-4 flex flex-row items-center justify-between px-6 pb-6">
         <NavbarItem
           icon={<House className="w-7 h-7" />}
           label="หน้าหลัก"

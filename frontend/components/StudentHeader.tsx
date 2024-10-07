@@ -1,9 +1,19 @@
+// Context
 import { NavbarContext } from "@/contexts/NavbarContext";
+
+// Icon
 import { ChevronLeft } from "lucide-react";
+
+// Next
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+
+// React
 import { useContext } from "react";
 
 const StudentHeader = () => {
+  const router = useRouter();
+
   const { isShowStudentHomeNavbar, isShowHeaderNavbar, headerNavbarTitle } =
     useContext(NavbarContext);
 
@@ -21,7 +31,7 @@ const StudentHeader = () => {
   if (isShowHeaderNavbar) {
     return (
       <div className="p-4 w-full shadow flex flex-row items-center gap-4">
-        <ChevronLeft className="w-7 h-7" />
+        <ChevronLeft className="w-7 h-7" onClick={() => router.back()} />
         <p className="font-bold">{headerNavbarTitle}</p>
       </div>
     );

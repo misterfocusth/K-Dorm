@@ -17,16 +17,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
+
+// Image
+import Image from "next/image";
+
+// Icons
 import { Plus } from "lucide-react";
+
+// Components
 import MaintenanceHistoryList from "@/components/student/list/MaintenanceHistoryList";
 
 const StudentMaintenancePage = () => {
-  const { setShowButtonNavbar, setShowHeaderNavbar } = useContext(NavbarContext);
+  const { setShowBottomNavbar, setShowHeaderNavbar } = useContext(NavbarContext);
 
   useEffect(() => {
-    setShowButtonNavbar(true);
+    setShowBottomNavbar(true);
     setShowHeaderNavbar(false);
   }, []);
 
