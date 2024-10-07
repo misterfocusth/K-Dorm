@@ -1,4 +1,5 @@
 import { ChevronRight, CircleAlert, CircleCheck } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 
 type MaintenanceHistoryItemProps = {
@@ -6,14 +7,18 @@ type MaintenanceHistoryItemProps = {
   title: string;
   description: string;
   createdAt: string;
+  id: string;
 };
 
 const MaintenanceHistoryItem = ({
+  id,
   isResolved,
   title,
   description,
   createdAt,
 }: MaintenanceHistoryItemProps) => {
+  const router = useRouter();
+
   const formattedDate = useMemo(() => {
     const date = new Date(createdAt);
 
@@ -42,7 +47,10 @@ const MaintenanceHistoryItem = ({
   }, [createdAt]);
 
   return (
-    <div className="flex flex-row items-center justify-between">
+    <div
+      className="flex flex-row items-center justify-between"
+      onClick={() => router.push("/student/maintenance/" + id)}
+    >
       <div>
         {isResolved ? (
           <div className="w-13 h-13 bg-[#84CC16] rounded-full text-white flex items-center justify-center p-2">

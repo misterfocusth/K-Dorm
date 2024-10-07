@@ -57,8 +57,8 @@ const StudentMaintenancePage = () => {
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>ทั้งหมด</SelectLabel>
-                      <SelectItem value="apple">ซ่อมแล้ว</SelectItem>
-                      <SelectItem value="banana">ยังไม่ซ่อม</SelectItem>
+                      <SelectItem value="1">ซ่อมแล้ว</SelectItem>
+                      <SelectItem value="2">ยังไม่ซ่อม</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
