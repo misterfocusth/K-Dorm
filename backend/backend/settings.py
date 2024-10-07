@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+from urllib.parse import urlparse
 import environ
 import os
 from pathlib import Path
@@ -17,36 +18,68 @@ from pathlib import Path
 import pyrebase
 import firebase_admin
 
+ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
+
+
+def get_env(key):
+    if os.path.exists(os.path.join(ROOT_DIR, '.env')):
+        environ.Env.read_env(os.path.join(ROOT_DIR, '.env'))
+        env = environ.Env(
+            DEBUG=(bool, False)
+        )
+        return env(key)
+    else:
+        return os.environ.get(key)
+
+
+def get_db_config():
+    if not os.path.exists(os.path.join(ROOT_DIR, '.env')):
+        tmpPostgres = urlparse(get_env("DATABASE_URL"))
+        return {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': tmpPostgres.path.replace('/', ''),
+                'USER': tmpPostgres.username,
+                'PASSWORD': tmpPostgres.password,
+                'HOST': tmpPostgres.hostname,
+                'PORT': '5432',
+            }
+        }
+    else:
+        return {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': 'kdorm',
+                'USER': 'postgres',
+                'PASSWORD': 'password',
+                'HOST': '127.0.0.1',
+                'PORT': '6969',
+            }
+        }
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# LOAD ENV
-ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
-environ.Env.read_env(os.path.join(ROOT_DIR, '.env'))
-
-env = environ.Env(
-    # set casting, default value
-    DEBUG=(bool, False)
-)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = get_env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = get_env('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Firebase ========================
 try:
     config = {
-        "apiKey": env('FIREBASE_API_KEY'),
-        "authDomain": env('FIREBASE_AUTH_DOMAIN'),
-        "databaseURL": env('FIREBASE_DATABASE_URL'),
-        "storageBucket": env('FIREBASE_STORAGE_BUCKET'),
+        "apiKey": get_env('FIREBASE_API_KEY'),
+        "authDomain": get_env('FIREBASE_AUTH_DOMAIN'),
+        "databaseURL": get_env('FIREBASE_DATABASE_URL'),
+        "storageBucket": get_env('FIREBASE_STORAGE_BUCKET'),
     }
 
     firebase = pyrebase.initialize_app(config)
@@ -97,9 +130,12 @@ MIDDLEWARE = [
 # CORS CONFIG ============
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    'https://kdorm.vercel.app',
+    'https://kdorm-git-misterfocusth-developm-1b1ec4-misterfocusths-projects.vercel.app',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = True
 
 # ========================
 
@@ -126,19 +162,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 # Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+# https://docs.djangoproject.com/en/5.0/ref/settings/#database
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "kdorm",
-        "USER": "postgres",
-        "PASSWORD": "password",
-        "HOST": "localhost",
-        "PORT": "6969",
-    }
-}
-
+DATABASES = get_db_config()
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

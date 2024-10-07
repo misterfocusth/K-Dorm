@@ -96,7 +96,12 @@ const AuthContextProviders = ({ children }: { children: React.ReactNode }) => {
 
       await createSession(uid, sessionIdToken);
 
-      const userData = await api.authentication.signIn.mutate({ body: null });
+      const userData = await api.authentication.signIn.mutate({
+        body: null,
+        extraHeaders: {
+          Authorization: `Bearer ${sessionIdToken}`,
+        },
+      });
 
       const userDataResult = userData.body as Response<SignInResult>;
       const { user, role } = userDataResult.result;
