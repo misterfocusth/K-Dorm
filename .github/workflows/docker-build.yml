@@ -41,7 +41,7 @@ jobs:
         run: |
           ls -l
           docker compose -f docker-compose.dev.yml build --no-cache
-          docker push it65070219/k-dorm-backend
+          docker push it65070219/k-dorm-backend:latest
 
   deploy_to_google_cloud_run:
     runs-on: ubuntu-latest
