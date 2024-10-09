@@ -3,14 +3,14 @@ import "./globals.css";
 
 // React Query
 import RQClientProvider from "@/providers/RQClientProvider";
-import Header from "@/components/headers";
 
-// Next
-import { cookies } from "next/headers";
-
-// Constants
-import { SESSION_UID_COOKIE_NAME, SESSION_ID_TOKEN_COOKIE_NAME } from "@/constants";
+// Context
 import AuthContextProviders from "@/contexts/AuthContext";
+
+// Font
+import { Noto_Sans_Thai } from "next/font/google";
+
+const notoSansThai = Noto_Sans_Thai({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,14 +22,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // TODO: Remove it after implementing login page
-  const uid = cookies().get(SESSION_UID_COOKIE_NAME)?.value || null;
-  const sessionIdToken = cookies().get(SESSION_ID_TOKEN_COOKIE_NAME)?.value || null;
-
   return (
     <html lang="en">
       <body>
-        <main>
+        <main className={notoSansThai.className}>
           <RQClientProvider>
             <AuthContextProviders>{children}</AuthContextProviders>
           </RQClientProvider>
