@@ -36,11 +36,11 @@ jobs:
           ls -l
         shell: bash
 
-      # Step 6: Build and push the Docker images using docker-compose.dev.yml
+      # Step 6: Build and push the Docker images using docker-compose.prod.yml
       - name: Build and push Docker images
         run: |
           ls -l
-          docker compose -f docker-compose.dev.yml build --no-cache
+          docker compose -f docker-compose.prod.yml build --no-cache
           docker push it65070219/k-dorm-backend:latest
 
   deploy_to_google_cloud_run:

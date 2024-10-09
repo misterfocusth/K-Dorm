@@ -25,6 +25,14 @@ frontend:
 	@echo "Starting frontend"
 	cd ./frontend && pnpm dev
 
+compose-dev:
+	@echo "Starting docker-compose - development"
+	docker-compose -f docker-compose.dev.yml up --build -d
+
+compose-prod:
+	@echo "Starting docker-compose - production" 
+	docker-compose -f docker-compose.prod.yml up --build -d
+
 kill_ports:
 	@echo "Killing processes on ports $(BACKEND_PORT) and $(FRONTEND_PORT)"
 	@for PORT in $(BACKEND_PORT) $(FRONTEND_PORT); do \
