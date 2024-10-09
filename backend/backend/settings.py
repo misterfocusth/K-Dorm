@@ -15,45 +15,43 @@ import environ
 import os
 from pathlib import Path
 
-import pyrebase
+import json
 import firebase_admin
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 
 
 def get_env(key):
-    if os.path.exists(os.path.join(ROOT_DIR, '.env')):
-        environ.Env.read_env(os.path.join(ROOT_DIR, '.env'))
-        env = environ.Env(
-            DEBUG=(bool, False)
-        )
+    if os.path.exists(os.path.join(ROOT_DIR, ".env")):
+        environ.Env.read_env(os.path.join(ROOT_DIR, ".env"))
+        env = environ.Env(DEBUG=(bool, False))
         return env(key)
     else:
         return os.environ.get(key)
 
 
 def get_db_config():
-    if not os.path.exists(os.path.join(ROOT_DIR, '.env')):
+    if not os.path.exists(os.path.join(ROOT_DIR, ".env")):
         tmpPostgres = urlparse(get_env("DATABASE_URL"))
         return {
-            'default': {
-                'ENGINE': 'django.db.backends.postgresql',
-                'NAME': tmpPostgres.path.replace('/', ''),
-                'USER': tmpPostgres.username,
-                'PASSWORD': tmpPostgres.password,
-                'HOST': tmpPostgres.hostname,
-                'PORT': '5432',
+            "default": {
+                "ENGINE": "django.db.backends.postgresql",
+                "NAME": tmpPostgres.path.replace("/", ""),
+                "USER": tmpPostgres.username,
+                "PASSWORD": tmpPostgres.password,
+                "HOST": tmpPostgres.hostname,
+                "PORT": "5432",
             }
         }
     else:
         return {
-            'default': {
-                'ENGINE': 'django.db.backends.postgresql',
-                'NAME': 'kdorm',
-                'USER': 'postgres',
-                'PASSWORD': 'password',
-                'HOST': '127.0.0.1',
-                'PORT': '6969',
+            "default": {
+                "ENGINE": "django.db.backends.postgresql",
+                "NAME": "kdorm",
+                "USER": "postgres",
+                "PASSWORD": "password",
+                "HOST": "127.0.0.1",
+                "PORT": "6969",
             }
         }
 
@@ -66,72 +64,65 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = get_env('SECRET_KEY')
+SECRET_KEY = get_env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = get_env('DEBUG')
+DEBUG = get_env("DEBUG")
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 
 # Firebase ========================
 try:
-    config = {
-        "apiKey": get_env('FIREBASE_API_KEY'),
-        "authDomain": get_env('FIREBASE_AUTH_DOMAIN'),
-        "databaseURL": get_env('FIREBASE_DATABASE_URL'),
-        "storageBucket": get_env('FIREBASE_STORAGE_BUCKET'),
-    }
 
-    firebase = pyrebase.initialize_app(config)
-    auth = firebase.auth()
+    firebaseAdminConfigFile = Path(str(BASE_DIR) + "/" + get_env("FIREBASE_ADMIN_PATH"))
 
-    default_app = firebase_admin.initialize_app()
+    with firebaseAdminConfigFile.open() as f:
+        firebaseAdminConfig = json.load(f)
+
+    creds = firebase_admin.credentials.Certificate(firebaseAdminConfig)
+    default_app = firebase_admin.initialize_app(credential=creds)
 except Exception:
     raise Exception(
-        "Firebase configuration credentials not found. Please add the configuration to the environment variables.")
+        "Firebase configuration credentials not found. Please add the configuration to the environment variables."
+    )
 
 # ================================
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
     # Cors
-    'corsheaders',
-
+    "corsheaders",
     # Rest Framework
-    'rest_framework',
-
+    "rest_framework",
     # Apps
-    'api',
-
+    "api",
     # Authentication
-    "authentication"
+    "authentication",
 ]
 
 MIDDLEWARE = [
     # Cors
-    'corsheaders.middleware.CorsMiddleware',
-
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 # CORS CONFIG ============
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    'https://kdorm.vercel.app',
-    'https://kdorm-git-misterfocusth-developm-1b1ec4-misterfocusths-projects.vercel.app',
+    "https://kdorm.vercel.app",
+    "https://kdorm-git-misterfocusth-developm-1b1ec4-misterfocusths-projects.vercel.app",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -141,25 +132,25 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 APPEND_SLASH = False
 
-ROOT_URLCONF = 'backend.urls'
+ROOT_URLCONF = "backend.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'backend.wsgi.application'
+WSGI_APPLICATION = "backend.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#database
@@ -171,16 +162,16 @@ DATABASES = get_db_config()
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -188,9 +179,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -200,9 +191,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

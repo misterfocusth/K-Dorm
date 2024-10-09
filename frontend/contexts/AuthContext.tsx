@@ -1,11 +1,10 @@
 "use client";
 
 // React
-import { useCallback, useEffect, useState, createContext, useContext } from "react";
+import { useCallback, useEffect, useState, createContext } from "react";
 
 // Firebase
 import {
-  type User,
   GoogleAuthProvider,
   signInWithPopup,
   onAuthStateChanged as _onAuthStateChanged,
@@ -36,7 +35,6 @@ import {
   STUDENT_LOGIN_ROUTE,
 } from "@/constants";
 import LoadingSpinner from "@/components/LoadingSpinner";
-import { NavbarContext } from "./NavbarContext";
 
 interface IAuthContext {
   currentUser: Account | null;
@@ -125,7 +123,7 @@ const AuthContextProviders = ({ children }: { children: React.ReactNode }) => {
 
       setCurrentUser(null);
       setRole((prev) => {
-        if (prev === "STUDENT") {
+        if (!prev || prev === "STUDENT") {
           router.push(STUDENT_LOGIN_ROUTE);
         } else {
           router.push(STAFF_LOGIN_ROUTE);

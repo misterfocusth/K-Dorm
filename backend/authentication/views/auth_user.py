@@ -23,7 +23,8 @@ class AuthUserDetailView(APIView):
     def get(self, request):
         try:
             session_token = get_session_id_token(request)
-            decoded_token = auth.verify_id_token(session_token)
+            decoded_token = auth.verify_id_token(
+                session_token, clock_skew_seconds=30)
             uid = decoded_token['uid']
 
             account = Account.objects.filter(uid=uid).first()
