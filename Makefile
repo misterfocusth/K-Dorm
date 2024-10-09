@@ -15,15 +15,23 @@ backend:
 	@echo "Starting backend"
 	@if [ ! -d "./myvenv" ]; then \
 		echo "myvenv not found, creating virtual environment..."; \
-		python3 -m venv myvenv && source ./myvenv/bin/activate && pip install -r requirements.txt; \
+		python3 -m venv myvenv && . ./myvenv/bin/activate && pip install -r ./backend/requirements.txt; \
 	else \
 		echo "myvenv found, activating virtual environment..."; \
 	fi
-	source ./myvenv/bin/activate && cd ./backend && python manage.py runserver &
+	. ./myvenv/bin/activate && cd ./backend && python manage.py runserver &
 
 frontend:
 	@echo "Starting frontend"
 	cd ./frontend && pnpm dev
+
+compose-dev:
+	@echo "Starting docker-compose - development"
+	docker-compose -f docker-compose.dev.yml up --build -d
+
+compose-prod:
+	@echo "Starting docker-compose - production" 
+	docker-compose -f docker-compose.prod.yml up --build -d
 
 kill_ports:
 	@echo "Killing processes on ports $(BACKEND_PORT) and $(FRONTEND_PORT)"

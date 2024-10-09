@@ -1,11 +1,22 @@
 version: "3.8"
 
 services:
-  backend:
-    build:
-      context: ./backend
-    volumes:
-      - ./backend:/app
+  postgres:
+    image: postgres:latest
+    container_name: my_postgres_container
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: kdorm
     ports:
-      - "8000:8000"
-    image: it65070219/k-dorm-backend:latest
+      - "6969:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - postgres_network
+
+volumes:
+  postgres_data:
+
+networks:
+  postgres_network:
