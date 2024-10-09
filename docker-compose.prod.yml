@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./backend
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    image: it65070219/k-dorm-backend:latest
