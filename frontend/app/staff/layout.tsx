@@ -13,7 +13,7 @@ import StudentNavbar from "@/components/StudentNavbar";
 // Context
 import { NavbarContextProvider } from "@/contexts/NavbarContext";
 
-const StudentLayout = ({
+const StaffLayout = ({
   children,
 }: Readonly<{
   children: ReactNode;
@@ -33,4 +33,4 @@ const StudentLayout = ({
   );
 };
 
-export default StudentLayout;
+export default StaffLayout;
