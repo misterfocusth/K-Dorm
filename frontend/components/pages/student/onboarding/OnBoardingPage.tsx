@@ -21,7 +21,7 @@ const OnBoardingPage = ({ config }: OnBoardingPageProps) => {
   const [currentStep, setCurrentStep] = useState<number>(0);
 
   return (
-    <div className="h-full flex flex-col justify-center items-center gap-10 pt-40 pb-6">
+    <div className="h-full flex flex-col justify-center items-center gap-10 pt-40 pb-6 px-9">
       <Image src={config[currentStep].imageSrc} width={200} height={200} alt="OnBoarding Image" />
 
       <div className="text-center flex flex-col gap-5">

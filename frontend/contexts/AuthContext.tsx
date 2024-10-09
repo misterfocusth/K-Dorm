@@ -5,7 +5,6 @@ import { useCallback, useEffect, useState, createContext } from "react";
 
 // Firebase
 import {
-  type User,
   GoogleAuthProvider,
   signInWithPopup,
   onAuthStateChanged as _onAuthStateChanged,
@@ -124,7 +123,7 @@ const AuthContextProviders = ({ children }: { children: React.ReactNode }) => {
 
       setCurrentUser(null);
       setRole((prev) => {
-        if (prev === "STUDENT") {
+        if (!prev || prev === "STUDENT") {
           router.push(STUDENT_LOGIN_ROUTE);
         } else {
           router.push(STAFF_LOGIN_ROUTE);
@@ -134,8 +133,6 @@ const AuthContextProviders = ({ children }: { children: React.ReactNode }) => {
       });
     } catch (error) {
       console.error("Error signing out with Google", error);
-    } finally {
-      setIsLoading(false);
     }
   }, []);
 
