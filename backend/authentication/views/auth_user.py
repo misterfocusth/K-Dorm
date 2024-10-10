@@ -7,7 +7,7 @@ from rest_framework import status
 from rest_framework.exceptions import AuthenticationFailed
 
 # Model
-from api.models import Account
+from domain.models import Account
 
 # Serializers
 from authentication.serializers.auth_user import AuthUserSerializer

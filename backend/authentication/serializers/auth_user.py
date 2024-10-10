@@ -3,7 +3,7 @@ from rest_framework import serializers
 from rest_framework.generics import GenericAPIView
 
 # Models
-from api.models import Account
+from domain.models import Account
 
 # Serializers
 from api.serializers.account import MaintenanceStaffSerializer, SecurityStaffSerializer, StaffSerializer, StudentSerializer

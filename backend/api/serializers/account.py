@@ -2,7 +2,7 @@
 from rest_framework import serializers
 
 # Models
-from api.models import Student, Staff, MaintenanceStaff, SecurityStaff
+from domain.models import Student, Staff, MaintenanceStaff, SecurityStaff
 
 
 class StudentSerializer(serializers.ModelSerializer):

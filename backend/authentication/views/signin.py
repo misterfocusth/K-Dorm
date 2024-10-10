@@ -10,7 +10,7 @@ from django.db import transaction
 from rest_framework.exceptions import AuthenticationFailed
 
 # Model
-from api.models import Account, Student, Staff
+from domain.models import Account, Student, Staff
 
 # Serializers
 from authentication.serializers.auth_user import AuthUserSerializer

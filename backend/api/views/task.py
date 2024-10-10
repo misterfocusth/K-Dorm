@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 # Models
-import api.models as models
+import domain.models as models
 
 # Serializers
 import api.serializers.task as serializers
