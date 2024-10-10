@@ -1,5 +1,8 @@
 "use client";
 
+// Route Guard HOC
+import withRoleGuard from "@/components/hoc/withRoleGuard";
+
 // Components
 import StudentResidenceCard from "@/components/student/Card/StudentResidenceCard";
 import StudentHomeMenu from "@/components/student/menu/StudentHomeMenu";
@@ -22,9 +25,6 @@ const StudentHome = () => {
 
   return (
     <div className="py-8 flex flex-col gap-6 px-9">
-      {/* <p>Role: {role}</p> */}
-      {/* <p>Current User: {JSON.stringify(currentUser)}</p> */}
-
       <div>
         <p className="text-3xl font-bold text-primary">{`สวัสดี คุณ ${currentUser?.firstName}`}</p>
         <p className="mt-1">หวังว่าวันนี้จะเป็นวันที่ดีของเธอนะ</p>
@@ -64,4 +64,4 @@ const StudentHome = () => {
   );
 };
 
-export default StudentHome;
+export default withRoleGuard(StudentHome, ["STUDENT"]);

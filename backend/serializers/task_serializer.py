@@ -2,7 +2,7 @@
 from rest_framework import serializers
 
 # Models
-from api.models import Task
+from domain.models import Task
 
 
 class TaskSerializer(serializers.ModelSerializer):

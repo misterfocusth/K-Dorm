@@ -18,11 +18,11 @@ RUN pip install -r requirements.txt
 COPY . /app/
 
 # Set environment variables for Django
-ENV DJANGO_SETTINGS_MODULE=backend.settings
+ENV DJANGO_SETTINGS_MODULE=core.settings
 ENV PORT 8000
 
 # Expose the port Django runs on
 EXPOSE 8000
 
 # Run database migrations and start the Gunicorn server
-CMD ["gunicorn", "backend.wsgi"]
+CMD ["gunicorn", "core.wsgi"]

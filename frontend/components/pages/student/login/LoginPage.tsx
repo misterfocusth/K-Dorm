@@ -1,5 +1,6 @@
 "use client";
 
+import withRoleGuard from "@/components/hoc/withRoleGuard";
 // Components
 import { Button } from "@/components/ui/button";
 
@@ -16,11 +17,11 @@ import { useCallback, useContext, useTransition } from "react";
 const LoginPage = () => {
   const [isPending, startTransition] = useTransition();
 
-  const { login } = useContext(AuthContext);
+  const { loginWithGoogle } = useContext(AuthContext);
 
   const handleSignIn = useCallback(() => {
-    startTransition(async () => await login());
-  }, [login]);
+    startTransition(async () => await loginWithGoogle());
+  }, [loginWithGoogle]);
 
   return (
     <div className="flex flex-col gap-16 items-center h-full justify-center px-9">
@@ -47,4 +48,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default withRoleGuard(LoginPage, ["STUDENT"], true);

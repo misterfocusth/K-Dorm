@@ -25,7 +25,7 @@ const StudentLayout = ({
 
         <div className="h-full z-0">{children}</div>
 
-        <div className="fixed bottom-0 w-full z-10">
+        <div className="fixed bottom-0 w-full max-w-md z-10">
           <StudentNavbar />
         </div>
       </NavbarContextProvider>

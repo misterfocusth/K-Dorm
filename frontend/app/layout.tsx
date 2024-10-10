@@ -5,7 +5,7 @@ import "./globals.css";
 import RQClientProvider from "@/providers/RQClientProvider";
 
 // Context
-import AuthContextProviders from "@/contexts/AuthContext";
+import AuthContextProvider from "@/contexts/AuthContext";
 
 // Font
 import { Noto_Sans_Thai } from "next/font/google";
@@ -28,7 +28,7 @@ export default function RootLayout({
       <body>
         <main className={notoSansThai.className}>
           <RQClientProvider>
-            <AuthContextProviders>{children}</AuthContextProviders>
+            <AuthContextProvider>{children}</AuthContextProvider>
           </RQClientProvider>
         </main>
       </body>

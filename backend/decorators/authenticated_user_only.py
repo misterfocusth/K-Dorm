@@ -6,7 +6,7 @@ from rest_framework import status
 from firebase_admin import auth
 
 # Models
-from api.models import Account
+from domain.models import Account
 
 # TODO: Fix this, idk why it's not working properly :(
 
