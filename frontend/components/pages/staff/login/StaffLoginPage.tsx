@@ -86,7 +86,7 @@ const StaffLoginPage = () => {
                 <FormItem>
                   <FormLabel>อีเมล (Email)</FormLabel>
                   <FormControl>
-                    <Input placeholder="superuser" {...field} />
+                    <Input placeholder="admin@kmitl.ac.th" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

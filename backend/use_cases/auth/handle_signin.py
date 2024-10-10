@@ -1,5 +1,4 @@
 # Django REST Framework
-from rest_framework import status
 from rest_framework.decorators import api_view
 
 # Django
@@ -15,7 +14,7 @@ from repositories.account_repository import *
 import utils.token as token_utils
 
 # Repository
-import repositories.account_repository as account_repository
+from repositories.account_repository import create_new_account, create_new_student_account, create_new_staff_account, get_account_by_uid
 
 
 @transaction.atomic
@@ -29,21 +28,21 @@ def _create_new_account(auth_user_data, is_student=False, is_system_admin=False)
         first_name = "System"
         last_name = "Admin"
 
-    account = account_repository.create_new_account(
+    account = create_new_account(
         uid=auth_user_data['uid'],
         email=auth_user_data['email'],
-        firstName=first_name,
-        lastName=last_name,
+        first_name=first_name,
+        last_name=last_name,
     )
 
     if is_student:
-        account_repository.create_new_student_account(
-            studentId=auth_user_data['email'].split("@")[0],
+        create_new_student_account(
+            student_id=auth_user_data['email'].split("@")[0],
             account=account
         )
 
     if is_system_admin:
-        account_repository.create_new_staff_account(
+        create_new_staff_account(
             account=account
         )
 
@@ -67,7 +66,7 @@ def handle_signin(request):
     }
 
     # Check if user exists in the database
-    account = account_repository.get_account_by_uid(uid)
+    account = get_account_by_uid(uid)
 
     if account is None and auth_user_data['email'] == 'admin@kmitl.ac.th':
         _create_new_account(

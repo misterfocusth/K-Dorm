@@ -3,7 +3,7 @@ from domain.models import Account, Student, Staff
 
 
 def get_account_by_uid(uid):
-    account = Account.objects.get(uid=uid)
+    account = Account.objects.filter(uid=uid).first()
     return account
 
 
@@ -21,7 +21,7 @@ def create_new_account(uid, email, first_name, last_name):
 
 def create_new_student_account(student_id, account):
     student = Student.objects.create(
-        student_id=student_id,
+        studentId=student_id,
         account=account
     )
     student.save()
