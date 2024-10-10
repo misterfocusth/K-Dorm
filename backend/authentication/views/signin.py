@@ -21,10 +21,48 @@ from authentication.token import get_session_id_token
 # Firebase
 from firebase_admin import auth
 
+# Django
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
+
+
+def create_account(uid, email, first_name, last_name):
+    account = Account.objects.create(
+        uid=uid,
+        email=email,
+        firstName=first_name,
+        lastName=last_name
+    )
+    account.save()
+    return account
+
 
 class SignInView(APIView):
     @transaction.atomic
     def post(self, request):
+        # LOGIN AS SUPERUSER ACCOUNT
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            account = User.objects.filter(username=username).first()
+
+            if account is None:
+                created_account = create_account(
+                    uid=user.uid,
+                    email=user.email,
+                    first_name=user.first_name,
+                    last_name=user.last_name
+                )
+                serializer = AuthUserSerializer(created_account)
+
+            role = "SUPERUSER"
+            result = {"user": serializer.data, "role": role}
+            return Response(status=status.HTTP_200_OK, data={"result": result})
+
+        # LOGIN AS STUDENT / STAFF
         try:
             session_token = get_session_id_token(request)
 
@@ -61,11 +99,11 @@ class SignInView(APIView):
 
                 return Response(status=status.HTTP_200_OK, data={"result": {"user": user_data, "role": role}})
 
-            created_account = Account.objects.create(
+            created_account = create_account(
                 uid=auth_user_data['uid'],
                 email=auth_user_data['email'],
-                firstName=auth_user_data['display_name'].split(" ")[0],
-                lastName=auth_user_data['display_name'].split(" ")[1],
+                first_name=auth_user_data['display_name'].split(" ")[0],
+                last_name=auth_user_data['display_name'].split(" ")[1],
             )
 
             Student.objects.create(
