@@ -29,6 +29,9 @@ import { Plus } from "lucide-react";
 import MaintenanceHistoryList from "@/components/student/list/MaintenanceHistoryList";
 import { useRouter } from "next/navigation";
 
+// Route Guard HOC
+import withRoleGuard from "@/components/hoc/withRoleGuard";
+
 const StudentMaintenancePage = () => {
   const router = useRouter();
   const { setShowBottomNavbar, setShowHeaderNavbar } = useContext(NavbarContext);
@@ -98,4 +101,4 @@ const StudentMaintenancePage = () => {
   );
 };
 
-export default StudentMaintenancePage;
+export default withRoleGuard(StudentMaintenancePage, ["STUDENT"]);

@@ -5,7 +5,7 @@ import { useAuthContext } from "@/contexts/AuthContext";
 import { Role } from "@/types";
 
 // Next
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 // React
 import { ComponentType, useEffect } from "react";
@@ -17,12 +17,13 @@ const withRoleGuard = <P extends object>(
   return (props: P) => {
     const { currentUser, role } = useAuthContext();
     const router = useRouter();
+    const pathname = usePathname();
 
     useEffect(() => {
-      console.log("withRouteGuard");
+      const isStudentPath = pathname.startsWith("/student");
 
       if (!currentUser || !role || !requiredRoles.includes(role)) {
-        router.push("/login");
+        router.push(isStudentPath ? "/student/login" : "/staff/login");
       }
     }, [currentUser, role, router]);
 

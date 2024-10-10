@@ -1,5 +1,8 @@
 "use client";
 
+// Route Guard HOC
+import withRoleGuard from "@/components/hoc/withRoleGuard";
+
 // Components
 import ImageGallery from "@/components/ImageGallery";
 import { Separator } from "@/components/ui/separator";
@@ -91,4 +94,4 @@ const StudentMaintenanceDetailPage = ({ id }: StudentMaintenanceDetailPageProps)
   );
 };
 
-export default StudentMaintenanceDetailPage;
+export default withRoleGuard(StudentMaintenanceDetailPage, ["STUDENT"]);

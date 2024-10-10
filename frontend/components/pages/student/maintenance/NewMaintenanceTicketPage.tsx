@@ -23,6 +23,9 @@ import { useRouter } from "next/navigation";
 import { ImageIcon, Trash2 } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
+// Route Guard HOC
+import withRoleGuard from "@/components/hoc/withRoleGuard";
+
 const newMaintainanceTiketFormSchema = z.object({
   title: z.string().min(1, {
     message: "กรุณากรอกหัวข้อการแจ้งซ่อม",
@@ -189,4 +192,4 @@ const NewMaintenanceTicketPage = () => {
   );
 };
 
-export default NewMaintenanceTicketPage;
+export default withRoleGuard(NewMaintenanceTicketPage, ["STUDENT"]);

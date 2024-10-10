@@ -1,8 +1,16 @@
 "use client";
 
+// Route Guard HOC
+import withRoleGuard from "@/components/hoc/withRoleGuard";
+
+// Components
 import { Button } from "@/components/ui/button";
+
+// Contexts
 import { AuthContext } from "@/contexts/AuthContext";
 import { NavbarContext } from "@/contexts/NavbarContext";
+
+// React
 import { useCallback, useContext, useEffect } from "react";
 
 const StudentProfilePage = () => {
@@ -30,4 +38,4 @@ const StudentProfilePage = () => {
   );
 };
 
-export default StudentProfilePage;
+export default withRoleGuard(StudentProfilePage, ["STUDENT"]);
