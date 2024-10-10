@@ -1,5 +1,6 @@
 "use client";
 
+import withRoleGuard from "@/components/hoc/withRoleGuard";
 // Components
 import { Button } from "@/components/ui/button";
 
@@ -47,4 +48,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default withRoleGuard(LoginPage, ["STUDENT"], true);

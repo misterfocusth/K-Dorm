@@ -1,5 +1,8 @@
 "use client";
 
+// Route Guard HOC
+import withRoleGuard from "@/components/hoc/withRoleGuard";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -10,8 +13,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+
+// Contexts
 import { AuthContext } from "@/contexts/AuthContext";
+
+// Types
+import { STAFF_ROLES } from "@/types";
+
+// Zod
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { Separator } from "@radix-ui/react-select";
 import { Loader2 } from "lucide-react";
 import { useCallback, useContext, useTransition } from "react";
@@ -122,4 +133,4 @@ const StaffLoginPage = () => {
   );
 };
 
-export default StaffLoginPage;
+export default withRoleGuard(StaffLoginPage, [...STAFF_ROLES], true);
