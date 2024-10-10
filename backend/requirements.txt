@@ -14,4 +14,3 @@ django-environ
 gunicorn
 python-dotenv
 requests
-decrypt
