@@ -106,9 +106,7 @@ INSTALLED_APPS = [
 
     # APP_LABELS
     "api",
-    "domain",
-    "repositories",
-    "serializers",
+    "domain"
 ]
 
 MIDDLEWARE = [
