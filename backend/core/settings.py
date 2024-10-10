@@ -110,9 +110,6 @@ INSTALLED_APPS = [
     "views",
     "repositories",
     "serializers",
-
-    # Authentication
-    "authentication",
 ]
 
 MIDDLEWARE = [
