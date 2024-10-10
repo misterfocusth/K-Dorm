@@ -107,7 +107,6 @@ INSTALLED_APPS = [
     # APP_LABELS
     "api",
     "domain",
-    "views",
     "repositories",
     "serializers",
 ]
