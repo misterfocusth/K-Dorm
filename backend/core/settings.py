@@ -74,7 +74,8 @@ ALLOWED_HOSTS = ["*"]
 # Firebase ========================
 try:
 
-    firebaseAdminConfigFile = Path(str(BASE_DIR) + "/" + get_env("FIREBASE_ADMIN_PATH"))
+    firebaseAdminConfigFile = Path(
+        str(BASE_DIR) + "/" + get_env("FIREBASE_ADMIN_PATH"))
 
     with firebaseAdminConfigFile.open() as f:
         firebaseAdminConfig = json.load(f)
@@ -99,10 +100,17 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Cors
     "corsheaders",
+
     # Rest Framework
     "rest_framework",
-    # Apps
+
+    # APP_LABELS
     "api",
+    "domain",
+    "views",
+    "repositories",
+    "serializers",
+
     # Authentication
     "authentication",
 ]
@@ -132,7 +140,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 APPEND_SLASH = False
 
-ROOT_URLCONF = "backend.urls"
+ROOT_URLCONF = "core.urls"
 
 TEMPLATES = [
     {
@@ -150,7 +158,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "backend.wsgi.application"
+WSGI_APPLICATION = "core.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#database
