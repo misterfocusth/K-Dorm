@@ -10,16 +10,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { AuthContext } from "@/contexts/AuthContext";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Separator } from "@radix-ui/react-select";
 import { Loader2 } from "lucide-react";
-import { useCallback, useTransition } from "react";
+import { useCallback, useContext, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const staffLoginFormSchema = z.object({
-  username: z.string().min(1, {
-    message: "กรุณากรอกชื่อผู้ใช้",
+  email: z.string().email({
+    message: "กรุณากรอกอีเมลให้ถูกต้อง",
   }),
   password: z.string().min(1, {
     message: "กรุณากรอกรหัสผ่าน",
@@ -28,22 +29,25 @@ const staffLoginFormSchema = z.object({
 
 const StaffLoginPage = () => {
   const [isPending, startTransition] = useTransition();
+  const { loginWithEmailAndPassword, loginWithGoogle } = useContext(AuthContext);
 
   const form = useForm<z.infer<typeof staffLoginFormSchema>>({
     resolver: zodResolver(staffLoginFormSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
 
-  const onSubmit = useCallback((values: z.infer<typeof staffLoginFormSchema>) => {
-    console.log(values);
+  const onSubmit = useCallback(async (values: z.infer<typeof staffLoginFormSchema>) => {
+    startTransition(async () => {
+      await loginWithEmailAndPassword(values.email, values.password);
+    });
   }, []);
 
   const handleSignInWithGoogle = useCallback(() => {
     startTransition(async () => {
-      console.log("Sign in with Google");
+      await loginWithGoogle();
     });
   }, []);
 
@@ -66,10 +70,10 @@ const StaffLoginPage = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 mt-8 w-full ">
             <FormField
               control={form.control}
-              name="username"
+              name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>ชื่อผู้ใช้ (Username)</FormLabel>
+                  <FormLabel>อีเมล (Email)</FormLabel>
                   <FormControl>
                     <Input placeholder="superuser" {...field} />
                   </FormControl>

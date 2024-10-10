@@ -8,6 +8,8 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   onAuthStateChanged as _onAuthStateChanged,
+  signInWithEmailAndPassword,
+  UserCredential,
 } from "firebase/auth";
 
 // Firebase Config
@@ -39,78 +41,107 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 interface IAuthContext {
   currentUser: Account | null;
   role: Role | null;
-  login: () => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
+  loginWithEmailAndPassword: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
 const initialState: IAuthContext = {
   currentUser: null,
   role: null,
-  login: () => {
+  loginWithGoogle: () => {
     return Promise.reject();
   },
   logout: () => {
+    return Promise.reject();
+  },
+  loginWithEmailAndPassword: () => {
     return Promise.reject();
   },
 };
 
 export const AuthContext = createContext<IAuthContext>(initialState);
 
-const AuthContextProviders = ({ children }: { children: React.ReactNode }) => {
+const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentUser, setCurrentUser] = useState<Account | null>(null);
   const [role, setRole] = useState<Role | null>(null);
 
-  const getUserSession = useCallback(async () => {
+  const getUserIdAndSessionIdToken = async (fbCredential: UserCredential) => {
     try {
-      const userData = await api.authentication.getMe.query();
+      const uid = fbCredential.user?.uid;
+      const sessionIdToken = await fbCredential.user?.getIdToken();
+      return { uid, sessionIdToken };
+    } catch (error) {
+      throw new Error("Error getting user id and session id token");
+    }
+  };
+
+  const handleUserAuthentication = async (uid: string, sessionIdToken: string) => {
+    await createSession(uid, sessionIdToken);
+    const currentUser = await getCurrentUserData(sessionIdToken);
+
+    if (currentUser) {
+      setCurrentUser(currentUser.user);
+      setRole(currentUser.role as Role);
+      router.push(currentUser.role === "STUDENT" ? STUDENT_HOME_ROUTE : STAFF_HOME_ROUTE);
+    } else {
+      throw new Error("Error retrieving user data");
+    }
+  };
+
+  const getCurrentUserData = useCallback(async (sessionIdToken?: string) => {
+    let userData;
+
+    try {
+      if (!sessionIdToken) {
+        userData = await api.authentication.getMe.query();
+      } else {
+        userData = await api.authentication.signIn.mutate({
+          body: null,
+          extraHeaders: {
+            Authorization: `Bearer ${sessionIdToken}`,
+          },
+        });
+      }
+
       const userDataResult = userData.body as Response<SignInResult>;
-
-      const { user, role } = userDataResult.result;
-
-      setCurrentUser(user);
-      setRole(role as Role);
+      return userDataResult.result;
     } catch (error) {
       console.error("Error getting user session", error);
-      await removeSession(); // Remove current session if error occurs
-    } finally {
-      setIsLoading(false);
+      await removeSession();
     }
   }, []);
 
-  const login = useCallback(async () => {
+  const loginWithGoogle = useCallback(async () => {
     const provider = new GoogleAuthProvider();
 
     try {
       const result = await signInWithPopup(firebaseAuth, provider);
 
-      if (!result || !result.user) {
-        throw new Error("Google sign in failed");
-      }
+      if (!result || !result.user) throw new Error("Google sign in failed");
 
-      const uid = result.user.uid;
-      const sessionIdToken = await result.user.getIdToken();
-
-      await createSession(uid, sessionIdToken);
-
-      const userData = await api.authentication.signIn.mutate({
-        body: null,
-        extraHeaders: {
-          Authorization: `Bearer ${sessionIdToken}`,
-        },
-      });
-
-      const userDataResult = userData.body as Response<SignInResult>;
-      const { user, role } = userDataResult.result;
-
-      setCurrentUser(user);
-      setRole(role as Role);
-
-      router.push(role === "STUDENT" ? STUDENT_HOME_ROUTE : STAFF_HOME_ROUTE);
+      const { uid, sessionIdToken } = await getUserIdAndSessionIdToken(result);
+      await handleUserAuthentication(uid, sessionIdToken);
     } catch (error) {
       console.error("Error signing in with Google", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const loginWithEmailAndPassword = useCallback(async (email: string, password: string) => {
+    try {
+      const result = await signInWithEmailAndPassword(firebaseAuth, email, password);
+
+      if (!result || !result.user) throw new Error("Credentials sign in failed");
+
+      const { uid, sessionIdToken } = await getUserIdAndSessionIdToken(result);
+      await handleUserAuthentication(uid, sessionIdToken);
+    } catch (error) {
+      console.error("Error signing in with credentials", error);
     } finally {
       setIsLoading(false);
     }
@@ -137,18 +168,27 @@ const AuthContextProviders = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    getUserSession();
-  }, [getUserSession]);
+    (async () => {
+      const currentUser = await getCurrentUserData();
+      if (currentUser) {
+        setCurrentUser(currentUser.user);
+        setRole(currentUser.role as Role);
+      }
+      setIsLoading(false);
+    })();
+  }, [getCurrentUserData]);
 
   if (isLoading) {
     return <LoadingSpinner loading={isLoading} />;
   }
 
   return (
-    <AuthContext.Provider value={{ currentUser, login, logout, role }}>
+    <AuthContext.Provider
+      value={{ currentUser, loginWithEmailAndPassword, loginWithGoogle, logout, role }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
 
-export default AuthContextProviders;
+export default AuthContextProvider;
