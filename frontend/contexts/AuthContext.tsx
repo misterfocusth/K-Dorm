@@ -1,7 +1,7 @@
 "use client";
 
 // React
-import { useCallback, useEffect, useState, createContext } from "react";
+import { useCallback, useEffect, useState, createContext, useContext } from "react";
 
 // Firebase
 import {
@@ -192,3 +192,5 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default AuthContextProvider;
+
+export const useAuthContext = () => useContext(AuthContext);
