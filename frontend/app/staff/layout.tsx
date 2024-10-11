@@ -3,6 +3,7 @@
 // Components
 import StaffLeftMenu from "@/components/StaffLeftMenu";
 import StaffRightMenu from "@/components/StaffRightMenu";
+import { Toaster } from "@/components/ui/toaster";
 
 // Next
 import { usePathname } from "next/navigation";
@@ -31,7 +32,10 @@ const StaffLayout = ({
           </div>
         )}
 
-        <div className="w-full p-10">{children}</div>
+        <div className="w-full ">
+          {children}
+          <Toaster />
+        </div>
 
         {shouldShowMenu && (
           <div className="w-[3.5%] h-full">
