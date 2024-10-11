@@ -16,6 +16,7 @@ import { STAFF_ROUTE_PREFIX } from "@/constants";
 
 const PATHS = [
   STAFF_ROUTE_PREFIX + "/home",
+  STAFF_ROUTE_PREFIX + "/account",
   STAFF_ROUTE_PREFIX + "/recruit-wave",
   STAFF_ROUTE_PREFIX + "/residences",
   STAFF_ROUTE_PREFIX + "/building",
@@ -65,7 +66,7 @@ const StaffLeftMenu = () => {
         <MenuItem
           Icon={<UserRoundPlus className="w-6 h-6" />}
           isSelected={selectedMenuIndex === 2}
-          path={PATHS[3]}
+          path={PATHS[2]}
           label="รอบรับสมัคร"
         />
 
