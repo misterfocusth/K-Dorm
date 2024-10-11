@@ -9,8 +9,8 @@ class Task(models.Model):
     complete = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ['-date_created']
-        db_table = 'task'
+        ordering = ["-date_created"]
+        db_table = "task"
 
     def __str__(self):
         return self.title
@@ -39,7 +39,7 @@ class MyBaseModel(models.Model):
 
 class RecruitmentWave(MyBaseModel):
     class Meta:
-        db_table = 'recruitment_wave'
+        db_table = "recruitment_wave"
 
     name = models.CharField(max_length=255)
     year = models.IntegerField()
@@ -48,7 +48,7 @@ class RecruitmentWave(MyBaseModel):
 
 class Account(MyBaseModel):
     class Meta:
-        db_table = 'account'
+        db_table = "account"
 
     uid = models.TextField(unique=True)
     email = models.EmailField(unique=True)
@@ -61,7 +61,7 @@ class Account(MyBaseModel):
 
 class File(MyBaseModel):
     class Meta:
-        db_table = 'file'
+        db_table = "file"
 
     handle = models.TextField()
     note = models.TextField()
@@ -69,132 +69,106 @@ class File(MyBaseModel):
 
     publiclyVisible = models.BooleanField(default=False)
 
-    visibleToStudents = models.ManyToManyField(
-        'Student',
-        related_name='accessToFiles'
-    )
-    visibleToStaffs = models.ManyToManyField(
-        'Staff',
-        related_name='accessToFiles'
-    )
+    visibleToStudents = models.ManyToManyField("Student", related_name="accessToFiles")
+    visibleToStaffs = models.ManyToManyField("Staff", related_name="accessToFiles")
     visibleToMaintenanceStaffs = models.ManyToManyField(
-        'MaintenanceStaff',
-        related_name='accessToFiles'
+        "MaintenanceStaff", related_name="accessToFiles"
     )
     visibleToSecurityStaffs = models.ManyToManyField(
-        'SecurityStaff',
-        related_name='accessToFiles'
+        "SecurityStaff", related_name="accessToFiles"
     )
 
     activity = models.ForeignKey(
-        'Activity',
-        on_delete=models.CASCADE,
-        related_name='files'
+        "Activity", on_delete=models.CASCADE, related_name="files"
     )
 
     maintenanceTicket = models.ForeignKey(
-        'MaintenanceTicket',
-        on_delete=models.CASCADE,
-        related_name='files'
+        "MaintenanceTicket", on_delete=models.CASCADE, related_name="files"
     )
 
 
 class Student(MyBaseModel):
     class Meta:
-        db_table = 'student'
+        db_table = "student"
 
     studentId = models.CharField(max_length=255)
     isOnBoarded = models.BooleanField(default=False)
     account = models.OneToOneField(
-        'Account',
-        on_delete=models.CASCADE,
-        related_name='student'
+        "Account", on_delete=models.CASCADE, related_name="student"
     )
 
 
 class Staff(MyBaseModel):
     class Meta:
-        db_table = 'staff'
+        db_table = "staff"
 
     account = models.OneToOneField(
-        'Account',
-        on_delete=models.CASCADE,
-        related_name='staff'
+        "Account", on_delete=models.CASCADE, related_name="staff"
     )
 
 
 class MaintenanceStaff(MyBaseModel):
     class Meta:
-        db_table = 'maintenance_staff'
+        db_table = "maintenance_staff"
 
     account = models.OneToOneField(
-        'Account',
-        on_delete=models.CASCADE,
-        related_name='maintenanceStaff'
+        "Account", on_delete=models.CASCADE, related_name="maintenanceStaff"
     )
 
 
 class SecurityStaff(MyBaseModel):
     class Meta:
-        db_table = 'security_staff'
+        db_table = "security_staff"
 
     account = models.OneToOneField(
-        'Account',
-        on_delete=models.CASCADE,
-        related_name='securityStaff'
+        "Account", on_delete=models.CASCADE, related_name="securityStaff"
     )
 
 
 class Building(MyBaseModel):
     class Meta:
-        db_table = 'building'
+        db_table = "building"
 
     name = models.CharField(max_length=255, unique=True)
 
 
 class Room(MyBaseModel):
     class Meta:
-        db_table = 'room'
+        db_table = "room"
 
     floor = models.IntegerField()
     name = models.CharField(max_length=255)
 
     building = models.ForeignKey(
-        'Building',
-        on_delete=models.CASCADE,
-        related_name='rooms'
+        "Building", on_delete=models.CASCADE, related_name="rooms"
     )
 
 
 class Residence(MyBaseModel):
     class Meta:
-        db_table = 'residence'
+        db_table = "residence"
 
     startDate = models.DateTimeField()
     endDate = models.DateTimeField(null=True, default=None)
     isEvicted = models.BooleanField(default=False)
 
     student = models.ForeignKey(
-        'Student',
-        on_delete=models.CASCADE,
-        related_name='residences'
+        "Student", on_delete=models.CASCADE, related_name="residences"
     )
     room = models.ForeignKey(
-        'Room',
+        "Room",
         on_delete=models.CASCADE,
-        related_name='residences',
+        related_name="residences",
         null=True,
     )
     recruitmentWave = models.ForeignKey(
-        'RecruitmentWave',
-        on_delete=models.CASCADE,
-        related_name='residences'
+        "RecruitmentWave", on_delete=models.CASCADE, related_name="residences"
     )
 
 
 class UsageBilling(MyBaseModel):
     class Meta:
-        db_table = 'usage_billing'
+        db_table = "usage_billing"
 
     cycle = models.DateTimeField()
 
@@ -220,15 +194,13 @@ class UsageBilling(MyBaseModel):
     paidDate = models.DateTimeField(null=True, default=None)
 
     room = models.ForeignKey(
-        'Room',
-        on_delete=models.CASCADE,
-        related_name='usageBilling'
+        "Room", on_delete=models.CASCADE, related_name="usageBilling"
     )
 
 
 class RentBilling(MyBaseModel):
     class Meta:
-        db_table = 'rent_billing'
+        db_table = "rent_billing"
 
     cycle = models.DateTimeField()
 
@@ -247,20 +219,16 @@ class RentBilling(MyBaseModel):
     ref = models.TextField(null=True, default=None)
 
     residence = models.ForeignKey(
-        'Residence',
-        on_delete=models.CASCADE,
-        related_name='rentBillings'
+        "Residence", on_delete=models.CASCADE, related_name="rentBillings"
     )
     student = models.ForeignKey(
-        'Student',
-        on_delete=models.CASCADE,
-        related_name='rentBillings'
+        "Student", on_delete=models.CASCADE, related_name="rentBillings"
     )
 
 
 class ActivityCategory(MyBaseModel):
     class Meta:
-        db_table = 'activity_category'
+        db_table = "activity_category"
 
     handle = models.TextField()
     name = models.TextField()
@@ -272,7 +240,7 @@ class ActivityCategory(MyBaseModel):
 
 class Activity(MyBaseModel):
     class Meta:
-        db_table = 'activity'
+        db_table = "activity"
 
     name = models.TextField()
     note = models.TextField(null=True, default=None)
@@ -283,21 +251,17 @@ class Activity(MyBaseModel):
     earnedVolunteerHours = models.FloatField(null=True, default=None)
 
     student = models.ForeignKey(
-        'Student',
-        on_delete=models.CASCADE,
-        related_name='activities'
+        "Student", on_delete=models.CASCADE, related_name="activities"
     )
 
     category = models.ForeignKey(
-        'ActivityCategory',
-        on_delete=models.CASCADE,
-        related_name='activities'
+        "ActivityCategory", on_delete=models.CASCADE, related_name="activities"
     )
 
 
 class MaintenanceTicket(MyBaseModel):
     class Meta:
-        db_table = 'maintenance_ticket'
+        db_table = "maintenance_ticket"
 
     title = models.TextField()
     description = models.TextField()
@@ -308,26 +272,20 @@ class MaintenanceTicket(MyBaseModel):
     isResolved = models.BooleanField(default=False)
 
     student = models.ForeignKey(
-        'Student',
-        on_delete=models.CASCADE,
-        related_name='maintenanceTickets'
+        "Student", on_delete=models.CASCADE, related_name="maintenanceTickets"
     )
 
     maintenanceStaff = models.ForeignKey(
-        'MaintenanceStaff',
-        on_delete=models.CASCADE,
-        related_name='maintenanceTickets'
+        "MaintenanceStaff", on_delete=models.CASCADE, related_name="maintenanceTickets"
     )
 
 
 class IdentificationKey(MyBaseModel):
     class Meta:
-        db_table = 'identification_key'
+        db_table = "identification_key"
 
     key = models.TextField()
     expiredAt = models.DateTimeField()
     account = models.ForeignKey(
-        'Account',
-        on_delete=models.CASCADE,
-        related_name='identificationKeys'
+        "Account", on_delete=models.CASCADE, related_name="identificationKeys"
     )
