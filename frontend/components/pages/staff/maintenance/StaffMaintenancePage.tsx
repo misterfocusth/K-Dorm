@@ -66,7 +66,7 @@ const StaffMaintenancePage = () => {
         </div>
       </div>
 
-      <div className="col-span-3 px-20">{<ManageMaintenanceTicket />}</div>
+      <div className="col-span-3 px-14 2xl:px-20">{<ManageMaintenanceTicket />}</div>
     </div>
   );
 };
