@@ -36,9 +36,9 @@ const StaffLeftMenu = () => {
 
   useEffect(() => {}, []);
   return (
-    <div className="py-8 px-4">
+    <div className="py-8 px-4 bg-orange-100 h-full">
       <div>
-        <p className="font-bold text-2xl text-center">K-Dorm</p>
+        <p className="font-bold text-2xl text-center py-2">K-Dorm</p>
       </div>
 
       <Separator className="my-6 bg-gray-300" />

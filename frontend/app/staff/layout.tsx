@@ -26,15 +26,15 @@ const StaffLayout = ({
     <main className={"h-[100dvh]"}>
       <div className="h-full flex flex-row">
         {shouldShowMenu && (
-          <div className="w-[19%] bg-orange-100">
+          <div className="w-[19%] h-full">
             <StaffLeftMenu />
           </div>
         )}
 
-        <div className=" w-full">{children}</div>
+        <div className="w-full p-10">{children}</div>
 
         {shouldShowMenu && (
-          <div className="w-[3.5%] bg-orange-100">
+          <div className="w-[3.5%] h-full">
             <StaffRightMenu />
           </div>
         )}

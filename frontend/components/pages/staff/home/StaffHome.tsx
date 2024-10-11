@@ -20,7 +20,7 @@ const StaffHome = () => {
 
   return (
     <div>
-      <Button onClick={handleSignOut}>ออกจากระบบ</Button>
+      <p className="text-2xl font-bold">หน้าแรก</p>
     </div>
   );
 };
