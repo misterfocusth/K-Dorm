@@ -19,7 +19,7 @@ const StaffHome = () => {
   }, []);
 
   return (
-    <div>
+    <div className="p-10">
       <p className="text-2xl font-bold">หน้าแรก</p>
     </div>
   );
