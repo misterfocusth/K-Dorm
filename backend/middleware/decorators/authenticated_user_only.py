@@ -8,18 +8,18 @@ from firebase_admin import auth
 # Models
 from domain.models import Account
 
-# TODO: Fix this, idk why it's not working properly :(
+# Utils
+from utils.token import get_session_id_token
 
-"""
-Deprecated, Wait for sila to migrate
-"""
+# Exceptions
+from rest_framework.exceptions import AuthenticationFailed
 
 
 def authenticated_user_only(view_func):
     @wraps(view_func)
     def _wrapped_view_func(request, *args, **kwargs):
         try:
-            session_id_token = request.COOKIES.get("session_id_token")
+            session_id_token = get_session_id_token(request)
             decoded_token = auth.verify_id_token(session_id_token)
 
             uid = decoded_token["uid"]
@@ -32,14 +32,14 @@ def authenticated_user_only(view_func):
                 return view_func(request, *args, **kwargs)
             else:
                 return JsonResponse(
-                    {"error": "HTTP_401_UNAUTHORIZED", "message": "UNAUTHORIZED!"},
+                    {"error": "UNAUTHORIZED", "message": "UNAUTHORIZED!"},
                     status=status.HTTP_401_UNAUTHORIZED,
                 )
 
         except auth.InvalidIdTokenError:
             return JsonResponse(
                 {
-                    "error": "HTTP_401_UNAUTHORIZED",
+                    "error": "UNAUTHORIZED",
                     "message": "Invalid Session ID Token!",
                 },
                 status=status.HTTP_401_UNAUTHORIZED,
@@ -47,7 +47,7 @@ def authenticated_user_only(view_func):
         except auth.ExpiredIdTokenError:
             return JsonResponse(
                 {
-                    "error": "HTTP_401_UNAUTHORIZED",
+                    "error": "UNAUTHORIZED",
                     "message": "Expired Session ID Token!",
                 },
                 status=status.HTTP_401_UNAUTHORIZED,
@@ -55,9 +55,14 @@ def authenticated_user_only(view_func):
         except auth.RevokedIdTokenError:
             return JsonResponse(
                 {
-                    "error": "HTTP_401_UNAUTHORIZED",
+                    "error": "UNAUTHORIZED",
                     "message": "Revoked Session ID Token!",
                 },
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+        except AuthenticationFailed as e:
+            return JsonResponse(
+                {"error": "UNAUTHORIZED", "message": str(e)},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
 
