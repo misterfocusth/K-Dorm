@@ -4,7 +4,7 @@
 import { NavbarContext } from "@/contexts/NavbarContext";
 
 // React
-import { useContext, useEffect, useMemo } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 // UI Components
 import { Input } from "@/components/ui/input";
@@ -33,10 +33,15 @@ import { useRouter } from "next/navigation";
 import withRoleGuard from "@/components/hoc/withRoleGuard";
 import { QUERY_KEYS } from "@/constants";
 import { getApiService } from "@/libs/tsr-react-query";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const StudentMaintenancePage = () => {
   const router = useRouter();
+
   const { setShowBottomNavbar, setShowHeaderNavbar } = useContext(NavbarContext);
+
+  const [searchText, setSearchText] = useState<string>("");
+  const [filterStatus, setFilterStatus] = useState<string | null>(null);
 
   const { isLoading, isFetching, data } =
     getApiService().maintenance.getStudentMaintenanceTickets.useQuery({
@@ -47,9 +52,28 @@ const StudentMaintenancePage = () => {
     if (!data?.body.result) return [];
     else
       return data.body.result.sort(
-        (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
   }, [data?.body.result]);
+
+  const filteredMaintenanceTickets = useMemo(() => {
+    if (!maintenanceTickets) return [];
+    let filtered = maintenanceTickets;
+
+    if (searchText) {
+      filtered = filtered.filter(
+        (ticket) => ticket.title.includes(searchText) || ticket.description.includes(searchText)
+      );
+    }
+
+    if (filterStatus === "2") {
+      filtered = filtered.filter((ticket) => ticket.isResolved);
+    } else if (filterStatus === "3") {
+      filtered = filtered.filter((ticket) => !ticket.isResolved);
+    }
+
+    return filtered;
+  }, [maintenanceTickets, searchText, filterStatus]);
 
   useEffect(() => {
     setShowBottomNavbar(true);
@@ -57,7 +81,7 @@ const StudentMaintenancePage = () => {
   }, []);
 
   if (isLoading || isFetching) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner loading />;
   }
 
   return (
@@ -67,7 +91,11 @@ const StudentMaintenancePage = () => {
           <p className="text-xl font-bold">รายการแจ้งซ่อมของฉัน</p>
 
           <div className="flex flex-row gap-2 mt-4">
-            <Input type="text" placeholder="ค้นหารายการแจ้งซ่อม" />
+            <Input
+              type="text"
+              placeholder="ค้นหารายการแจ้งซ่อม"
+              onChange={(e) => setSearchText(e.target.value)}
+            />
 
             <div className="w-[150px] relative">
               <div className="z-0 absolute bottom-6 flex justify-center w-full">
@@ -80,15 +108,15 @@ const StudentMaintenancePage = () => {
               </div>
 
               <div className="absolute w-full z-10">
-                <Select>
+                <Select onValueChange={setFilterStatus}>
                   <SelectTrigger>
-                    <SelectValue placeholder="ทั้งหมด" />
+                    <SelectValue placeholder="สถานะ" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>ทั้งหมด</SelectLabel>
-                      <SelectItem value="1">ซ่อมแล้ว</SelectItem>
-                      <SelectItem value="2">ยังไม่ซ่อม</SelectItem>
+                      <SelectItem value="1">ทั้งหมด</SelectItem>
+                      <SelectItem value="2">ซ่อมแล้ว</SelectItem>
+                      <SelectItem value="3">ยังไม่ซ่อม</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -112,8 +140,8 @@ const StudentMaintenancePage = () => {
           </Button>
         </div>
 
-        <div className="mt-8 pb-24">
-          <MaintenanceHistoryList maintenanceTickets={maintenanceTickets} />
+        <div className="mt-6 pb-24">
+          <MaintenanceHistoryList maintenanceTickets={filteredMaintenanceTickets} />
         </div>
       </div>
     </div>

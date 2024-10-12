@@ -127,7 +127,7 @@ const StaffMaintenancePage = () => {
         </div>
 
         <div className="mt-8">
-          <ScrollArea className="h-[70dvh] w-full rounded-xl border">
+          <ScrollArea className="h-[70dvh] w-full rounded-xl border px-4">
             <MaintenanceHistoryList
               staffView
               maintenanceTickets={filteredMaintenanceTickets || []}
