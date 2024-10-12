@@ -1,3 +1,8 @@
+from utils.token import get_session_id_token
+from firebase_admin import auth
+from repositories.account_repository import get_account_by_uid
+
+
 def get_user_role(user_data):
     role = ""
 
@@ -11,3 +16,17 @@ def get_user_role(user_data):
         role = "SECURITY_STAFF"
 
     return role
+
+
+def get_account_from_session(request):
+    session_token = get_session_id_token(request)
+
+    decoded_token = auth.verify_id_token(
+        session_token, clock_skew_seconds=30)
+    uid = decoded_token['uid']
+
+    user = auth.get_user(uid)
+
+    account = get_account_by_uid(uid)
+
+    return account
