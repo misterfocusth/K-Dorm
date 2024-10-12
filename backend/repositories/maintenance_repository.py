@@ -20,3 +20,10 @@ def get_maintenance_ticket_by_student(student):
 
 def get_all_maintenance_tickets():
     return MaintenanceTicket.objects.all()
+
+
+def get_maintenance_ticket_by_id(id):
+    maintenance_ticket = MaintenanceTicket.objects.filter(id=id).first()
+    if maintenance_ticket:
+        return maintenance_ticket
+    return None

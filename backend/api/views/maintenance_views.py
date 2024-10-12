@@ -4,7 +4,7 @@ from rest_framework import status
 
 # Use-Cases
 from use_cases.maintenance.handle_create_maintenance_ticket import handle_create_maintenance_ticket
-from use_cases.maintenance.handle_get_maintenance_tickets import handle_get_student_maintenance_tickets, handle_get_all_maintenance_tickets
+from use_cases.maintenance.handle_get_maintenance_tickets import handle_get_student_maintenance_tickets, handle_get_all_maintenance_tickets, handle_get_maintenance_ticket_by_id
 
 # Interfaces
 from interfaces.api_response import APIResponse
@@ -39,6 +39,17 @@ def student_maintenance_ticket(request):
             return APIResponse(status=status.HTTP_200_OK, data=serialized_data)
     except Exception as e:
         return ErrorResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR, error="INTERNAL_SERVER_ERROR", message=str(e))
+
+
+@api_view(['GET'])
+@authenticated_user_only
+def student_maintenance_ticket_detail(request, pk):
+    result = handle_get_maintenance_ticket_by_id(pk)
+    if result is not None:
+        serialized_data = serialize(data=result)
+        return APIResponse(status=status.HTTP_200_OK, data=serialized_data)
+    else:
+        return ErrorResponse(status=status.HTTP_404_NOT_FOUND, error="NOT_FOUND", message="Maintenance ticket not found")
 
 
 @api_view(['POST', 'GET'])
