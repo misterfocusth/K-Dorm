@@ -58,7 +58,7 @@ def staff_maintenance_tickets(request):
     try:
         if request.method == 'GET':
             result = handle_get_all_maintenance_tickets(request)
-            serialized_data = serialize(data=result)
+            serialized_data = serialize(data=result, many=True)
             return APIResponse(status=status.HTTP_200_OK, data=serialized_data)
     except Exception as e:
         return ErrorResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR, error="INTERNAL_SERVER_ERROR", message=str(e))

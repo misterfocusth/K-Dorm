@@ -25,8 +25,8 @@ class MaintenanceSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     files = FileSerializer(many=True, read_only=True)
-    student = StudentSerializer(many=False, read_only=True)
-    maintenance_staff = MaintenanceStaffSerializer(many=False, read_only=True)
+    assignedBy = StudentSerializer(many=False, read_only=True)
+    assignedTo = MaintenanceStaffSerializer(many=False, read_only=True)
 
 
 class CreateSerializer(serializers.Serializer):
