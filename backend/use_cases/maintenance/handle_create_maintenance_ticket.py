@@ -1,5 +1,3 @@
-from utils.account_utils import get_account_from_session
-
 # Django
 from django.db import transaction
 
@@ -14,9 +12,6 @@ from utils.firebase_storage import get_bucket_location
 
 @transaction.atomic
 def handle_create_maintenance_ticket(request, serializer):
-    # Get Student Data From Session Data (TODO: Change to middleware)
-    account = get_account_from_session(request)
-
     validated_data = serializer.validated_data
 
     # Create Maintenance Ticket
@@ -24,7 +19,7 @@ def handle_create_maintenance_ticket(request, serializer):
         title=validated_data['title'],
         description=validated_data['description'],
         location=validated_data['location'],
-        student=account.student
+        student=request.user.student
     )
 
     # Upload and Save Files

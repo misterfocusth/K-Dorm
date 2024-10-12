@@ -2,9 +2,6 @@
 from rest_framework.decorators import api_view
 from rest_framework import status
 
-# Exceptions
-from rest_framework.exceptions import AuthenticationFailed
-
 # Use-Cases
 from use_cases.maintenance.handle_create_maintenance_ticket import handle_create_maintenance_ticket
 
@@ -15,8 +12,12 @@ from interfaces.error_response import ErrorResponse
 # Serializer
 from serializers.maintenance_serializer import get_serializer_class, serialize
 
+# Decorators
+from middleware.decorators.authenticated_user_only import authenticated_user_only
+
 
 @api_view(['POST', 'GET'])
+@authenticated_user_only
 def student_maintenance_ticket(request):
     try:
         if request.method == 'POST':
@@ -33,7 +34,5 @@ def student_maintenance_ticket(request):
 
         if request.method == 'GET':
             return APIResponse(status=status.HTTP_200_OK, data={"test": "test"})
-    except AuthenticationFailed as e:
-        return ErrorResponse(status=status.HTTP_401_UNAUTHORIZED, error="UNAUTHORIZED", message=str(e))
     except Exception as e:
         return ErrorResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR, error="INTERNAL_SERVER_ERROR", message=str(e))
