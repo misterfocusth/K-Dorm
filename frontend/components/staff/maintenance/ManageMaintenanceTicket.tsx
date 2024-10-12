@@ -12,6 +12,10 @@ const ManageMaintenanceTicket = () => {
     [selectedTicket?.files]
   );
 
+  if (!selectedTicket) {
+    return null;
+  }
+
   return (
     <div>
       <p className="text-2xl font-bold">รายละเอียดการแจ้งซ่อม</p>
@@ -20,7 +24,7 @@ const ManageMaintenanceTicket = () => {
         <ImageGallery imagesSrc={imagesSrc || []} />
 
         <div className="mt-8">
-          <MaintenanceTicketDetail staffView />
+          <MaintenanceTicketDetail staffView maintenanceTicket={selectedTicket} />
         </div>
 
         <div className="flex flex-row items-center justify-end gap-4 mt-8">
