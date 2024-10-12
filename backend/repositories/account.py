@@ -2,7 +2,7 @@
 from domain.models import Account, Student, Staff
 
 from django.db.models import Model
-from exception.stackable_exception import StackableException
+from backend.exception.base_stackable_exception import StackableException
 from exception.unknown_exception import UnknownException
 
 

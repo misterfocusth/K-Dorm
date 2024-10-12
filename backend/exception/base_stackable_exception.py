@@ -11,7 +11,7 @@ class StackableException(Exception):
     wrapped: takes an previous exception for rethrowing, the class will automatically chain the messages
     """
 
-    def __init__(self, message: str, wrapped: Exception = None):
+    def __init__(self, message: str, wrapped: Exception | None = None):
         if wrapped is not None:
             self.wrapped = wrapped
             self.message = message + ":" + wrapped.__str__()

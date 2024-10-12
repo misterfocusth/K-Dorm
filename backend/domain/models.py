@@ -1,19 +1,7 @@
-from datetime import timezone
+from __future__ import annotations
+
+from django.utils import timezone
 from django.db import models
-
-
-class Task(models.Model):
-    title = models.CharField(max_length=80)
-    description = models.TextField()
-    date_created = models.DateTimeField(auto_now_add=True)
-    complete = models.BooleanField(default=False)
-
-    class Meta:
-        ordering = ["-date_created"]
-        db_table = "task"
-
-    def __str__(self):
-        return self.title
 
 
 class MyBaseModel(models.Model):
@@ -37,8 +25,22 @@ class MyBaseModel(models.Model):
         abstract = True
 
 
+class Task(models.Model):
+    title = models.CharField(max_length=80)
+    description = models.TextField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    complete = models.BooleanField(default=False)
+
+    class Meta(MyBaseModel.Meta):
+        ordering = ["-date_created"]
+        db_table = "task"
+
+    def __str__(self):
+        return self.title
+
+
 class RecruitmentWave(MyBaseModel):
-    class Meta:
+    class Meta(MyBaseModel.Meta):
         db_table = "recruitment_wave"
 
     name = models.CharField(max_length=255)
@@ -47,7 +49,7 @@ class RecruitmentWave(MyBaseModel):
 
 
 class Account(MyBaseModel):
-    class Meta:
+    class Meta(MyBaseModel.Meta):
         db_table = "account"
 
     uid = models.TextField(unique=True)
@@ -60,7 +62,7 @@ class Account(MyBaseModel):
 
 
 class File(MyBaseModel):
-    class Meta:
+    class Meta(MyBaseModel.Meta):
         db_table = "file"
 
     handle = models.TextField()
@@ -88,7 +90,7 @@ class File(MyBaseModel):
 
 
 class Student(MyBaseModel):
-    class Meta:
+    class Meta(MyBaseModel.Meta):
         db_table = "student"
 
     studentId = models.CharField(max_length=255)
@@ -99,7 +101,7 @@ class Student(MyBaseModel):
 
 
 class Staff(MyBaseModel):
-    class Meta:
+    class Meta(MyBaseModel.Meta):
         db_table = "staff"
 
     account = models.OneToOneField(
@@ -108,7 +110,7 @@ class Staff(MyBaseModel):
 
 
 class MaintenanceStaff(MyBaseModel):
-    class Meta:
+    class Meta(MyBaseModel.Meta):
         db_table = "maintenance_staff"
 
     account = models.OneToOneField(
@@ -117,7 +119,7 @@ class MaintenanceStaff(MyBaseModel):
 
 
 class SecurityStaff(MyBaseModel):
-    class Meta:
+    class Meta(MyBaseModel.Meta):
         db_table = "security_staff"
 
     account = models.OneToOneField(
@@ -126,14 +128,14 @@ class SecurityStaff(MyBaseModel):
 
 
 class Building(MyBaseModel):
-    class Meta:
+    class Meta(MyBaseModel.Meta):
         db_table = "building"
 
     name = models.CharField(max_length=255, unique=True)
 
 
 class Room(MyBaseModel):
-    class Meta:
+    class Meta(MyBaseModel.Meta):
         db_table = "room"
 
     floor = models.IntegerField()
@@ -145,7 +147,7 @@ class Room(MyBaseModel):
 
 
 class Residence(MyBaseModel):
-    class Meta:
+    class Meta(MyBaseModel.Meta):
         db_table = "residence"
 
     startDate = models.DateTimeField()
@@ -166,14 +168,28 @@ class Residence(MyBaseModel):
     )
 
 
-class UsageBilling(MyBaseModel):
-    class Meta:
-        db_table = "usage_billing"
+class BaseBillingModel(MyBaseModel):
+    class Meta(MyBaseModel.Meta):
+        abstract = True
 
     cycle = models.DateTimeField()
+    isPaid = models.BooleanField(default=False)
+    paidDate = models.DateTimeField(null=True, default=None)
 
     deadline = models.DateTimeField(null=True, default=None)
     fineRate = models.FloatField()
+
+    fineCost = models.FloatField()
+    extraCost = models.FloatField()
+    extraCostNote = models.TextField(null=True, default=None)
+
+    # Stripe reference
+    ref = models.TextField(null=True, default=None)
+
+
+class UsageBilling(BaseBillingModel):
+    class Meta(BaseBillingModel.Meta):
+        db_table = "usage_billing"
 
     # Usage unit
     electricityUsage = models.FloatField()
@@ -183,40 +199,17 @@ class UsageBilling(MyBaseModel):
     electricityCost = models.FloatField()
     waterCost = models.FloatField()
 
-    fineCost = models.FloatField()
-    extraCost = models.FloatField()
-    extraCostNote = models.TextField(null=True, default=None)
-
-    # Stripe reference
-    ref = models.TextField(null=True, default=None)
-
-    isPaid = models.BooleanField(default=False)
-    paidDate = models.DateTimeField(null=True, default=None)
-
     room = models.ForeignKey(
         "Room", on_delete=models.CASCADE, related_name="usageBilling"
     )
 
 
-class RentBilling(MyBaseModel):
-    class Meta:
+class RentBilling(BaseBillingModel):
+
+    class Meta(BaseBillingModel.Meta):
         db_table = "rent_billing"
 
-    cycle = models.DateTimeField()
-
-    isPaid = models.BooleanField(default=False)
-    paidDate = models.DateTimeField(null=True, default=None)
-
-    deadline = models.DateTimeField(null=True, default=None)
-    fineRate = models.FloatField()
-
     rentCost = models.FloatField()
-    fineCost = models.FloatField()
-    extraCost = models.FloatField()
-    extraCostNote = models.TextField(null=True, default=None)
-
-    # Stripe reference
-    ref = models.TextField(null=True, default=None)
 
     residence = models.ForeignKey(
         "Residence", on_delete=models.CASCADE, related_name="rentBillings"
@@ -227,7 +220,7 @@ class RentBilling(MyBaseModel):
 
 
 class ActivityCategory(MyBaseModel):
-    class Meta:
+    class Meta(MyBaseModel.Meta):
         db_table = "activity_category"
 
     handle = models.TextField()
@@ -239,7 +232,7 @@ class ActivityCategory(MyBaseModel):
 
 
 class Activity(MyBaseModel):
-    class Meta:
+    class Meta(MyBaseModel.Meta):
         db_table = "activity"
 
     name = models.TextField()
@@ -260,7 +253,7 @@ class Activity(MyBaseModel):
 
 
 class MaintenanceTicket(MyBaseModel):
-    class Meta:
+    class Meta(MyBaseModel.Meta):
         db_table = "maintenance_ticket"
 
     title = models.TextField()
@@ -281,7 +274,7 @@ class MaintenanceTicket(MyBaseModel):
 
 
 class IdentificationKey(MyBaseModel):
-    class Meta:
+    class Meta(MyBaseModel.Meta):
         db_table = "identification_key"
 
     key = models.TextField()

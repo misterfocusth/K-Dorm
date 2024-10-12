@@ -9,3 +9,12 @@ class StaffRepository:
         staff.save()
 
         return staff
+
+    @staticmethod
+    def get_staff_by_account_id(account_id: str) -> Staff | None:
+        try:
+            staff = Staff.objects.get(account_id=account_id)
+        except Staff.DoesNotExist:
+            return None
+
+        return staff

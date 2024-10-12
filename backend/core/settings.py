@@ -36,7 +36,7 @@ def get_db_config():
         return {
             "default": {
                 "ENGINE": "django.db.backends.postgresql",
-                "NAME": tmpPostgres.path.replace("/", ""),
+                "NAME": tmpPostgres.path.replace("/", ""),  # type: ignore
                 "USER": tmpPostgres.username,
                 "PASSWORD": tmpPostgres.password,
                 "HOST": tmpPostgres.hostname,
@@ -74,8 +74,10 @@ ALLOWED_HOSTS = ["*"]
 # Firebase ========================
 try:
 
-    firebaseAdminConfigFile = Path(
-        str(BASE_DIR) + "/" + get_env("FIREBASE_ADMIN_PATH"))
+    if get_env("FIREBASE_ADMIN_PATH"):
+
+        raise Exception("Firebase configuration credentials not found.")
+    firebaseAdminConfigFile = Path(str(BASE_DIR) + "/" + get_env("FIREBASE_ADMIN_PATH"))
 
     with firebaseAdminConfigFile.open() as f:
         firebaseAdminConfig = json.load(f)
@@ -100,13 +102,11 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Cors
     "corsheaders",
-
     # Rest Framework
     "rest_framework",
-
     # APP_LABELS
     "api",
-    "domain"
+    "domain",
 ]
 
 MIDDLEWARE = [

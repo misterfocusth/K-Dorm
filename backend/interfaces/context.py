@@ -1,5 +1,6 @@
-from api.models import Account
 from rest_framework.request import Request
+
+from backend.domain.models import Account
 
 
 class Context:
@@ -8,6 +9,6 @@ class Context:
     store: As an any dictionary for storing data
     """
 
-    def __init__(self, account: Account = None, store: dict = {}):
+    def __init__(self, account: Account | None = None, store: dict = {}):
         self.user = account
         self.store = store
