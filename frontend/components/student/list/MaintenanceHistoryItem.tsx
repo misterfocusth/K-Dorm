@@ -28,7 +28,7 @@ const MaintenanceHistoryItem = ({
 
   return (
     <div
-      className="flex flex-row items-center justify-between hover:bg-gray-100 cursor-pointer p-4 rounded-3xl"
+      className="flex flex-row items-center justify-between hover:bg-gray-100 cursor-pointer p-2 lg:p-4 rounded-3xl gap-6 lg:gap-0"
       onClick={onClickListItem ? onClickListItem : handleOnStaffSelectTicket}
     >
       <div className="max-w-[20%]">

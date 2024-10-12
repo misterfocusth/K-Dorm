@@ -15,14 +15,15 @@ const MaintenanceHistoryList = ({
 }: MaintenanceHistoryListProps) => {
   return (
     <div className={`flex flex-col gap-2`}>
-      {maintenanceTickets.map((maintenanceTicket) => (
-        <MaintenanceHistoryItem
-          key={maintenanceTicket.id}
-          maintenanceTicket={maintenanceTicket}
-          onClickListItem={onClickListItem}
-          staffView={staffView}
-        />
-      ))}
+      {maintenanceTickets &&
+        maintenanceTickets.map((maintenanceTicket) => (
+          <MaintenanceHistoryItem
+            key={maintenanceTicket.id}
+            maintenanceTicket={maintenanceTicket}
+            onClickListItem={onClickListItem}
+            staffView={staffView}
+          />
+        ))}
     </div>
   );
 };

@@ -15,10 +15,10 @@ import ManageMaintenanceTicket from "@/components/staff/maintenance/ManageMainte
 import { useMaintenanceTicketContext } from "@/contexts/MaintenanceTicketContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
-import { api } from "@/libs/tsr-react-query";
 import { QUERY_KEYS } from "@/constants";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import withRoleGuard from "@/components/hoc/withRoleGuard";
+import { getApiService } from "@/libs/tsr-react-query";
 
 const StaffMaintenancePage = () => {
   const [searchText, setSearchText] = useState<string>("");
@@ -26,9 +26,10 @@ const StaffMaintenancePage = () => {
   const [orderBy, setOrderBy] = useState<string | null>(null);
   const { selectedTicket } = useMaintenanceTicketContext();
 
-  const { isLoading, isFetching, data } = api.maintenance.getAllMaintenanceTickets.useQuery({
-    queryKey: QUERY_KEYS.maintenance.getAllMaintenanceTickets,
-  });
+  const { isLoading, isFetching, data } =
+    getApiService().maintenance.getAllMaintenanceTickets.useQuery({
+      queryKey: QUERY_KEYS.maintenance.getAllMaintenanceTickets,
+    });
 
   const maintenanceTickets = useMemo(
     () =>

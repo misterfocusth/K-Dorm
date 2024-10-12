@@ -14,10 +14,11 @@ const getCookie = (name: string): string | undefined => {
   return cookieValue;
 };
 
-export const api = initTsrReactQuery(contract, {
-  baseUrl: process.env.NEXT_PUBLIC_BACKEND_BASE_URL || "http://localhost:8000/api",
-  credentials: "include",
-  baseHeaders: {
-    Authorization: `Bearer ${getCookie("session_id_token")}`,
-  },
-});
+export const getApiService = () =>
+  initTsrReactQuery(contract, {
+    baseUrl: process.env.NEXT_PUBLIC_BACKEND_BASE_URL || "http://localhost:8000/api",
+    credentials: "include",
+    baseHeaders: {
+      Authorization: `Bearer ${getCookie("session_id_token")}`,
+    },
+  });

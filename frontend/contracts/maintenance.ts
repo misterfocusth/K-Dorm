@@ -19,7 +19,7 @@ type GetMaintenanceTicketDetail = z.infer<typeof getMaintenanceTicketDetailSchem
 const c = initContract();
 
 export const maintenanceTicketContract = c.router({
-  getMaintenanceTickets: {
+  getStudentMaintenanceTickets: {
     method: "GET",
     path: "/student/maintenance",
     responses: {

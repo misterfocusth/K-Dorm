@@ -4,7 +4,7 @@
 import { NavbarContext } from "@/contexts/NavbarContext";
 
 // React
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useMemo } from "react";
 
 // UI Components
 import { Input } from "@/components/ui/input";
@@ -31,18 +31,37 @@ import { useRouter } from "next/navigation";
 
 // Route Guard HOC
 import withRoleGuard from "@/components/hoc/withRoleGuard";
+import { QUERY_KEYS } from "@/constants";
+import { getApiService } from "@/libs/tsr-react-query";
 
 const StudentMaintenancePage = () => {
   const router = useRouter();
   const { setShowBottomNavbar, setShowHeaderNavbar } = useContext(NavbarContext);
+
+  const { isLoading, isFetching, data } =
+    getApiService().maintenance.getStudentMaintenanceTickets.useQuery({
+      queryKey: QUERY_KEYS.maintenance.getStudentMaintenanceTickets,
+    });
+
+  const maintenanceTickets = useMemo(() => {
+    if (!data?.body.result) return [];
+    else
+      return data.body.result.sort(
+        (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
+  }, [data?.body.result]);
 
   useEffect(() => {
     setShowBottomNavbar(true);
     setShowHeaderNavbar(false);
   }, []);
 
+  if (isLoading || isFetching) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div className="bg-[#FDBA74] bg-opacity-50 relative ">
+    <div className="bg-[#FDBA74] bg-opacity-50 relative">
       <div className="py-10 pb-16 h-full">
         <div className="px-6 ">
           <p className="text-xl font-bold">รายการแจ้งซ่อมของฉัน</p>
@@ -93,8 +112,8 @@ const StudentMaintenancePage = () => {
           </Button>
         </div>
 
-        <div className="mt-8">
-          <MaintenanceHistoryList />
+        <div className="mt-8 pb-24">
+          <MaintenanceHistoryList maintenanceTickets={maintenanceTickets} />
         </div>
       </div>
     </div>
