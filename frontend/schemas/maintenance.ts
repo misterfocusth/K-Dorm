@@ -6,9 +6,9 @@ import { fileSchema } from "./file";
 export const maintenanceTicketSchema = baseSchema.extend({
   title: z.string(),
   description: z.string(),
-  assignedTo: studentSchema, // Student
-  assignedBy: accountSchema, // Maintenance Staff
-  files: fileSchema,
+  assignedTo: accountSchema, // Maintenance Staff
+  assignedBy: studentSchema, // Student
+  files: fileSchema.array(),
   isResolved: z.boolean().default(false),
   resolvedAt: z.string().nullable(),
 });

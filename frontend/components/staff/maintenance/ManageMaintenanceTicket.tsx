@@ -2,24 +2,22 @@ import ImageGallery from "@/components/ImageGallery";
 import MaintenanceTicketDetail from "@/components/maintenance/MaintenanceTicketDetail";
 import { Button } from "@/components/ui/button";
 import { useMaintenanceTicketContext } from "@/contexts/MaintenanceTicketContext";
+import { useMemo } from "react";
 
 const ManageMaintenanceTicket = () => {
   const { selectedTicket, setSelectedTicket } = useMaintenanceTicketContext();
+
+  const imagesSrc = useMemo(
+    () => selectedTicket?.files.map((file) => file.path),
+    [selectedTicket?.files]
+  );
 
   return (
     <div>
       <p className="text-2xl font-bold">รายละเอียดการแจ้งซ่อม</p>
 
       <div className="rounded-3xl p-12 w-full shadow-lg flex flex-col gap-4 mt-8">
-        <ImageGallery
-          imagesSrc={[
-            "https://picsum.photos/1920/1080",
-            "https://picsum.photos/1920/1080",
-            "https://picsum.photos/1920/1080",
-            "https://picsum.photos/1920/1080",
-            "https://picsum.photos/1920/1080",
-          ]}
-        />
+        <ImageGallery imagesSrc={imagesSrc || []} />
 
         <div className="mt-8">
           <MaintenanceTicketDetail staffView />

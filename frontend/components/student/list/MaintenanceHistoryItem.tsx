@@ -4,28 +4,20 @@ import { ChevronRight, CircleAlert, CircleCheck } from "lucide-react";
 import { useCallback, useMemo } from "react";
 
 type MaintenanceHistoryItemProps = {
-  isResolved: boolean;
-  title: string;
-  description: string;
-  createdAt: string;
-  id: string;
+  maintenanceTicket: MaintenanceTicket;
   staffView?: boolean;
   onClickListItem?: () => void;
 };
 
 const MaintenanceHistoryItem = ({
-  id,
-  isResolved,
-  title,
-  description,
-  createdAt,
+  maintenanceTicket,
   staffView,
   onClickListItem,
 }: MaintenanceHistoryItemProps) => {
-  const { setSelectedTicket, selectedTicket } = useMaintenanceTicketContext();
+  const { setSelectedTicket } = useMaintenanceTicketContext();
 
   const formattedDate = useMemo(() => {
-    const date = new Date(createdAt);
+    const date = new Date(maintenanceTicket.createdAt);
 
     const monthsThai = [
       "ม.ค.",
@@ -49,39 +41,11 @@ const MaintenanceHistoryItem = ({
     const minutes = date.getMinutes().toString().padStart(2, "0");
 
     return `${day} ${month} ${year} - ${hours}:${minutes}`;
-  }, [createdAt]);
+  }, [maintenanceTicket.createdAt]);
 
   const handleOnStaffSelectTicket = useCallback(() => {
-    console.log("Select ticket", selectedTicket);
-
-    const mockData: MaintenanceTicket = {
-      title: title,
-      description: description,
-      location: "ห้อง 201",
-      resolvedAt: new Date().toISOString(),
-      createdAt: createdAt,
-      maintenanceStaff: {
-        id: 1,
-        uid: "1",
-        email: "staff@kmitl.com",
-        firstName: "ศิลา",
-        lastName: "ภักดีวงษ์",
-        isDisabled: false,
-      },
-      student: {
-        id: 1,
-        uid: "1",
-        email: "staff@kmitl.com",
-        firstName: "ศิลา",
-        lastName: "ภักดีวงษ์",
-        isDisabled: false,
-        studentId: "65070219",
-        isOnBoarded: true,
-      },
-    };
-
-    setSelectedTicket(mockData);
-  }, [createdAt, description, setSelectedTicket, title, selectedTicket]);
+    setSelectedTicket(maintenanceTicket);
+  }, [maintenanceTicket, setSelectedTicket]);
 
   return (
     <div
@@ -89,7 +53,7 @@ const MaintenanceHistoryItem = ({
       onClick={onClickListItem ? onClickListItem : handleOnStaffSelectTicket}
     >
       <div className="max-w-[20%]">
-        {isResolved ? (
+        {maintenanceTicket.isResolved ? (
           <div className="w-13 h-13 bg-[#84CC16] rounded-full text-white flex items-center justify-center p-2">
             <CircleCheck className="w-10 h-10" strokeWidth={2} />
           </div>
@@ -101,12 +65,21 @@ const MaintenanceHistoryItem = ({
       </div>
 
       <div className="flex flex-col gap-1 max-w-[70%]">
-        <p>{title}</p>
+        <p>{maintenanceTicket.title}</p>
         <p className="text-gray-400 ">
-          {description.length > 100 ? description.slice(0, 100) + "..." : description}
+          {maintenanceTicket.description.length > 100
+            ? maintenanceTicket.description.slice(0, 100) + "..."
+            : maintenanceTicket.description}
         </p>
         <p className="text-gray-400">{formattedDate}</p>
-        {staffView && <p className="text-gray-400">เจ้าหน้าที่ผู้รับผิดชอบ: นายศิลา ภักดีวงษ์</p>}
+        {staffView && (
+          <p className="text-gray-400">
+            เจ้าหน้าที่ผู้รับผิดชอบ:{" "}
+            {maintenanceTicket.assignedTo
+              ? maintenanceTicket.assignedBy.firstName + " " + maintenanceTicket.assignedBy.lastName
+              : "-"}
+          </p>
+        )}
       </div>
 
       <div className="max-w-[10%]">
