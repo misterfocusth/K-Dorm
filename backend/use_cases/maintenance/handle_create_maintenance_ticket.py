@@ -9,6 +9,10 @@ from django.db import transaction
 # Firebase
 from firebase_admin import storage
 
+# Repositories
+from repositories.maintenance_repository import create_maintenance_ticket
+from repositories.file_repository import create_flie
+
 
 @transaction.atomic
 def handle_create_maintenance_ticket(request, serializer):
@@ -18,7 +22,7 @@ def handle_create_maintenance_ticket(request, serializer):
     validated_data = serializer.validated_data
 
     # Create Maintenance Ticket
-    maintenance_ticket = MaintenanceTicket.objects.create(
+    maintenance_ticket = create_maintenance_ticket(
         title=validated_data['title'],
         description=validated_data['description'],
         location=validated_data['location'],
@@ -41,7 +45,7 @@ def handle_create_maintenance_ticket(request, serializer):
 
         file_url = blob.public_url
 
-        file = File.objects.create(
+        file = create_flie(
             handle=filename,
             note="",
             path=file_url,
