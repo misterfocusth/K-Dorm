@@ -1,4 +1,5 @@
 import { useMaintenanceTicketContext } from "@/contexts/MaintenanceTicketContext";
+import { getTHFormattedDateTime } from "@/libs/datetime";
 import { MaintenanceTicket } from "@/types";
 import { ChevronRight, CircleAlert, CircleCheck } from "lucide-react";
 import { useCallback, useMemo } from "react";
@@ -16,32 +17,10 @@ const MaintenanceHistoryItem = ({
 }: MaintenanceHistoryItemProps) => {
   const { setSelectedTicket } = useMaintenanceTicketContext();
 
-  const formattedDate = useMemo(() => {
-    const date = new Date(maintenanceTicket.createdAt);
-
-    const monthsThai = [
-      "ม.ค.",
-      "ก.พ.",
-      "มี.ค.",
-      "เม.ย.",
-      "พ.ค.",
-      "มิ.ย.",
-      "ก.ค.",
-      "ส.ค.",
-      "ก.ย.",
-      "ต.ค.",
-      "พ.ย.",
-      "ธ.ค.",
-    ];
-
-    const day = date.getDate();
-    const month = monthsThai[date.getMonth()];
-    const year = date.getFullYear() + 543;
-    const hours = date.getHours();
-    const minutes = date.getMinutes().toString().padStart(2, "0");
-
-    return `${day} ${month} ${year} - ${hours}:${minutes}`;
-  }, [maintenanceTicket.createdAt]);
+  const formattedDate = useMemo(
+    () => getTHFormattedDateTime(maintenanceTicket.createdAt),
+    [maintenanceTicket.createdAt]
+  );
 
   const handleOnStaffSelectTicket = useCallback(() => {
     setSelectedTicket(maintenanceTicket);
@@ -72,13 +51,25 @@ const MaintenanceHistoryItem = ({
             : maintenanceTicket.description}
         </p>
         <p className="text-gray-400">{formattedDate}</p>
+
         {staffView && (
-          <p className="text-gray-400">
-            เจ้าหน้าที่ผู้รับผิดชอบ:{" "}
-            {maintenanceTicket.assignedTo
-              ? maintenanceTicket.assignedBy.firstName + " " + maintenanceTicket.assignedBy.lastName
-              : "-"}
-          </p>
+          <div>
+            <p className="text-gray-400">
+              แจ้งโดย:{" "}
+              {maintenanceTicket.assignedBy.account.firstName +
+                " " +
+                maintenanceTicket.assignedBy.account.lastName}
+            </p>
+
+            <p className="text-gray-400">
+              เจ้าหน้าที่ผู้รับผิดชอบ:{" "}
+              {maintenanceTicket.assignedTo
+                ? maintenanceTicket.assignedTo.account.firstName +
+                  " " +
+                  maintenanceTicket.assignedBy.account.lastName
+                : "-"}
+            </p>
+          </div>
         )}
       </div>
 

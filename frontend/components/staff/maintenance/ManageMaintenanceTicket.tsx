@@ -27,7 +27,7 @@ const ManageMaintenanceTicket = () => {
           <Button className="bg-gray-400" onClick={() => setSelectedTicket(null)}>
             ยกเลิก / ปิด
           </Button>
-          {!selectedTicket?.resolvedAt && (
+          {!selectedTicket?.isResolved && (
             <Button className="bg-[#84CC16] text-white">ดำเนินการซ่อมแล้ว</Button>
           )}
         </div>
