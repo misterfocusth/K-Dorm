@@ -1,5 +1,4 @@
 from functools import wraps
-from django.http import JsonResponse
 from rest_framework import status
 
 # Firebase
@@ -13,6 +12,9 @@ from utils.token import get_session_id_token
 
 # Exceptions
 from rest_framework.exceptions import AuthenticationFailed
+
+# Interface
+from interfaces.error_response import ErrorResponse
 
 
 def authenticated_user_only(view_func):
@@ -31,13 +33,13 @@ def authenticated_user_only(view_func):
             if session_id_token:
                 return view_func(request, *args, **kwargs)
             else:
-                return JsonResponse(
+                return ErrorResponse(
                     {"error": "UNAUTHORIZED", "message": "UNAUTHORIZED!"},
                     status=status.HTTP_401_UNAUTHORIZED,
                 )
 
         except auth.InvalidIdTokenError:
-            return JsonResponse(
+            return ErrorResponse(
                 {
                     "error": "UNAUTHORIZED",
                     "message": "Invalid Session ID Token!",
@@ -45,7 +47,7 @@ def authenticated_user_only(view_func):
                 status=status.HTTP_401_UNAUTHORIZED,
             )
         except auth.ExpiredIdTokenError:
-            return JsonResponse(
+            return ErrorResponse(
                 {
                     "error": "UNAUTHORIZED",
                     "message": "Expired Session ID Token!",
@@ -53,7 +55,7 @@ def authenticated_user_only(view_func):
                 status=status.HTTP_401_UNAUTHORIZED,
             )
         except auth.RevokedIdTokenError:
-            return JsonResponse(
+            return ErrorResponse(
                 {
                     "error": "UNAUTHORIZED",
                     "message": "Revoked Session ID Token!",
@@ -61,7 +63,7 @@ def authenticated_user_only(view_func):
                 status=status.HTTP_401_UNAUTHORIZED,
             )
         except AuthenticationFailed as e:
-            return JsonResponse(
+            return ErrorResponse(
                 {"error": "UNAUTHORIZED", "message": str(e)},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
