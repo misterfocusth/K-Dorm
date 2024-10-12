@@ -4,6 +4,7 @@ from rest_framework import status
 
 # Use-Cases
 from use_cases.maintenance.handle_create_maintenance_ticket import handle_create_maintenance_ticket
+from use_cases.maintenance.handle_get_student_maintenance_tickets import handle_get_student_maintenance_tickets
 
 # Interfaces
 from interfaces.api_response import APIResponse
@@ -33,6 +34,19 @@ def student_maintenance_ticket(request):
                 return ErrorResponse(status=status.HTTP_400_BAD_REQUEST, error="BAD_REQUEST", message=serializer.errors)
 
         if request.method == 'GET':
-            return APIResponse(status=status.HTTP_200_OK, data={"test": "test"})
+            result = handle_get_student_maintenance_tickets(request)
+            serialized_data = serialize(data=result, many=True)
+            return APIResponse(status=status.HTTP_200_OK, data=serialized_data)
     except Exception as e:
         return ErrorResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR, error="INTERNAL_SERVER_ERROR", message=str(e))
+
+# @api_view(['POST', 'GET'])
+# @authenticated_user_only
+# def staff_maintenance_tickets(request):
+#     try:
+#         if request.method == 'GET':
+#             result = handle_get_staff_maintenance_tickets(request)
+#             serialized_data = serialize(data=result)
+#             return APIResponse(status=status.HTTP_200_OK, data=serialized_data)
+#     except Exception as e:
+#         return ErrorResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR, error="INTERNAL_SERVER_ERROR", message=str(e))

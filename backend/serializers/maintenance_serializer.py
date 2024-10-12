@@ -14,8 +14,8 @@ def get_serializer_class(request):
         return CreateSerializer
 
 
-def serialize(data):
-    serializer = MaintenanceSerializer(data)
+def serialize(data, many=False):
+    serializer = MaintenanceSerializer(data, many=many)
     return serializer.data
 
 
