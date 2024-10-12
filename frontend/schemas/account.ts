@@ -10,3 +10,7 @@ export const accountSchema = baseSchema.extend({
   lastName: z.string(),
   isDisabled: z.boolean().default(false),
 });
+
+export const studentSchema = accountSchema.extend({
+  studentId: z.string(),
+});
