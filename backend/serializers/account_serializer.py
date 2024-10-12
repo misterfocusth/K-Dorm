@@ -2,13 +2,21 @@
 from rest_framework import serializers
 
 # Models
-from domain.models import Student, Staff, MaintenanceStaff, SecurityStaff
+from domain.models import Student, Staff, MaintenanceStaff, SecurityStaff, Account
+
+
+class AccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = '__all__'
 
 
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = '__all__'
+
+    account = AccountSerializer()
 
 
 class StaffSerializer(serializers.ModelSerializer):

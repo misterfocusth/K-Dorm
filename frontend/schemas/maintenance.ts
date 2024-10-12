@@ -7,7 +7,10 @@ export const maintenanceTicketSchema = baseSchema.extend({
   title: z.string(),
   description: z.string(),
   assignedTo: accountSchema, // Maintenance Staff
-  assignedBy: studentSchema, // Student
+  assignedBy: z.object({
+    studentId: z.string(),
+    account: accountSchema,
+  }), // Student
   files: fileSchema.array(),
   isResolved: z.boolean().default(false),
   resolvedAt: z.string().nullable(),

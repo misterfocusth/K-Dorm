@@ -32,6 +32,8 @@ const StaffMaintenancePage = () => {
 
   const maintenanceTickets = useMemo(() => data?.body.result, [data]);
 
+  const [filteredMaintenanceTickets, setFilteredMaintenanceTickets] = useState(maintenanceTickets);
+
   const handleFilterStatusChange = useCallback((value: string) => {
     setFilterStatus(value);
   }, []);
@@ -39,6 +41,26 @@ const StaffMaintenancePage = () => {
   const handleOrderByChange = useCallback((value: string) => {
     setOrderBy(value);
   }, []);
+
+  const handleSearchTextChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchText(e.target.value);
+
+      if (!e.target.value) {
+        setFilteredMaintenanceTickets(maintenanceTickets);
+        return;
+      } else if (maintenanceTickets) {
+        const filtered = maintenanceTickets.filter(
+          (ticket) =>
+            ticket.assignedBy.account.firstName.includes(e.target.value) ||
+            ticket.assignedBy.account.lastName.includes(e.target.value) ||
+            ticket.assignedBy.studentId.includes(e.target.value)
+        );
+        setFilteredMaintenanceTickets(filtered);
+      }
+    },
+    [maintenanceTickets]
+  );
 
   if (isLoading || isFetching) return <LoadingSpinner loading />;
 
@@ -49,8 +71,12 @@ const StaffMaintenancePage = () => {
           <p className="text-2xl font-bold">จัดการการแจ้งซ่อม</p>
 
           <div className="w-full flex flex-row items-center gap-4 mt-8">
-            <Input type="text" placeholder="ค้นหาโดยใช้ชื่อ หรือรหัสนักศึกษา" />
-            <Button>ค้นหา</Button>
+            <Input
+              type="text"
+              placeholder="ค้นหาโดยใช้ชื่อ หรือรหัสนักศึกษา"
+              onChange={handleSearchTextChange}
+              value={searchText}
+            />
           </div>
 
           <div className="flex flex-row w-full gap-8 items-center mt-4">
@@ -85,7 +111,7 @@ const StaffMaintenancePage = () => {
           <ScrollArea className="h-[70dvh] w-full rounded-xl border">
             <MaintenanceHistoryList
               staffView
-              maintenanceTickets={maintenanceTickets ? maintenanceTickets : []}
+              maintenanceTickets={filteredMaintenanceTickets || []}
             />
           </ScrollArea>
         </div>
