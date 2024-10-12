@@ -25,8 +25,8 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 // Route Guard HOC
 import withRoleGuard from "@/components/hoc/withRoleGuard";
-import { getCookieByName } from "@/libs/cookie";
 import Image from "next/image";
+import { useCreateMaintenanceMutation } from "@/hooks/useCreateMaintenanceMutation";
 
 const newMaintainanceTiketFormSchema = z.object({
   title: z.string().min(1, {
@@ -40,6 +40,7 @@ const newMaintainanceTiketFormSchema = z.object({
 
 const NewMaintenanceTicketPage = () => {
   const router = useRouter();
+  const mutation = useCreateMaintenanceMutation();
 
   const { setShowBottomNavbar, setShowHeaderNavbar, setHeaderNavbarTitle } =
     useContext(NavbarContext);
@@ -85,19 +86,14 @@ const NewMaintenanceTicketPage = () => {
         console.log(key, value);
       });
 
-      fetch(process.env.NEXT_PUBLIC_BACKEND_BASE_URL + "/student/maintenance", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${getCookieByName("session_id_token")}`,
-        },
-        body: formData,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-        });
+      mutation
+        .mutateAsync(formData)
+        .then(() => {
+          router.push("/student/maintenance");
+        })
+        .catch((err) => console.error(err));
     },
-    [selectedImages]
+    [selectedImages, mutation, router]
   );
 
   const handleDeleteImage = useCallback((imageName: string) => {
