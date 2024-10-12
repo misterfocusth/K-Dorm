@@ -1,5 +1,6 @@
 // React
 import { useState } from "react";
+import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 
 const ImageGallery = ({ imagesSrc }: { imagesSrc: string[] }) => {
   const [selectedImage, setSelectedImage] = useState("");
@@ -15,15 +16,20 @@ const ImageGallery = ({ imagesSrc }: { imagesSrc: string[] }) => {
   return (
     <div className="w-full overflow-y-auto flex justify-center items-center">
       <div className="flex flex-nowrap">
-        {imagesSrc.map((image, index) => (
-          <img
-            key={index}
-            src={image}
-            alt={`Image ${index + 1}`}
-            className=" h-40 m-1 cursor-pointer object-cover rounded-xl"
-            onClick={() => handleImageClick(image)}
-          />
-        ))}
+        <ScrollArea className="w-full whitespace-nowrap rounded-md border">
+          <div className="flex  space-x-4 p-4">
+            {imagesSrc.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                alt={`Image ${index + 1}`}
+                className=" h-40 m-1 cursor-pointer object-cover rounded-xl"
+                onClick={() => handleImageClick(image)}
+              />
+            ))}
+          </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </div>
 
       {selectedImage && (
