@@ -16,10 +16,6 @@ from interfaces.error_response import ErrorResponse
 from serializers.maintenance_serializer import get_serializer_class, serialize
 
 
-# Utils
-from utils import account_utils
-
-
 @api_view(['POST', 'GET'])
 def student_maintenance_ticket(request):
     try:

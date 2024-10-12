@@ -1,17 +1,15 @@
 from utils.account_utils import get_account_from_session
 
-# Models
-from domain.models import MaintenanceTicket, File
-
 # Django
 from django.db import transaction
-
-# Firebase
-from firebase_admin import storage
 
 # Repositories
 from repositories.maintenance_repository import create_maintenance_ticket
 from repositories.file_repository import create_flie
+from repositories.firebase_storage_repository import upload_file_to_bucket
+
+# Utils
+from utils.firebase_storage import get_bucket_location
 
 
 @transaction.atomic
@@ -33,22 +31,15 @@ def handle_create_maintenance_ticket(request, serializer):
     uploaded_files = request.FILES.getlist('files')
 
     for file in uploaded_files:
-        filename = file.name
-        bucket_location = f"maintenance_tickets/{
-            maintenance_ticket.id}/{filename}"
+        bucket_location = get_bucket_location(
+            file, maintenance_ticket=maintenance_ticket)
 
-        bucket = storage.bucket()
-
-        blob = bucket.blob(bucket_location)
-        blob.upload_from_file(file)
-        blob.make_public()
-
-        file_url = blob.public_url
+        upload_result = upload_file_to_bucket(file, bucket_location)
 
         file = create_flie(
-            handle=filename,
+            handle=upload_result['filename'],
             note="",
-            path=file_url,
+            path=upload_result['file_url'],
             maintenanceTicket=maintenance_ticket
         )
 
