@@ -41,31 +41,26 @@ def authenticated_user_only(view_func):
 
         except auth.InvalidIdTokenError:
             return ErrorResponse(
-                {
-                    "error": "UNAUTHORIZED",
-                    "message": "Invalid Session ID Token!",
-                },
+                error="UNAUTHORIZED",
+                message="Invalid Session ID Token!",
                 status=status.HTTP_401_UNAUTHORIZED,
             )
         except auth.ExpiredIdTokenError:
             return ErrorResponse(
-                {
-                    "error": "UNAUTHORIZED",
-                    "message": "Expired Session ID Token!",
-                },
+                error="UNAUTHORIZED",
+                message="Expired Session ID Token!",
                 status=status.HTTP_401_UNAUTHORIZED,
             )
         except auth.RevokedIdTokenError:
             return ErrorResponse(
-                {
-                    "error": "UNAUTHORIZED",
-                    "message": "Revoked Session ID Token!",
-                },
+                error="UNAUTHORIZED",
+                message="Revoked Session ID Token!",
                 status=status.HTTP_401_UNAUTHORIZED,
             )
         except AuthenticationFailed as e:
             return ErrorResponse(
-                {"error": "UNAUTHORIZED", "message": str(e)},
+                error="UNAUTHORIZED",
+                message=str(e),
                 status=status.HTTP_401_UNAUTHORIZED,
             )
 

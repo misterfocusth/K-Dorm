@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { api } from "@/libs/tsr-react-query";
 import { QUERY_KEYS } from "@/constants";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import withRoleGuard from "@/components/hoc/withRoleGuard";
 
 const StaffMaintenancePage = () => {
   const [searchText, setSearchText] = useState<string>("");
@@ -124,4 +125,4 @@ const StaffMaintenancePage = () => {
   );
 };
 
-export default StaffMaintenancePage;
+export default withRoleGuard(StaffMaintenancePage, ["STAFF", "MAINTENANCE_STAFF"]);
