@@ -44,7 +44,7 @@ def student_maintenance_ticket(request):
 @api_view(['GET'])
 @authenticated_user_only
 def student_maintenance_ticket_detail(request, pk):
-    result = handle_get_maintenance_ticket_by_id(pk)
+    result = handle_get_maintenance_ticket_by_id(request, pk)
     if result is not None:
         serialized_data = serialize(data=result)
         return APIResponse(status=status.HTTP_200_OK, data=serialized_data)
