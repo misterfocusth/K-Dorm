@@ -5,14 +5,9 @@ import { MaintenanceTicket } from "@/types";
 type MaintenanceHistoryListProps = {
   maintenanceTickets: MaintenanceTicket[];
   staffView?: boolean;
-  onClickListItem?: () => void;
 };
 
-const MaintenanceHistoryList = ({
-  maintenanceTickets,
-  staffView,
-  onClickListItem,
-}: MaintenanceHistoryListProps) => {
+const MaintenanceHistoryList = ({ maintenanceTickets, staffView }: MaintenanceHistoryListProps) => {
   return (
     <div className={`flex flex-col gap-2`}>
       {maintenanceTickets &&
@@ -20,7 +15,6 @@ const MaintenanceHistoryList = ({
           <MaintenanceHistoryItem
             key={maintenanceTicket.id}
             maintenanceTicket={maintenanceTicket}
-            onClickListItem={onClickListItem}
             staffView={staffView}
           />
         ))}

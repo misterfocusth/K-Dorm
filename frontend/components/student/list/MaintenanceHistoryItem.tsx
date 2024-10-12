@@ -3,20 +3,17 @@ import { useMaintenanceTicketContext } from "@/contexts/MaintenanceTicketContext
 import { getTHFormattedDateTime } from "@/libs/datetime";
 import { MaintenanceTicket } from "@/types";
 import { ChevronRight, CircleAlert, CircleCheck } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
 type MaintenanceHistoryItemProps = {
   maintenanceTicket: MaintenanceTicket;
   staffView?: boolean;
-  onClickListItem?: () => void;
 };
 
-const MaintenanceHistoryItem = ({
-  maintenanceTicket,
-  staffView,
-  onClickListItem,
-}: MaintenanceHistoryItemProps) => {
+const MaintenanceHistoryItem = ({ maintenanceTicket, staffView }: MaintenanceHistoryItemProps) => {
   const { setSelectedTicket, selectedTicket } = useMaintenanceTicketContext();
+  const router = useRouter();
 
   const formattedDate = useMemo(
     () => getTHFormattedDateTime(maintenanceTicket.createdAt),
@@ -27,12 +24,16 @@ const MaintenanceHistoryItem = ({
     setSelectedTicket(maintenanceTicket);
   }, [maintenanceTicket, setSelectedTicket]);
 
+  const handleStudentSelectTicket = useCallback(() => {
+    router.push(`/student/maintenance/${maintenanceTicket.id}`);
+  }, [maintenanceTicket, router]);
+
   return (
     <div
       className={`flex flex-row items-center justify-between hover:bg-gray-100 cursor-pointer p-2 lg:p-4 rounded-3xl gap-6 ${
         selectedTicket?.id === maintenanceTicket.id && "bg-gray-100"
       }`}
-      onClick={onClickListItem ? onClickListItem : handleOnStaffSelectTicket}
+      onClick={staffView ? handleOnStaffSelectTicket : handleStudentSelectTicket}
     >
       <div className="max-w-[20%]">
         {maintenanceTicket.isResolved ? (

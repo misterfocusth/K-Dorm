@@ -49,9 +49,10 @@ const StudentMaintenancePage = () => {
     });
 
   const maintenanceTickets = useMemo(() => {
+    console.log(data?.body.result);
     if (!data?.body.result) return [];
     else
-      return data.body.result.sort(
+      return data?.body.result.sort(
         (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
   }, [data?.body.result]);
