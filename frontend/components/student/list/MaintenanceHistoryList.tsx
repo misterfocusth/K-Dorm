@@ -1,24 +1,28 @@
 import React from "react";
 import MaintenanceHistoryItem from "./MaintenanceHistoryItem";
+import { MaintenanceTicket } from "@/types";
 
 type MaintenanceHistoryListProps = {
+  maintenanceTickets: MaintenanceTicket[];
   staffView?: boolean;
   onClickListItem?: () => void;
 };
 
-const MaintenanceHistoryList = ({ staffView, onClickListItem }: MaintenanceHistoryListProps) => {
+const MaintenanceHistoryList = ({
+  maintenanceTickets,
+  staffView,
+  onClickListItem,
+}: MaintenanceHistoryListProps) => {
   return (
     <div className={`flex flex-col gap-2`}>
-      {new Array(10).fill(0).map((_, index) => (
+      {maintenanceTickets.map((maintenanceTicket) => (
         <MaintenanceHistoryItem
-          key={index}
-          id={index + ""}
-          isResolved={index % 2 === 0}
-          title={"ซ่อมประตูห้อง"}
-          description={
-            "ประตูห้องพังเนื่องจากเปิดแรงเกินไป ประตูห้องพังเนื่องจากเปิดแรงเกินไป ประตูห้องพังเนื่องจากเปิดแรงเกินไป ประตูห้องพังเนื่องจากเปิดแรงเกินไป"
-          }
-          createdAt={new Date().toISOString()}
+          key={maintenanceTicket.id}
+          id={maintenanceTicket.id + ""}
+          isResolved={maintenanceTicket.isResolved}
+          title={maintenanceTicket.title}
+          description={maintenanceTicket.description}
+          createdAt={maintenanceTicket.createdAt}
           onClickListItem={onClickListItem}
           staffView={staffView}
         />

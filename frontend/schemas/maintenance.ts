@@ -5,7 +5,7 @@ import { fileSchema } from "./file";
 
 export const maintenanceTicketSchema = baseSchema.extend({
   title: z.string(),
-  note: z.string(),
+  description: z.string(),
   assignedTo: studentSchema, // Student
   assignedBy: accountSchema, // Maintenance Staff
   files: fileSchema,

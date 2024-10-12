@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 // Components
 import {
@@ -14,15 +14,23 @@ import MaintenanceHistoryList from "@/components/student/list/MaintenanceHistory
 import ManageMaintenanceTicket from "@/components/staff/maintenance/ManageMaintenanceTicket";
 import { useMaintenanceTicketContext } from "@/contexts/MaintenanceTicketContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import MaintenanceHistoryItem from "@/components/student/list/MaintenanceHistoryItem";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { api } from "@/libs/tsr-react-query";
+import { QUERY_KEYS } from "@/constants";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const StaffMaintenancePage = () => {
   const [searchText, setSearchText] = useState<string>("");
   const [filterStatus, setFilterStatus] = useState<string | null>(null);
   const [orderBy, setOrderBy] = useState<string | null>(null);
   const { selectedTicket } = useMaintenanceTicketContext();
+
+  const { isLoading, isFetching, data } = api.maintenance.getAllMaintenanceTickets.useQuery({
+    queryKey: QUERY_KEYS.maintenance.getAllMaintenanceTickets,
+  });
+
+  const maintenanceTickets = useMemo(() => data?.body.result, [data]);
 
   const handleFilterStatusChange = useCallback((value: string) => {
     setFilterStatus(value);
@@ -31,6 +39,8 @@ const StaffMaintenancePage = () => {
   const handleOrderByChange = useCallback((value: string) => {
     setOrderBy(value);
   }, []);
+
+  if (isLoading || isFetching) return <LoadingSpinner loading />;
 
   return (
     <div className="p-10 grid grid-cols-5 ">
@@ -73,7 +83,10 @@ const StaffMaintenancePage = () => {
 
         <div className="mt-8">
           <ScrollArea className="h-[70dvh] w-full rounded-xl border">
-            <MaintenanceHistoryList staffView />
+            <MaintenanceHistoryList
+              staffView
+              maintenanceTickets={maintenanceTickets ? maintenanceTickets : []}
+            />
           </ScrollArea>
         </div>
       </div>
