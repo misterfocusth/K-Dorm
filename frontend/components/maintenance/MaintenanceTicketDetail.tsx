@@ -1,6 +1,7 @@
 import { MaintenanceTicket } from "@/types";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Separator } from "../ui/separator";
+import MaintenanceStaffSelect from "../staff/maintenance/MaintenanceStaffSelect";
 
 type MaintenanceTicketDetailProps = {
   staffView?: boolean;
@@ -11,6 +12,8 @@ const MaintenanceTicketDetail: FC<MaintenanceTicketDetailProps> = ({
   staffView,
   maintenanceTicket,
 }) => {
+  const [selectedStaff, setSelectedStaff] = useState<any | null>(null);
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-row justify-between">
@@ -44,15 +47,33 @@ const MaintenanceTicketDetail: FC<MaintenanceTicketDetailProps> = ({
         </div>
       )}
 
-      <div className="flex flex-row justify-between">
-        <p className="flex-1 text-gray-400">ดำเนินการซ่อมโดย</p>
-        <p className="flex-1">นางสาวศรุตา โทรัตน</p>
-      </div>
+      {staffView && !maintenanceTicket?.resolvedAt && (
+        <div className="flex flex-row justify-between items-center">
+          <p className="flex-1 text-gray-400">เจ้าหน้าที่ผู้รับผิดชอบ</p>
 
-      <div className="flex flex-row justify-between">
-        <p className="flex-1 text-gray-400">วันและเวลาที่ซ่อม</p>
-        <p className="flex-1">24 ก.ย. 2567 - 12:00</p>
-      </div>
+          <div className="flex-1">
+            <MaintenanceStaffSelect
+              selectedStaff={selectedStaff}
+              onSelectStaff={setSelectedStaff}
+            />
+          </div>
+        </div>
+      )}
+
+      {!staffView ||
+        (maintenanceTicket?.resolvedAt && (
+          <div>
+            <div className="flex flex-row justify-between">
+              <p className="flex-1 text-gray-400">ดำเนินการซ่อมโดย</p>
+              <p className="flex-1">นางสาวศรุตา โทรัตน</p>
+            </div>
+
+            <div className="flex flex-row justify-between">
+              <p className="flex-1 text-gray-400">วันและเวลาที่ซ่อม</p>
+              <p className="flex-1">24 ก.ย. 2567 - 12:00</p>
+            </div>
+          </div>
+        ))}
     </div>
   );
 };

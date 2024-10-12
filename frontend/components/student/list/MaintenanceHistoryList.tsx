@@ -9,7 +9,7 @@ type MaintenanceHistoryListProps = {
 const MaintenanceHistoryList = ({ staffView, onClickListItem }: MaintenanceHistoryListProps) => {
   return (
     <div className={`flex flex-col gap-2`}>
-      {new Array(3).fill(0).map((_, index) => (
+      {new Array(10).fill(0).map((_, index) => (
         <MaintenanceHistoryItem
           key={index}
           id={index + ""}

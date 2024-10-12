@@ -13,8 +13,13 @@ import {
 import MaintenanceHistoryList from "@/components/student/list/MaintenanceHistoryList";
 import ManageMaintenanceTicket from "@/components/staff/maintenance/ManageMaintenanceTicket";
 import { useMaintenanceTicketContext } from "@/contexts/MaintenanceTicketContext";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import MaintenanceHistoryItem from "@/components/student/list/MaintenanceHistoryItem";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const StaffMaintenancePage = () => {
+  const [searchText, setSearchText] = useState<string>("");
   const [filterStatus, setFilterStatus] = useState<string | null>(null);
   const [orderBy, setOrderBy] = useState<string | null>(null);
   const { selectedTicket } = useMaintenanceTicketContext();
@@ -28,12 +33,17 @@ const StaffMaintenancePage = () => {
   }, []);
 
   return (
-    <div className="p-10 grid grid-cols-5">
+    <div className="p-10 grid grid-cols-5 ">
       <div className="col-span-2">
         <div>
           <p className="text-2xl font-bold">จัดการการแจ้งซ่อม</p>
 
-          <div className="flex flex-row w-full gap-8 items-center mt-8">
+          <div className="w-full flex flex-row items-center gap-4 mt-8">
+            <Input type="text" placeholder="ค้นหาโดยใช้ชื่อ หรือรหัสนักศึกษา" />
+            <Button>ค้นหา</Button>
+          </div>
+
+          <div className="flex flex-row w-full gap-8 items-center mt-4">
             <div className="w-full">
               <Select onValueChange={handleFilterStatusChange}>
                 <SelectTrigger className="rounded-xl p-4">
@@ -62,11 +72,15 @@ const StaffMaintenancePage = () => {
         </div>
 
         <div className="mt-8">
-          <MaintenanceHistoryList staffView />
+          <ScrollArea className="h-[70dvh] w-full rounded-xl border">
+            <MaintenanceHistoryList staffView />
+          </ScrollArea>
         </div>
       </div>
 
-      <div className="col-span-3 px-14 2xl:px-20">{<ManageMaintenanceTicket />}</div>
+      <div className="col-span-3 px-14 2xl:px-20">
+        {selectedTicket && <ManageMaintenanceTicket />}
+      </div>
     </div>
   );
 };
