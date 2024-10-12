@@ -39,7 +39,6 @@ class CreateSerializer(serializers.Serializer):
     title = serializers.CharField(required=True)
     description = serializers.CharField(required=True)
     location = serializers.CharField()
-    student_id = serializers.IntegerField(required=True)
     files = serializers.FileField(required=True)
 
     def validate_title(self, value):

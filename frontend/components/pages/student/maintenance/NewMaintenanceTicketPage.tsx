@@ -25,12 +25,14 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 // Route Guard HOC
 import withRoleGuard from "@/components/hoc/withRoleGuard";
+import { getCookieByName } from "@/libs/cookie";
+import Image from "next/image";
 
 const newMaintainanceTiketFormSchema = z.object({
   title: z.string().min(1, {
     message: "กรุณากรอกหัวข้อการแจ้งซ่อม",
   }),
-  note: z.string().min(1, {
+  description: z.string().min(1, {
     message: "กรุณากรอกสถานที่",
   }),
   location: z.string(),
@@ -42,7 +44,7 @@ const NewMaintenanceTicketPage = () => {
   const { setShowBottomNavbar, setShowHeaderNavbar, setHeaderNavbarTitle } =
     useContext(NavbarContext);
 
-  const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleOpenImageSeletor = useCallback(() => {
@@ -54,8 +56,7 @@ const NewMaintenanceTicketPage = () => {
   const handleImageChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const filesArray = Array.from(event.target.files);
-      const imageUrls = filesArray.map((file) => URL.createObjectURL(file));
-      setSelectedImages(imageUrls);
+      setSelectedImages(filesArray);
     }
   }, []);
 
@@ -63,17 +64,44 @@ const NewMaintenanceTicketPage = () => {
     resolver: zodResolver(newMaintainanceTiketFormSchema),
     defaultValues: {
       title: "",
-      note: "",
+      description: "",
       location: "",
     },
   });
 
-  const onSubmit = useCallback((values: z.infer<typeof newMaintainanceTiketFormSchema>) => {
-    console.log(values);
-  }, []);
+  const onSubmit = useCallback(
+    (values: z.infer<typeof newMaintainanceTiketFormSchema>) => {
+      const formData = new FormData();
 
-  const handleDeleteImage = useCallback((imageUrl: string) => {
-    setSelectedImages((prev) => prev.filter((url) => url !== imageUrl));
+      formData.append("title", values.title);
+      formData.append("description", values.description);
+      formData.append("location", values.location);
+
+      selectedImages.forEach((image) => {
+        formData.append("files", image);
+      });
+
+      formData.forEach((value, key) => {
+        console.log(key, value);
+      });
+
+      fetch(process.env.NEXT_PUBLIC_BACKEND_BASE_URL + "/student/maintenance", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${getCookieByName("session_id_token")}`,
+        },
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        });
+    },
+    [selectedImages]
+  );
+
+  const handleDeleteImage = useCallback((imageName: string) => {
+    setSelectedImages((prev) => prev.filter((image) => image.name !== imageName));
   }, []);
 
   useEffect(() => {
@@ -88,20 +116,22 @@ const NewMaintenanceTicketPage = () => {
         <div className="flex flex-row items-center justify-center overflow-y-auto">
           <ScrollArea className="w-96 whitespace-nowrap rounded-md border">
             <div className="flex w-max space-x-4 p-4">
-              {selectedImages.map((imageUrl, index) => (
-                <div className="relative">
-                  <img
+              {selectedImages.map((image, index) => (
+                <div className="relative" key={index}>
+                  <Image
                     key={index}
-                    src={imageUrl}
+                    src={URL.createObjectURL(image)}
                     alt="selected image"
-                    className="w-full h-48 object-cover rounded-xl"
+                    className="w-full h-40 object-cover rounded-xl"
+                    width={1920}
+                    height={1080}
                   />
 
                   <Button
                     variant="destructive"
                     size="icon"
                     className="absolute top-4 right-4 rounded-full"
-                    onClick={() => handleDeleteImage(imageUrl)}
+                    onClick={() => handleDeleteImage(image.name)}
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
@@ -164,7 +194,7 @@ const NewMaintenanceTicketPage = () => {
 
           <FormField
             control={form.control}
-            name="note"
+            name="description"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>รายละเอียด</FormLabel>

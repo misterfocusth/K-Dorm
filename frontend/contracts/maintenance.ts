@@ -28,6 +28,16 @@ export const maintenanceTicketContract = c.router({
     },
     summary: "Get student maintenance tickets",
   },
+  createMaintenanceTicket: {
+    method: "POST",
+    path: "/student/maintenance",
+    body: z.any(),
+    responses: {
+      200: c.type<Response<GetMaintenanceTicketDetail>>(),
+      400: c.type<ErrorResponse<{ code: string; message: string }>>(),
+    },
+    summary: "Create student maintenance ticket",
+  },
   getMaintenanceTicketById: {
     method: "GET",
     path: "/student/maintenance/:id",
