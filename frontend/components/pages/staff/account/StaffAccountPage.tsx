@@ -1,6 +1,8 @@
 "use client";
 
 import withRoleGuard from "@/components/hoc/withRoleGuard";
+import { staffTableColumns } from "@/components/staff/account/table/Columns";
+import StaffAccountTable from "@/components/staff/account/table/StaffAccountTable";
 import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input";
@@ -14,7 +16,46 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Account } from "@/types";
 import { UserPlusIcon } from "lucide-react";
+export const staffs: Account[] = [
+  {
+    id: 1,
+    email: "staff@kmitl.ac.th",
+    firstName: "System",
+    lastName: "Admin",
+    isDisabled: false,
+    staff: true,
+    uid: "1",
+  },
+  {
+    id: 2,
+    email: "sila.pak@kmitl.ac.th",
+    firstName: "Sila",
+    lastName: "Pakdeewong",
+    isDisabled: false,
+    maintenanceStaff: true,
+    uid: "2",
+  },
+  {
+    id: 3,
+    email: "focus.pak@kmitl.ac.th",
+    firstName: "Focus",
+    lastName: "Pakdeewong",
+    isDisabled: false,
+    securityStaff: true,
+    uid: "3",
+  },
+  {
+    id: 4,
+    email: "saruta.to@kmitl.ac.th",
+    firstName: "Saruta",
+    lastName: "Torat",
+    isDisabled: true,
+    staff: true,
+    uid: "4",
+  },
+];
 
 const StaffAccountPage = () => {
   return (
@@ -57,6 +98,11 @@ const StaffAccountPage = () => {
           <UserPlusIcon className="mr-2 h-4 w-4" />
           เพิ่มพนักงาน
         </Button>
+      </div>
+
+      {/* STAFF ACCOUNT TABLE */}
+      <div className="mt-8">
+        <StaffAccountTable columns={staffTableColumns} data={staffs} />
       </div>
     </div>
   );
