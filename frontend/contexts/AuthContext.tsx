@@ -142,6 +142,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       await handleUserAuthentication(uid, sessionIdToken);
     } catch (error) {
       console.error("Error signing in with credentials", error);
+      throw error;
     } finally {
       setIsLoading(false);
     }
