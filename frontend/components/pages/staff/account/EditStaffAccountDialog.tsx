@@ -5,23 +5,15 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "@/components/ui/context-menu";
 
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -39,7 +31,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useCallback } from "react";
-import { Account } from "@/types";
+import { Switch } from "@/components/ui/switch";
 
 const editStaffAccountFormSchema = z.object({
   firstName: z.string().min(1, {
@@ -54,6 +46,7 @@ const editStaffAccountFormSchema = z.object({
   type: z.enum(["STAFF", "MAINTENANCE_STAFF", "SECURITY_STAFF"], {
     message: "กรุณาเลือกประเภทของพนักงาน",
   }),
+  isDisabled: z.boolean().default(false),
 });
 
 const EditStaffAccountDialog = () => {
@@ -73,6 +66,7 @@ const EditStaffAccountDialog = () => {
         : selectedStaffAccount.maintenanceStaff
         ? "MAINTENANCE_STAFF"
         : "SECURITY_STAFF",
+      isDisabled: !selectedStaffAccount?.isDisabled,
     },
   });
 
@@ -90,7 +84,7 @@ const EditStaffAccountDialog = () => {
         hideEditStaffAccountDialog();
       }}
     >
-      <DialogContent className="max-w-xl">
+      <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>แก้ไขข้อมูลพนักงาน</DialogTitle>
           <DialogDescription>คุณสามารถแก้ไขข้อมูลพนักงานได้ในหน้านี้</DialogDescription>
@@ -160,6 +154,26 @@ const EditStaffAccountDialog = () => {
                       </SelectContent>
                     </Select>
                     <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="isDisabled"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 mt-2">
+                    <div className="space-y-0.5">
+                      <FormLabel className="text-base">สถานะของบัญชี</FormLabel>
+                      <FormDescription>เปิด / ปิด การใช้งานบัญชี</FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        aria-readonly
+                      />
+                    </FormControl>
                   </FormItem>
                 )}
               />
