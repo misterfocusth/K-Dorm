@@ -28,8 +28,8 @@ const createStaffFormSchema = z.object({
   email: z.string().email({
     message: "กรุณากรอกอีเมลให้ถูกต้อง",
   }),
-  type: z.string().min(1, {
-    message: "กรุณาเลือกประเภทบัญชี",
+  type: z.enum(["STAFF", "MAINTENANCE_STAFF", "SECURITY_STAFF"], {
+    message: "กรุณาเลือกประเภทของพนักงาน",
   }),
   firstName: z.string().min(1, {
     message: "กรุณากรอกชื่อจริง",

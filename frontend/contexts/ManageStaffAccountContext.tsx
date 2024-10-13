@@ -6,9 +6,9 @@ interface IManageStaffAccountContext {
   showCreateStaffAccountSection: () => void;
   hideCreateStaffAccountSection: () => void;
 
-  isOpenUpdateStaffAccountModal: boolean;
-  openUpdateStaffAccountModal: () => void;
-  closeUpdateStaffAccountModal: () => void;
+  isShowEditStaffAccountDialog: boolean;
+  openEditStaffAccountDialog: () => void;
+  hideEditStaffAccountDialog: () => void;
 
   isOpenDeleteStaffAccountModal: boolean;
   openDeleteStaffAccountModal: () => void;
@@ -23,9 +23,9 @@ const initialState: IManageStaffAccountContext = {
   showCreateStaffAccountSection: () => {},
   hideCreateStaffAccountSection: () => {},
 
-  isOpenUpdateStaffAccountModal: false,
-  openUpdateStaffAccountModal: () => {},
-  closeUpdateStaffAccountModal: () => {},
+  isShowEditStaffAccountDialog: false,
+  openEditStaffAccountDialog: () => {},
+  hideEditStaffAccountDialog: () => {},
 
   isOpenDeleteStaffAccountModal: false,
   openDeleteStaffAccountModal: () => {},
@@ -40,8 +40,7 @@ export const ManageStaffAccountContext = createContext<IManageStaffAccountContex
 export const ManageStaffAccountContextProvider = ({ children }: { children: ReactNode }) => {
   const [isShowCreateStaffAccountSection, setIsOpenCreateStaffAccountModal] =
     useState<boolean>(false);
-  const [isOpenUpdateStaffAccountModal, setIsOpenUpdateStaffAccountModal] =
-    useState<boolean>(false);
+  const [isShowEditStaffAccountDialog, setIsOpenUpdateStaffAccountModal] = useState<boolean>(false);
   const [isOpenDeleteStaffAccountModal, setIsOpenDeleteStaffAccountModal] =
     useState<boolean>(false);
   const [selectedStaffAccount, setSelectedStaffAccount] = useState<Account | null>(null);
@@ -49,8 +48,8 @@ export const ManageStaffAccountContextProvider = ({ children }: { children: Reac
   const showCreateStaffAccountSection = () => setIsOpenCreateStaffAccountModal(true);
   const closeCreateStaffAccountModal = () => setIsOpenCreateStaffAccountModal(false);
 
-  const openUpdateStaffAccountModal = () => setIsOpenUpdateStaffAccountModal(true);
-  const closeUpdateStaffAccountModal = () => setIsOpenUpdateStaffAccountModal(false);
+  const openEditStaffAccountDialog = () => setIsOpenUpdateStaffAccountModal(true);
+  const hideEditStaffAccountDialog = () => setIsOpenUpdateStaffAccountModal(false);
 
   const openDeleteStaffAccountModal = () => setIsOpenDeleteStaffAccountModal(true);
   const closeDeleteStaffAccountModal = () => setIsOpenDeleteStaffAccountModal(false);
@@ -62,9 +61,9 @@ export const ManageStaffAccountContextProvider = ({ children }: { children: Reac
         showCreateStaffAccountSection,
         hideCreateStaffAccountSection: closeCreateStaffAccountModal,
 
-        isOpenUpdateStaffAccountModal,
-        openUpdateStaffAccountModal,
-        closeUpdateStaffAccountModal,
+        isShowEditStaffAccountDialog,
+        openEditStaffAccountDialog,
+        hideEditStaffAccountDialog,
 
         isOpenDeleteStaffAccountModal,
         openDeleteStaffAccountModal,
