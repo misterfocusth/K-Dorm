@@ -73,6 +73,42 @@ const staffs: Account[] = [
     staff: true,
     uid: "4",
   },
+  {
+    id: 1,
+    email: "staff@kmitl.ac.th",
+    firstName: "System",
+    lastName: "Admin",
+    isDisabled: false,
+    staff: true,
+    uid: "1",
+  },
+  {
+    id: 2,
+    email: "sila.pak@kmitl.ac.th",
+    firstName: "Sila",
+    lastName: "Pakdeewong",
+    isDisabled: false,
+    maintenanceStaff: true,
+    uid: "2",
+  },
+  {
+    id: 3,
+    email: "focus.pak@kmitl.ac.th",
+    firstName: "Focus",
+    lastName: "Pakdeewong",
+    isDisabled: false,
+    securityStaff: true,
+    uid: "3",
+  },
+  {
+    id: 4,
+    email: "saruta.to@kmitl.ac.th",
+    firstName: "Saruta",
+    lastName: "Torat",
+    isDisabled: true,
+    staff: true,
+    uid: "4",
+  },
 ];
 
 const StaffAccountPage = () => {
