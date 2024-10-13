@@ -57,9 +57,7 @@ const MaintenanceHistoryItem = ({ maintenanceTicket, staffView }: MaintenanceHis
         <p className="text-gray-400">{formattedDate}</p>
 
         {staffView && (
-          <div>
-            <Separator className="mt-1 mb-2" />
-
+          <div className="mt-1">
             <p className="text-gray-400">
               แจ้งโดย:{" "}
               {maintenanceTicket.assignedBy.account.firstName +
