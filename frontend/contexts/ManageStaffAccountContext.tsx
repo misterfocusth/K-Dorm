@@ -1,10 +1,10 @@
 import { Account } from "@/types";
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 
 interface IManageStaffAccountContext {
-  isOpenCreateStaffAccountModal: boolean;
-  openCreateStaffAccountModal: () => void;
-  closeCreateStaffAccountModal: () => void;
+  isShowCreateStaffAccountSection: boolean;
+  showCreateStaffAccountSection: () => void;
+  hideCreateStaffAccountSection: () => void;
 
   isOpenUpdateStaffAccountModal: boolean;
   openUpdateStaffAccountModal: () => void;
@@ -19,9 +19,9 @@ interface IManageStaffAccountContext {
 }
 
 const initialState: IManageStaffAccountContext = {
-  isOpenCreateStaffAccountModal: false,
-  openCreateStaffAccountModal: () => {},
-  closeCreateStaffAccountModal: () => {},
+  isShowCreateStaffAccountSection: false,
+  showCreateStaffAccountSection: () => {},
+  hideCreateStaffAccountSection: () => {},
 
   isOpenUpdateStaffAccountModal: false,
   openUpdateStaffAccountModal: () => {},
@@ -38,7 +38,7 @@ const initialState: IManageStaffAccountContext = {
 export const ManageStaffAccountContext = createContext<IManageStaffAccountContext>(initialState);
 
 export const ManageStaffAccountContextProvider = ({ children }: { children: ReactNode }) => {
-  const [isOpenCreateStaffAccountModal, setIsOpenCreateStaffAccountModal] =
+  const [isShowCreateStaffAccountSection, setIsOpenCreateStaffAccountModal] =
     useState<boolean>(false);
   const [isOpenUpdateStaffAccountModal, setIsOpenUpdateStaffAccountModal] =
     useState<boolean>(false);
@@ -46,7 +46,7 @@ export const ManageStaffAccountContextProvider = ({ children }: { children: Reac
     useState<boolean>(false);
   const [selectedStaffAccount, setSelectedStaffAccount] = useState<Account | null>(null);
 
-  const openCreateStaffAccountModal = () => setIsOpenCreateStaffAccountModal(true);
+  const showCreateStaffAccountSection = () => setIsOpenCreateStaffAccountModal(true);
   const closeCreateStaffAccountModal = () => setIsOpenCreateStaffAccountModal(false);
 
   const openUpdateStaffAccountModal = () => setIsOpenUpdateStaffAccountModal(true);
@@ -58,9 +58,9 @@ export const ManageStaffAccountContextProvider = ({ children }: { children: Reac
   return (
     <ManageStaffAccountContext.Provider
       value={{
-        isOpenCreateStaffAccountModal,
-        openCreateStaffAccountModal,
-        closeCreateStaffAccountModal,
+        isShowCreateStaffAccountSection,
+        showCreateStaffAccountSection,
+        hideCreateStaffAccountSection: closeCreateStaffAccountModal,
 
         isOpenUpdateStaffAccountModal,
         openUpdateStaffAccountModal,
@@ -78,3 +78,5 @@ export const ManageStaffAccountContextProvider = ({ children }: { children: Reac
     </ManageStaffAccountContext.Provider>
   );
 };
+
+export const useManageStaffAccountContext = () => useContext(ManageStaffAccountContext);
