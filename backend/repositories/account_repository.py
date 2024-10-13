@@ -1,5 +1,5 @@
 # Model
-from domain.models import Account, Student, Staff
+from domain.models import Account, Student, Staff, MaintenanceStaff, SecurityStaff
 
 
 def get_account_by_uid(uid):
@@ -36,3 +36,26 @@ def create_new_staff_account(account):
     staff.save()
 
     return staff
+
+
+def create_new_maintenance_staff_account(account):
+    maintenance_staff = MaintenanceStaff.objects.create(
+        account=account
+    )
+    maintenance_staff.save()
+
+    return maintenance_staff
+
+
+def create_new_security_staff_account(account):
+    security_staff = SecurityStaff.objects.create(
+        account=account
+    )
+    security_staff.save()
+
+    return security_staff
+
+
+def get_all_staff_accounts():
+    staff_accounts = Account.objects.filter(student__isnull=True).all()
+    return staff_accounts

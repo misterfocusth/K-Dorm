@@ -1,5 +1,6 @@
 import api.views.auth_views as auth_views
 import api.views.maintenance_views as maintenance_views
+import api.views.account_views as account_views
 import api.views.task as task_views
 from django.urls import path
 
@@ -23,4 +24,9 @@ urlpatterns += [
     path('student/maintenance/<int:pk>',
          maintenance_views.student_maintenance_ticket_detail),
     path('staff/maintenance', maintenance_views.staff_maintenance_tickets),
+]
+
+# ACCOUNT URLS
+urlpatterns += [
+    path('staff/account', account_views.staff_account)
 ]

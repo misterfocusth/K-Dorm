@@ -5,6 +5,30 @@ from rest_framework import serializers
 from domain.models import Student, Staff, MaintenanceStaff, SecurityStaff, Account
 
 
+def get_serializer_class(request):
+    if request.method == 'POST':
+        return CreateSerializer
+
+
+def serialize(data, many=False):
+    serializer = AccountSerializer(data, many=many)
+    return serializer.data
+
+
+class CreateSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    firstName = serializers.CharField(required=True)
+    lastName = serializers.CharField(required=True)
+    type = serializers.CharField(required=True)
+
+    def validate_email(self, value):
+        if Account.objects.filter(email=value).exists():
+            raise serializers.ValidationError(
+                "Staff with this ID already exists.")
+        else:
+            return value
+
+
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account

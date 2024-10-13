@@ -13,6 +13,7 @@ import { FC, ReactNode, useEffect, useState } from "react";
 import { Separator } from "./ui/separator";
 import { usePathname, useRouter } from "next/navigation";
 import { STAFF_ROUTE_PREFIX } from "@/constants";
+import Image from "next/image";
 
 const PATHS = [
   STAFF_ROUTE_PREFIX + "/home",
@@ -37,9 +38,19 @@ const StaffLeftMenu = () => {
 
   useEffect(() => {}, []);
   return (
-    <div className="py-8 px-4 bg-orange-100 h-full">
-      <div>
-        <p className="font-bold text-2xl text-center py-2">K-Dorm</p>
+    <div className="py-8 px-4 bg-orange-50 h-full border">
+      <div className="flex flex-row items-center gap-4 ">
+        <Image
+          src="/assets/kmitl.webp"
+          width={1920}
+          height={1080}
+          alt="kmitl logo"
+          className=" w-12 h-12"
+        />
+        <div className="flex flex-col">
+          <p className="font-bold text-2xl m-0">K-Dorm</p>
+          <p className="text-sm m-0">Management Console</p>
+        </div>
       </div>
 
       <Separator className="my-6 bg-gray-300" />
