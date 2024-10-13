@@ -8,6 +8,8 @@ from domain.models import Student, Staff, MaintenanceStaff, SecurityStaff, Accou
 def get_serializer_class(request):
     if request.method == 'POST':
         return CreateSerializer
+    elif request.method == 'PUT':
+        return UpdateSerializer
 
 
 def serialize(data, many=False):
@@ -27,6 +29,14 @@ class CreateSerializer(serializers.Serializer):
                 "Staff with this ID already exists.")
         else:
             return value
+
+
+class UpdateSerializer(serializers.Serializer):
+    firstName = serializers.CharField()
+    lastName = serializers.CharField()
+    type = serializers.CharField()
+    isDisabled = serializers.BooleanField()
+    email = serializers.EmailField()
 
 
 class AccountSerializer(serializers.ModelSerializer):

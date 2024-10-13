@@ -28,5 +28,6 @@ urlpatterns += [
 
 # ACCOUNT URLS
 urlpatterns += [
-    path('staff/account', account_views.staff_account)
+    path('staff/account', account_views.staff_account),
+    path('staff/account/<int:id>', account_views.edit_staff_account),
 ]

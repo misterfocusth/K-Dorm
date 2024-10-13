@@ -7,6 +7,11 @@ def get_account_by_uid(uid):
     return account
 
 
+def get_account_by_id(id):
+    account = Account.objects.get(id=id)
+    return account
+
+
 def create_new_account(uid, email, first_name, last_name):
     account = Account.objects.create(
         uid=uid,
