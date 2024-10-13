@@ -67,7 +67,7 @@ const StaffAccountPage = () => {
 
         <Select>
           <SelectTrigger className="w-[50%]">
-            <SelectValue placeholder="เลืิอกดูตามประเภทพนักงาน" />
+            <SelectValue placeholder="เลือกดูตามประเภทพนักงาน" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>

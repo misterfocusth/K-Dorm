@@ -25,9 +25,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Separator } from "@radix-ui/react-select";
 import { Loader2 } from "lucide-react";
-import { useCallback, useContext, useTransition } from "react";
+import { useCallback, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { set, z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 
 const staffLoginFormSchema = z.object({
@@ -40,7 +40,7 @@ const staffLoginFormSchema = z.object({
 });
 
 const StaffLoginPage = () => {
-  const [isPending, startTransition] = useTransition();
+  const [isLoading, setIsLoading] = useState(false);
   const { loginWithEmailAndPassword, loginWithGoogle } = useContext(AuthContext);
   const { toast } = useToast();
 
@@ -54,43 +54,47 @@ const StaffLoginPage = () => {
 
   const onSubmit = useCallback(
     async (values: z.infer<typeof staffLoginFormSchema>) => {
-      startTransition(async () => {
-        loginWithEmailAndPassword(values.email, values.password)
-          .then(() => {
-            toast({
-              title: "เข้าสู่ระบบสำเร็จ",
-              description: "เข้าสู่ระบบด้วย Staff Account สำเร็จ",
-            });
-          })
-          .catch((error) => {
-            toast({
-              variant: "destructive",
-              title: "เข้าสู่ระบบไม่สำเร็จ",
-              description: error.message,
-            });
-          });
-      });
-    },
-    [loginWithEmailAndPassword, toast]
-  );
+      setIsLoading(true);
 
-  const handleSignInWithGoogle = useCallback(() => {
-    startTransition(() => {
-      loginWithGoogle()
+      loginWithEmailAndPassword(values.email, values.password)
         .then(() => {
           toast({
             title: "เข้าสู่ระบบสำเร็จ",
-            description: "เข้าสู่ระบบด้วย Google Account สำเร็จ",
+            description: "เข้าสู่ระบบด้วย Staff Account สำเร็จ",
           });
         })
         .catch((error) => {
+          setIsLoading(false);
+
           toast({
             variant: "destructive",
             title: "เข้าสู่ระบบไม่สำเร็จ",
             description: error.message,
           });
         });
-    });
+    },
+    [loginWithEmailAndPassword, toast]
+  );
+
+  const handleSignInWithGoogle = useCallback(() => {
+    setIsLoading(true);
+
+    loginWithGoogle()
+      .then(() => {
+        toast({
+          title: "เข้าสู่ระบบสำเร็จ",
+          description: "เข้าสู่ระบบด้วย Google Account สำเร็จ",
+        });
+      })
+      .catch((error) => {
+        setIsLoading(false);
+
+        toast({
+          variant: "destructive",
+          title: "เข้าสู่ระบบไม่สำเร็จ",
+          description: error.message,
+        });
+      });
   }, [loginWithGoogle, toast]);
 
   return (
@@ -138,8 +142,8 @@ const StaffLoginPage = () => {
               )}
             />
 
-            <Button type="submit" className="w-full rounded-xl" disabled={isPending}>
-              {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            <Button type="submit" className="w-full rounded-xl" disabled={isLoading}>
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               เข้าสู่ระบบ
             </Button>
           </form>
@@ -154,9 +158,9 @@ const StaffLoginPage = () => {
         <Button
           className="w-full font-bold rounded-xl bg-white text-black border"
           onClick={handleSignInWithGoogle}
-          disabled={isPending}
+          disabled={isLoading}
         >
-          {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           เข้าสู่ระบบโดยใช้ Google Account
         </Button>
       </div>
