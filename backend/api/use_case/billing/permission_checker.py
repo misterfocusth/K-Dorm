@@ -1,12 +1,13 @@
-from backend.exception.application_logic.client.NotFound import NotFoundException
+from backend.exception.application_logic.client.not_found import NotFoundException
 from backend.exception.permission.unauthorized_action import UnauthorizedAction
+from backend.interfaces.context import Context
 from backend.interfaces.request_with_context import RequestWithContext
 from backend.repositories.staff import StaffRepository
 from backend.repositories.student import StudentRepository
 
 
-def get_billing(req: RequestWithContext, studentId: str) -> bool:
-    user = req.ctx.user
+def get_billing(ctx: Context, studentId: str) -> bool:
+    user = ctx.user
     if user is None:
         raise UnauthorizedAction("Not logged in")
 

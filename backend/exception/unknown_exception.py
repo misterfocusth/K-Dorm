@@ -4,5 +4,7 @@ from .base_stackable_exception import StackableException
 
 
 class UnknownException(StackableException):
-    def __call__(self, message: str, wrapped: StackableException | None = None):
-        return super().__init__(message, wrapped)
+
+    @property
+    def error_code(self) -> str:
+        return "UNKNOWN_EXCEPTION"

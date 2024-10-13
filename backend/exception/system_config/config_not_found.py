@@ -3,4 +3,6 @@ from backend.exception.system_config.base import ConfigurationFailure
 
 
 class ConfigNotFound(ConfigurationFailure):
-    pass
+    @property
+    def error_code(self) -> str:
+        return "CONFIG_NOT_FOUND"

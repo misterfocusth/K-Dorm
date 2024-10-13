@@ -30,7 +30,7 @@ class Stats(TypedDict):
 
 
 @usecase(permission_checker.get_billing)
-def get_stats(ctx: Context, studentId: str) -> Stats:
+def get_stats_by_student_id(ctx: Context, studentId: str) -> Stats:
 
     student = StudentRepository.get_student_by_studentId(studentId)
     if student is None:

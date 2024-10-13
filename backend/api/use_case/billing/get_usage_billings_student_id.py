@@ -1,13 +1,13 @@
 from typing import Literal, Optional
 from backend.api.repository import rent_billing_repository
 from backend.api.use_case.billing import permission_checker
-from backend.exception.application_logic.server.Unexpected import UnexpectedException
+from backend.exception.application_logic.client.not_found import NotFoundException
 from backend.layer.use_case import usecase
 from backend.repositories.student import StudentRepository
 from interfaces.context import Context
 
 
-@usecase(permission_checker.get_billing)
+@usecase(permissionChecker=permission_checker.get_billing)
 def get_usage_billings_by_student_id(
     ctx: Context,
     studentId: str,
@@ -16,7 +16,7 @@ def get_usage_billings_by_student_id(
 
     student = StudentRepository.get_student_by_studentId(studentId)
     if student is None:
-        raise UnexpectedException("Student not found")
+        raise NotFoundException("Student not found")
 
     return rent_billing_repository.get_list(
         student_pk=student.pk,

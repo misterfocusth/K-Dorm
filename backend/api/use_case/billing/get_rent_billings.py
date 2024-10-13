@@ -1,15 +1,16 @@
 from typing import List, Literal, Optional
 
 from backend.api.repository import rent_billing_repository
-from backend.exception.application_logic.server.Unexpected import UnexpectedException
+from backend.api.use_case.billing import permission_checker
+from backend.exception.application_logic.client.not_found import NotFoundException
+from backend.exception.application_logic.server.unexpected import UnexpectedException
 from backend.interfaces.context import Context
 from backend.layer.use_case import usecase
 
-from api.use_case.billing import permission_checker
 from backend.repositories.student import StudentRepository
 
 
-@usecase(permission_checker.get_billing)
+@usecase(permissionChecker=permission_checker.get_billing)
 def get_rent_billings(
     ctx: Context,
     studentId: Optional[str] = None,
@@ -20,7 +21,7 @@ def get_rent_billings(
 
         student = StudentRepository.get_student_by_studentId(studentId)
         if student is None:
-            raise UnexpectedException("Student not found")
+            raise NotFoundException("Student not found")
 
         return rent_billing_repository.get_list(
             student_pk=student.pk,

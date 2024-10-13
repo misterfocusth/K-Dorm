@@ -1,10 +1,11 @@
+from typing import Dict, Optional
 from rest_framework.response import Response
 
 
 class ErrorResponse(Response):
-    def __init__(self, message, error, data=None, status=None, **kwargs):
-        if data is None:
-            data = {}
+    def __init__(self, message: str | Dict, error: str, data=None, status: Optional[int]=None, **kwargs):
+        # if data is None:
+        #     data = {}
 
         response_data = {
             'error': error,

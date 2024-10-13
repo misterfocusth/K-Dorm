@@ -1,5 +1,3 @@
-from rest_framework.request import Request
-
 from backend.domain.models import Account
 
 

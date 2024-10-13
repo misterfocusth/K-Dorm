@@ -2,4 +2,6 @@ from backend.exception.base_stackable_exception import StackableException
 
 
 class UnexpectedException(StackableException):
-    pass
+    @property
+    def error_code(self):
+        return 'UNEXPECTED_EXCEPTION'

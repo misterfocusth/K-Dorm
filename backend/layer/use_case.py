@@ -13,8 +13,11 @@ from rest_framework.views import View
 
 from backend.interfaces.request_with_context import RequestWithContext
 
+
 P = ParamSpec("P")
 R = TypeVar("R")
+
+PermissionChecker = Callable[Concatenate[Context, P], bool]
 
 
 """
@@ -25,18 +28,21 @@ R = TypeVar("R")
 
 
 def usecase(
-    permissionChecker: Optional[
-        Callable[Concatenate[RequestWithContext, P], bool]
-    ] = None
-):
-    def decorator(uc: Callable[Concatenate[Context, P], R]):
+    permissionChecker: Optional[PermissionChecker] = None,
+) -> Callable[
+    [Callable[Concatenate[Context, P], R]],
+    Callable[Concatenate[RequestWithContext, P], R],
+]:
+    def decorator(
+        uc: Callable[Concatenate[Context, P], R]
+    ) -> Callable[Concatenate[RequestWithContext, P], R]:
         def wrapper(
             request: RequestWithContext, *args: P.args, **kwargs: P.kwargs
         ) -> R:
-            # check permission
+            # # check permission
             if permissionChecker:
                 try:
-                    result = permissionChecker(request, *args, **kwargs)
+                    result = permissionChecker(request.ctx, *args, **kwargs)
                 except PermissionDenied as e:
                     raise PermissionDenied("Permission denied, reason: " + e.message)
                 except StackableException as e:
