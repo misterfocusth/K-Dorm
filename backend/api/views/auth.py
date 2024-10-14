@@ -8,10 +8,10 @@ from rest_framework.exceptions import AuthenticationFailed
 # Use-Cases
 
 # Interfaces
-from backend.api.use_case.auth import auth_uc
-from backend.interfaces.request_with_context import RequestWithContext
-from backend.layer.handle import handle
-from backend.repositories.account import AccountRepository
+from api.use_case.auth import auth_uc
+from interfaces.request_with_context import RequestWithContext
+from layer.handle import handle
+from repositories.account import AccountRepository
 from interfaces.api_response import APIResponse
 from interfaces.error_response import ErrorResponse
 
@@ -22,6 +22,7 @@ from serializers.user_serializer import AuthUserSerializer
 from utils import account_utils
 
 
+# Deprecated
 @api_view(["POST"])
 @handle()
 def signin(request: RequestWithContext):
@@ -44,6 +45,7 @@ def signin(request: RequestWithContext):
 
 
 @api_view(["GET"])
+@handle()
 def get_current_user(request: RequestWithContext):
     try:
         account = auth_uc.signin(request, request)

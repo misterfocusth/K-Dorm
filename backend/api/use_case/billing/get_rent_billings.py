@@ -1,12 +1,12 @@
 from typing import List, Literal, Optional
 
-from backend.api.repository import rent_billing_repository
-from backend.api.use_case.billing import permission_checker
-from backend.exception.application_logic.client.not_found import NotFoundException
-from backend.interfaces.context import Context
-from backend.layer.use_case import usecase
+from api.repository import rent_billing_repository
+from api.use_case.billing import permission_checker
+from exception.application_logic.client.not_found import NotFoundException
+from interfaces.context import Context
+from layer.use_case import usecase
 
-from backend.repositories.student import StudentRepository
+from repositories.student import StudentRepository
 
 
 @usecase(permissionChecker=permission_checker.get_billing)

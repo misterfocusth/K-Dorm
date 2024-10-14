@@ -2,16 +2,16 @@ from abc import abstractmethod
 from collections.abc import Callable
 
 from requests import Request
-from backend.domain.models import MyBaseModel
-from backend.exception.permission.base import PermissionDenied
-from backend.exception.base_stackable_exception import StackableException
-from backend.exception.unknown_exception import UnknownException
-from backend.interfaces.context import Context
+from domain.models import MyBaseModel
+from exception.permission.base import PermissionDenied
+from exception.base_stackable_exception import StackableException
+from exception.unknown_exception import UnknownException
+from interfaces.context import Context
 from typing import Concatenate, Optional, ParamSpec, TypeVar
 from rest_framework.permissions import BasePermission
 from rest_framework.views import View
 
-from backend.interfaces.request_with_context import RequestWithContext
+from interfaces.request_with_context import RequestWithContext
 
 
 P = ParamSpec("P")

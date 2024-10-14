@@ -4,7 +4,7 @@ from typing import List, Callable, NotRequired, Optional, ParamSpec, TypeVar, Ty
 
 from django.utils import timezone
 
-from backend.domain.models import BaseBillingModel, RentBilling
+from domain.models import BaseBillingModel, RentBilling
 
 P = ParamSpec("P")
 R = TypeVar("R", bound=BaseBillingModel)

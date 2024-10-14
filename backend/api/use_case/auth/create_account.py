@@ -9,14 +9,14 @@ from django.db import transaction
 from firebase_admin import auth
 
 # Utils
-from backend.layer.use_case import usecase
-from backend.repositories.staff import StaffRepository
-from backend.repositories.student import StudentRepository
+from layer.use_case import usecase
+from repositories.staff import StaffRepository
+from repositories.student import StudentRepository
 import utils.token as token_utils
 
 # Repository
 from repositories.account import AccountRepository
-from backend.interfaces.context import Context
+from interfaces.context import Context
 
 
 class UserData(TypedDict):

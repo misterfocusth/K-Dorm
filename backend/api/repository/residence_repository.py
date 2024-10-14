@@ -1,6 +1,6 @@
 from django.db.models.manager import BaseManager
 from typing import List, NotRequired, TypedDict, Unpack
-from backend.domain.models import RentBilling, Residence
+from domain.models import RentBilling, Residence
 from datetime import datetime as DateTime
 
 

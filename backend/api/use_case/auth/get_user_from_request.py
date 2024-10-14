@@ -1,7 +1,7 @@
 from rest_framework.request import Request
-from backend.exception.auth.base import AuthenticationFailure
-from backend.layer.use_case import usecase
-from backend.repositories.account import AccountRepository
+from exception.auth.base import AuthenticationFailure
+from layer.use_case import usecase
+from repositories.account import AccountRepository
 from interfaces.context import Context
 
 # Firebase
