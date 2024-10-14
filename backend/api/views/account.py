@@ -35,7 +35,7 @@ def staff_account(request: RequestWithContext) -> APIResponse | ErrorResponse:
             return APIResponse(status=status.HTTP_200_OK, data=staff_accounts)
         elif request.method == 'POST':
             serializer_class = get_serializer_class(request)
-            serializer = serializer_class()
+            serializer = serializer_class(data=request.data)
 
             if serializer.is_valid():
                 result = handle_create_account(request, serializer)
@@ -48,7 +48,7 @@ def staff_account(request: RequestWithContext) -> APIResponse | ErrorResponse:
     except AuthenticationFailed as e:
         return ErrorResponse(status=status.HTTP_401_UNAUTHORIZED, error="UNAUTHORIZED", message=str(e))
     except Exception as e:
-        return ErrorResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR, error="UNAUTHORIZED", message=str(e))
+        return ErrorResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR, error="INTERNAL_SERVER_ERROR", message=str(e))
 
     return ErrorResponse(status=status.HTTP_405_METHOD_NOT_ALLOWED, error="METHOD_NOT_ALLOWED", message="Method not allowed")
 
