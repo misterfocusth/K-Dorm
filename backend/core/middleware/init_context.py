@@ -13,7 +13,7 @@ class InitContext:
     def __call__(self, request):
 
         ctx = Context(None, {})
-        extended_request = RequestWithContext(request)
+        extended_request = RequestWithContext.init(request)
 
-        response = self.get_response(extended_request)
+        response = self.get_response(extended_request)  # type: ignore
         return response

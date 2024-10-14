@@ -64,8 +64,6 @@ ALLOWED_HOSTS = ["*"]
 # Firebase ========================
 try:
 
-    print(env)
-
     if not env["FIREBASE_ADMIN_PATH"]:
         raise Exception("Firebase configuration credentials not found.")
     firebaseAdminConfigFile = Path(str(BASE_DIR) + "/" + env["FIREBASE_ADMIN_PATH"])
