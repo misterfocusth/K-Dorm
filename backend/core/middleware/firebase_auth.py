@@ -5,7 +5,7 @@ from rest_framework.response import Response
 
 from firebase_admin import auth
 
-from backend.interfaces.request_with_context import RequestWithContext
+from interfaces.request_with_context import RequestWithContext
 from repositories.account import AccountRepository
 
 
