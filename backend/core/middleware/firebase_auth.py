@@ -5,7 +5,7 @@ from rest_framework.response import Response
 
 from firebase_admin import auth
 
-from api.repository.account import AccountRepository
+from backend.repositories.account import AccountRepository
 
 
 class FirebaseAuth:

@@ -35,12 +35,11 @@ def authenticated_user_only(view_func):
                     {"error": "HTTP_401_UNAUTHORIZED", "message": "UNAUTHORIZED!"},
                     status=status.HTTP_401_UNAUTHORIZED,
                 )
-
-        except auth.InvalidIdTokenError:
+        except auth.RevokedIdTokenError:
             return JsonResponse(
                 {
                     "error": "HTTP_401_UNAUTHORIZED",
-                    "message": "Invalid Session ID Token!",
+                    "message": "Revoked Session ID Token!",
                 },
                 status=status.HTTP_401_UNAUTHORIZED,
             )
@@ -52,11 +51,11 @@ def authenticated_user_only(view_func):
                 },
                 status=status.HTTP_401_UNAUTHORIZED,
             )
-        except auth.RevokedIdTokenError:
+        except auth.InvalidIdTokenError:
             return JsonResponse(
                 {
                     "error": "HTTP_401_UNAUTHORIZED",
-                    "message": "Revoked Session ID Token!",
+                    "message": "Invalid Session ID Token!",
                 },
                 status=status.HTTP_401_UNAUTHORIZED,
             )

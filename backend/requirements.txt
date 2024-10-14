@@ -14,3 +14,5 @@ django-environ
 gunicorn
 python-dotenv
 requests
+pylint
+unpack
