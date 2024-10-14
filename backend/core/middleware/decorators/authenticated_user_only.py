@@ -35,16 +35,11 @@ def authenticated_user_only(view_func):
                 return view_func(request, *args, **kwargs)
             else:
                 return ErrorResponse(
-                    {"error": "UNAUTHORIZED", "message": "UNAUTHORIZED!"},
+                    error="UNAUTHORIZED",
+                    message="UNAUTHORIZED!",
                     status=status.HTTP_401_UNAUTHORIZED,
                 )
 
-        except auth.InvalidIdTokenError:
-            return ErrorResponse(
-                error="UNAUTHORIZED",
-                message="Invalid Session ID Token!",
-                status=status.HTTP_401_UNAUTHORIZED,
-            )
         except auth.ExpiredIdTokenError:
             return ErrorResponse(
                 error="UNAUTHORIZED",
