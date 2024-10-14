@@ -1,5 +1,5 @@
 from rest_framework.status import HTTP_500_INTERNAL_SERVER_ERROR
-from backend.exception.base_stackable_exception import StackableException
+from exception.base_stackable_exception import StackableException
 
 
 class UncaughtException(StackableException):

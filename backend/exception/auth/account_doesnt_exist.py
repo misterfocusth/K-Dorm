@@ -1,5 +1,5 @@
 from rest_framework import status
-from backend.exception.auth.base import AuthenticationFailure
+from exception.auth.base import AuthenticationFailure
 
 
 class AccountDoesntExistException(AuthenticationFailure):

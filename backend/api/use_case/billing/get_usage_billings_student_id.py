@@ -1,9 +1,9 @@
 from typing import Literal, Optional
-from backend.api.repository import rent_billing_repository
-from backend.api.use_case.billing import permission_checker
-from backend.exception.application_logic.client.not_found import NotFoundException
-from backend.layer.use_case import usecase
-from backend.repositories.student import StudentRepository
+from api.repository import rent_billing_repository
+from api.use_case.billing import permission_checker
+from exception.application_logic.client.not_found import NotFoundException
+from layer.use_case import usecase
+from repositories.student import StudentRepository
 from interfaces.context import Context
 
 

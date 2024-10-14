@@ -1,4 +1,4 @@
-from backend.domain.models import Account
+from domain.models import Account
 
 
 class Context:
