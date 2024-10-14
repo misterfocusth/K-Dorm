@@ -27,7 +27,7 @@ from utils import account_utils
 @handle()
 def signin(request: RequestWithContext):
     try:
-        account = request
+        account = request.ctx.user
         serializer = AuthUserSerializer(account)
         user_data = serializer.data
         role = account_utils.get_user_role(user_data)
