@@ -14,20 +14,20 @@ from rest_framework.request import Request
 from rest_framework.views import APIView
 from rest_framework import serializers
 
-from backend.api.use_case.auth import is_staff
-from backend.exception.application_logic.client.validation import ValidationException
-from backend.exception.auth.unauthenticated import UnauthenticatedException
-from backend.exception.base_stackable_exception import StackableException
-from backend.exception.permission.base import PermissionDenied
-from backend.exception.uncaught_exception import UncaughtException
-from backend.interfaces.api_response import APIResponse
-from backend.interfaces.error_response import ErrorResponse
-from backend.interfaces.api_response import APIResponse
-from backend.interfaces.context import Context
-from backend.interfaces.request_with_context import RequestWithContext
-from backend.exception.unknown_exception import UnknownException
-from backend.api.use_case.auth import auth_uc as auth_uc
-from backend.repositories import account
+from api.use_case.auth import is_staff
+from exception.application_logic.client.validation import ValidationException
+from exception.auth.unauthenticated import UnauthenticatedException
+from exception.base_stackable_exception import StackableException
+from exception.permission.base import PermissionDenied
+from exception.uncaught_exception import UncaughtException
+from interfaces.api_response import APIResponse
+from interfaces.error_response import ErrorResponse
+from interfaces.api_response import APIResponse
+from interfaces.context import Context
+from interfaces.request_with_context import RequestWithContext
+from exception.unknown_exception import UnknownException
+from api.use_case.auth import auth_uc as auth_uc
+from repositories import account
 
 PathParams = ParamSpec("PathParams")
 

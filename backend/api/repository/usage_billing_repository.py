@@ -1,8 +1,8 @@
 from turtle import update
 from typing import List, Literal, NotRequired, Optional, TypedDict, Unpack
-from backend.api.repository import residence_repository
-from backend.api.repository.utils import BillingQueryFilter, update_fine_costs_decorator
-from backend.core.env import env
+from api.repository import residence_repository
+from api.repository.utils import BillingQueryFilter, update_fine_costs_decorator
+from core.environment import env
 from domain.models import UsageBilling
 from datetime import datetime as DateTime
 from django.db.models.manager import BaseManager
@@ -115,9 +115,9 @@ def update_usage_cost(
 ) -> UsageBilling:
     if waterUsage is not None:
         bill.waterUsage = waterUsage
-        bill.waterCost = waterUsage * float(env["WATER_RATE"])
+        bill.waterCost = waterUsage * float(env["WATER_COST_RATE"])
     if electricityUsage is not None:
         bill.electricityUsage = electricityUsage
-        bill.electricityCost = electricityUsage * float(env["ELECTRICITY_RATE"])
+        bill.electricityCost = electricityUsage * float(env["ELECTRICITY_COST_RATE"])
     bill.save()
     return bill

@@ -1,9 +1,9 @@
-from backend.exception.application_logic.client.not_found import NotFoundException
-from backend.exception.permission.unauthorized_action import UnauthorizedAction
-from backend.interfaces.context import Context
-from backend.interfaces.request_with_context import RequestWithContext
-from backend.repositories.staff import StaffRepository
-from backend.repositories.student import StudentRepository
+from exception.application_logic.client.not_found import NotFoundException
+from exception.permission.unauthorized_action import UnauthorizedAction
+from interfaces.context import Context
+from interfaces.request_with_context import RequestWithContext
+from repositories.staff import StaffRepository
+from repositories.student import StudentRepository
 
 
 def get_billing(ctx: Context, studentId: str) -> bool:

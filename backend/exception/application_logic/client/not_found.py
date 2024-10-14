@@ -1,5 +1,5 @@
 from rest_framework import status
-from backend.exception.application_logic.client.base import InvalidRequestException
+from exception.application_logic.client.base import InvalidRequestException
 
 
 class NotFoundException(InvalidRequestException):

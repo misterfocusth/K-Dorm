@@ -2,18 +2,18 @@ from datetime import datetime
 from functools import reduce
 from typing import List, TypedDict, cast
 
-from backend.api.repository import rent_billing_repository
-from backend.api.repository import usage_billing_repository
-from backend.api.use_case.billing import permission_checker
-from backend.domain.models import BaseBillingModel, RentBilling, Account, Student
-from backend.exception.application_logic.client.base import InvalidRequestException
-from backend.exception.permission.unauthorized_action import UnauthorizedAction
-from backend.interfaces.request_with_context import RequestWithContext
+from api.repository import rent_billing_repository
+from api.repository import usage_billing_repository
+from api.use_case.billing import permission_checker
+from domain.models import BaseBillingModel, RentBilling, Account, Student
+from exception.application_logic.client.base import InvalidRequestException
+from exception.permission.unauthorized_action import UnauthorizedAction
+from interfaces.request_with_context import RequestWithContext
 from rest_framework import permissions
-from backend.interfaces.context import Context
-from backend.layer.use_case import usecase
-from backend.repositories.staff import StaffRepository
-from backend.repositories.student import StudentRepository
+from interfaces.context import Context
+from layer.use_case import usecase
+from repositories.staff import StaffRepository
+from repositories.student import StudentRepository
 
 
 class Stats(TypedDict):

@@ -1,4 +1,4 @@
-from backend.exception.base_stackable_exception import StackableException
+from exception.base_stackable_exception import StackableException
 
 
 class ValidationException(StackableException):

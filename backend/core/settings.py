@@ -17,17 +17,7 @@ from pathlib import Path
 
 import json
 import firebase_admin
-
-ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
-
-
-def get_env(key):
-    if os.path.exists(os.path.join(ROOT_DIR, ".env")):
-        environ.Env.read_env(os.path.join(ROOT_DIR, ".env"))
-        env = environ.Env(DEBUG=(bool, False))
-        return env(key)
-    else:
-        return os.environ.get(key)
+from .environment import ROOT_DIR, Env, env, get_env, strict_get_env
 
 
 def get_db_config():
@@ -74,10 +64,11 @@ ALLOWED_HOSTS = ["*"]
 # Firebase ========================
 try:
 
-    if get_env("FIREBASE_ADMIN_PATH"):
+    print(env)
 
+    if not env["FIREBASE_ADMIN_PATH"]:
         raise Exception("Firebase configuration credentials not found.")
-    firebaseAdminConfigFile = Path(str(BASE_DIR) + "/" + get_env("FIREBASE_ADMIN_PATH"))
+    firebaseAdminConfigFile = Path(str(BASE_DIR) + "/" + env["FIREBASE_ADMIN_PATH"])
 
     with firebaseAdminConfigFile.open() as f:
         firebaseAdminConfig = json.load(f)
