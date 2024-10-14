@@ -1,8 +1,9 @@
+from rest_framework.request import Request
 from rest_framework.exceptions import AuthenticationFailed
 
 
 # TODO: To be migrated to middleware folder
-def get_session_id_token(request):
+def get_session_id_token(request: Request):
     session_id_token_cookie = request.COOKIES.get("session_id_token")
     session_id_token_auth_header = request.headers.get("Authorization")
 

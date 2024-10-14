@@ -6,10 +6,12 @@ from rest_framework import status
 from rest_framework.exceptions import AuthenticationFailed
 
 # Use-Cases
-from use_cases.auth.handle_get_current_user import handle_get_current_user
-from use_cases.auth.handle_signin import handle_signin
 
 # Interfaces
+from backend.api.use_case.auth import auth_uc
+from backend.interfaces.request_with_context import RequestWithContext
+from backend.layer.handle import handle
+from backend.repositories.account import AccountRepository
 from interfaces.api_response import APIResponse
 from interfaces.error_response import ErrorResponse
 
@@ -20,29 +22,42 @@ from serializers.user_serializer import AuthUserSerializer
 from utils import account_utils
 
 
-@api_view(['POST'])
-def signin(request):
+@api_view(["POST"])
+@handle()
+def signin(request: RequestWithContext):
     try:
-        account = handle_signin(request)
+        account = request
         serializer = AuthUserSerializer(account)
         user_data = serializer.data
         role = account_utils.get_user_role(user_data)
-        return APIResponse(status=status.HTTP_200_OK, data={"user": user_data, "role": role})
+        return APIResponse(
+            status=status.HTTP_200_OK, data={"user": user_data, "role": role}
+        )
     except AuthenticationFailed as e:
-        return ErrorResponse(status=status.HTTP_401_UNAUTHORIZED, error="UNAUTHORIZED", message=str(e))
+        return ErrorResponse(
+            status=status.HTTP_401_UNAUTHORIZED, error="UNAUTHORIZED", message=str(e)
+        )
     except Exception as e:
-        return ErrorResponse(status=status.HTTP_401_UNAUTHORIZED, error="UNAUTHORIZED", message=str(e))
+        return ErrorResponse(
+            status=status.HTTP_401_UNAUTHORIZED, error="UNAUTHORIZED", message=str(e)
+        )
 
 
-@api_view(['GET'])
-def get_current_user(request):
+@api_view(["GET"])
+def get_current_user(request: RequestWithContext):
     try:
-        account = handle_get_current_user(request)
+        account = auth_uc.signin(request, request)
         serializer = AuthUserSerializer(account)
         user_data = serializer.data
         role = account_utils.get_user_role(user_data)
-        return APIResponse(status=status.HTTP_200_OK, data={"user": user_data, "role": role})
+        return APIResponse(
+            status=status.HTTP_200_OK, data={"user": user_data, "role": role}
+        )
     except AuthenticationFailed as e:
-        return ErrorResponse(status=status.HTTP_401_UNAUTHORIZED, error="UNAUTHORIZED", message=str(e))
+        return ErrorResponse(
+            status=status.HTTP_401_UNAUTHORIZED, error="UNAUTHORIZED", message=str(e)
+        )
     except Exception as e:
-        return ErrorResponse(status=status.HTTP_401_UNAUTHORIZED, error="UNAUTHORIZED", message=str(e))
+        return ErrorResponse(
+            status=status.HTTP_401_UNAUTHORIZED, error="UNAUTHORIZED", message=str(e)
+        )
