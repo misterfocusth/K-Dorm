@@ -15,18 +15,18 @@ from rest_framework.views import APIView
 from rest_framework import serializers
 
 from backend.api.use_case.auth import is_staff
-from backend.exception import unknown_exception
 from backend.exception.application_logic.client.validation import ValidationException
 from backend.exception.auth.unauthenticated import UnauthenticatedException
 from backend.exception.base_stackable_exception import StackableException
 from backend.exception.permission.base import PermissionDenied
+from backend.exception.uncaught_exception import UncaughtException
 from backend.interfaces.api_response import APIResponse
 from backend.interfaces.error_response import ErrorResponse
 from backend.interfaces.api_response import APIResponse
 from backend.interfaces.context import Context
 from backend.interfaces.request_with_context import RequestWithContext
 from backend.exception.unknown_exception import UnknownException
-from api.use_case.auth import uc as auth_uc
+from backend.api.use_case.auth import auth_uc as auth_uc
 from backend.repositories import account
 
 PathParams = ParamSpec("PathParams")
@@ -47,7 +47,9 @@ def handle(
     only_role: List[ROLE] = [],
 ):
     def decorator(
-        handleFn: Callable[Concatenate[RequestWithContext, PathParams], APIResponse]
+        handleFn: Callable[
+            Concatenate[RequestWithContext, PathParams], APIResponse | ErrorResponse
+        ]
     ):
         # transform the a request without context to a request with context
         # wrapper is compatiable with the view function
@@ -155,6 +157,11 @@ def handle(
                 return ErrorResponse(
                     status=e.error_status, error=e.error_code, message=e.message
                 )
+            except Exception as e:
+                exception = UncaughtException(
+                    message="Uncaught exception, internal server error"
+                )
+                return ErrorResponse.fromException(exception)
 
         return wrapper
 

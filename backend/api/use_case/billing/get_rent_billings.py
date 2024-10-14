@@ -3,7 +3,6 @@ from typing import List, Literal, Optional
 from backend.api.repository import rent_billing_repository
 from backend.api.use_case.billing import permission_checker
 from backend.exception.application_logic.client.not_found import NotFoundException
-from backend.exception.application_logic.server.unexpected import UnexpectedException
 from backend.interfaces.context import Context
 from backend.layer.use_case import usecase
 

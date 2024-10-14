@@ -1,5 +1,5 @@
 from rest_framework.request import Request
-from backend.exception.auth.authentication_fail import AuthenticationFailure
+from backend.exception.auth.base import AuthenticationFailure
 from backend.layer.use_case import usecase
 from backend.repositories.account import AccountRepository
 from interfaces.context import Context
