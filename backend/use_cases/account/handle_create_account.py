@@ -9,11 +9,23 @@ from utils.firebase_storage import get_bucket_location
 
 import uuid
 
+from firebase_admin import auth
+
 
 @transaction.atomic
 def handle_create_account(request, serializer):
     uid = str(uuid.uuid4()).split("-")[0]
     validated_data = serializer.validated_data
+
+    auth.create_user(
+        uid=uid,
+        email=validated_data['email'],
+        email_verified=False,
+        password=validated_data['password'],
+        display_name=f"{validated_data['firstName']} {
+            validated_data['lastName']}",
+        provider_id='google.com'
+    )
 
     account = create_new_account(
         uid=uid,

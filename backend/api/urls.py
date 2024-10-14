@@ -1,6 +1,6 @@
 import api.views.auth as auth_views
 import api.views.maintenance_views as maintenance_views
-import api.views.account_views as account_views
+import api.views.account as account
 from django.urls import path
 
 urlpatterns = [
@@ -26,6 +26,6 @@ urlpatterns += [
 
 # ACCOUNT URLS
 urlpatterns += [
-    path('staff/account', account_views.staff_account),
-    path('staff/account/<int:id>', account_views.edit_staff_account),
+    path('staff/account', account.staff_account),
+    path('staff/account/<int:id>', account.edit_staff_account),
 ]
