@@ -10,6 +10,7 @@ def get_serializer_class(request):
         return CreateSerializer
     elif request.method == 'PUT':
         return UpdateSerializer
+    return AccountSerializer
 
 
 def serialize(data, many=False):

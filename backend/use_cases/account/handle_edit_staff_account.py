@@ -1,9 +1,10 @@
 from serializers.account_serializer import UpdateSerializer
 from rest_framework.request import Request
+from interfaces.request_with_context import RequestWithContext
 from repositories.account_repository import get_account_by_id
 
 
-def handle_edit_staff_account(request: Request, serializer: type[UpdateSerializer], id: int):
+def handle_edit_staff_account(request: RequestWithContext, serializer, id: int):
     validated_data = serializer.validated_data
 
     account = get_account_by_id(id=id)

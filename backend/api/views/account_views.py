@@ -17,18 +17,17 @@ from interfaces.error_response import ErrorResponse
 # Serializer
 from serializers.account_serializer import get_serializer_class, serialize
 
-# Utils
-from utils import account_utils
-
 # Decorators
-from middleware.decorators.authenticated_user_only import authenticated_user_only
+from core.middleware.decorators.authenticated_user_only import authenticated_user_only
+from layer.handle import handle
 
 from django.core.exceptions import ObjectDoesNotExist
+from interfaces.request_with_context import RequestWithContext
 
 
 @api_view(['GET', 'POST'])
-@authenticated_user_only
-def staff_account(request):
+@handle(only_authenticated=True, only_role=["STAFF"])
+def staff_account(request: RequestWithContext) -> APIResponse | ErrorResponse:
     try:
         if request.method == 'GET':
             result = handle_get_all_staff_accounts(request)
@@ -36,14 +35,14 @@ def staff_account(request):
             return APIResponse(status=status.HTTP_200_OK, data=staff_accounts)
         elif request.method == 'POST':
             serializer_class = get_serializer_class(request)
-            serializer = serializer_class(data=request.data)
+            serializer = serializer_class()
 
             if serializer.is_valid():
                 result = handle_create_account(request, serializer)
                 account_data = serialize(data=result)
                 return APIResponse(status=status.HTTP_201_CREATED, data=account_data)
             else:
-                return ErrorResponse(status=status.HTTP_400_BAD_REQUEST, error="BAD_REQUEST", message=serializer.errors)
+                return ErrorResponse(status=status.HTTP_400_BAD_REQUEST, error="BAD_REQUEST", message=str(serializer.errors))
     except serializers.ValidationError as e:
         return ErrorResponse(status=status.HTTP_404_NOT_FOUND, error="CONFLICT", message=str(e))
     except AuthenticationFailed as e:
@@ -51,10 +50,12 @@ def staff_account(request):
     except Exception as e:
         return ErrorResponse(status=status.HTTP_500_INTERNAL_SERVER_ERROR, error="UNAUTHORIZED", message=str(e))
 
+    return ErrorResponse(status=status.HTTP_405_METHOD_NOT_ALLOWED, error="METHOD_NOT_ALLOWED", message="Method not allowed")
+
 
 @api_view(['PUT'])
-@authenticated_user_only
-def edit_staff_account(request, id):
+@handle(only_authenticated=True, only_role=["STAFF"])
+def edit_staff_account(request: RequestWithContext, id: int):
     try:
         serializer_class = get_serializer_class(request)
         serializer = serializer_class(data=request.data)
@@ -64,7 +65,7 @@ def edit_staff_account(request, id):
             account_data = serialize(data=result)
             return APIResponse(status=status.HTTP_201_CREATED, data=account_data)
         else:
-            return ErrorResponse(status=status.HTTP_400_BAD_REQUEST, error="BAD_REQUEST", message=serializer.errors)
+            return ErrorResponse(status=status.HTTP_400_BAD_REQUEST, error="BAD_REQUEST", message=str(serializer.errors))
     except ObjectDoesNotExist as e:
         return ErrorResponse(status=status.HTTP_404_NOT_FOUND, error="NOT_FOUND", message=str(e))
     except serializers.ValidationError as e:

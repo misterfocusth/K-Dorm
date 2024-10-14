@@ -77,7 +77,9 @@ try:
     if get_env("FIREBASE_ADMIN_PATH"):
 
         raise Exception("Firebase configuration credentials not found.")
-    firebaseAdminConfigFile = Path(str(BASE_DIR) + "/" + get_env("FIREBASE_ADMIN_PATH"))
+
+    firebase_admin_path = get_env("FIREBASE_ADMIN_PATH") or ""
+    firebaseAdminConfigFile = Path(str(BASE_DIR) + "/" + firebase_admin_path)
 
     with firebaseAdminConfigFile.open() as f:
         firebaseAdminConfig = json.load(f)
