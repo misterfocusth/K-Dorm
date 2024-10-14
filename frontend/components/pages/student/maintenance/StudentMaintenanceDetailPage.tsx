@@ -5,6 +5,7 @@ import withRoleGuard from "@/components/hoc/withRoleGuard";
 
 // Components
 import ImageGallery from "@/components/ImageGallery";
+import MaintenanceTicketDetail from "@/components/maintenance/MaintenanceTicketDetail";
 import { Separator } from "@/components/ui/separator";
 
 // Context
@@ -55,40 +56,8 @@ const StudentMaintenanceDetailPage = ({ id }: StudentMaintenanceDetailPageProps)
         />
       </div>
 
-      <div className="rounded-3xl p-6 w-full shadow-lg flex flex-col gap-4 mt-8">
-        <div className="flex flex-row justify-between">
-          <p className="flex-1 text-gray-400">หัวข้อแจ้งซ่อม</p>
-          <p className="flex-1">ซ่อมแซมประตูห้อง</p>
-        </div>
-
-        <div className="flex flex-row justify-between">
-          <p className="flex-1 text-gray-400">สถานที่</p>
-          <p className="flex-1">หอพักนักศึกษา ทางเข้าหลักที่ 1</p>
-        </div>
-
-        <div className="flex flex-row justify-between">
-          <p className="flex-1 text-gray-400">รายละเอียด</p>
-          <p className="flex-1">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit adipiscing elit
-          </p>
-        </div>
-
-        <div className="flex flex-row justify-between">
-          <p className="flex-1 text-gray-400">วันและเวลาที่แจ้ง</p>
-          <p className="flex-1">24 ก.ย. 2567 - 12:00</p>
-        </div>
-
-        <Separator className="my-2" />
-
-        <div className="flex flex-row justify-between">
-          <p className="flex-1 text-gray-400">ดำเนินการซ่อมโดย</p>
-          <p className="flex-1">นางสาวศรุตา โทรัตน</p>
-        </div>
-
-        <div className="flex flex-row justify-between">
-          <p className="flex-1 text-gray-400">วันและเวลาที่ซ่อม</p>
-          <p className="flex-1">24 ก.ย. 2567 - 12:00</p>
-        </div>
+      <div className="rounded-3xl p-6 w-full shadow-lg  mt-8">
+        <MaintenanceTicketDetail />
       </div>
     </div>
   );

@@ -1,12 +1,13 @@
 export type Account = {
   id: number;
-  uid: String;
-  email: String;
+  uid: string;
+  email: string;
   firstName: string;
   lastName: string;
   isDisabled: boolean;
+};
 
-  // Student
-  studentId?: string;
-  isOnBoarded?: boolean;
+export type Student = Account & {
+  studentId: string;
+  isOnBoarded: boolean;
 };
