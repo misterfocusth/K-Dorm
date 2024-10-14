@@ -14,8 +14,7 @@ from rest_framework.request import Request
 from rest_framework.views import APIView
 from rest_framework import serializers
 
-from backend.api.use_case.auth.is_staff import is_staff
-from backend.api.use_case.auth.is_student import is_student
+from backend.api.use_case.auth import is_staff
 from backend.exception import unknown_exception
 from backend.exception.application_logic.client.validation import ValidationException
 from backend.exception.auth.unauthenticated import UnauthenticatedException
@@ -75,10 +74,10 @@ def handle(
                 if len(only_role) > 0:
                     found = False
                     if "STUDENT" in only_role:
-                        if is_student(_req, accountId=_req.ctx.user.uid):
+                        if auth_uc.is_student(_req, accountId=_req.ctx.user.uid):
                             found = True
                     if "STAFF" in only_role:
-                        if is_staff(_req, accountId=_req.ctx.user.uid):
+                        if auth_uc.is_staff(_req, accountId=_req.ctx.user.uid):
                             found = True
                     # TOOD: The rest roles
 
