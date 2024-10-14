@@ -12,6 +12,7 @@ from serializers.file_serializer import FileSerializer
 def get_serializer_class(request):
     if request.method == 'POST':
         return CreateSerializer
+    return MaintenanceSerializer
 
 
 def serialize(data, many=False):

@@ -1,7 +1,6 @@
-import api.views.auth_views as auth_views
+import api.views.auth as auth_views
 import api.views.maintenance_views as maintenance_views
 import api.views.account_views as account_views
-import api.views.task as task_views
 from django.urls import path
 
 urlpatterns = [
@@ -13,8 +12,8 @@ urlpatterns = [
 
 # AUTHENTICATION URLS
 urlpatterns += [
-    path("auth/me", auth.get_current_user, name="getme"),
-    path("auth/signin", auth.signin, name="signin"),
+    path("auth/me", auth_views.get_current_user, name="getme"),
+    path("auth/signin", auth_views.signin, name="signin"),
 ]
 
 # MAINTENANCE URLS
