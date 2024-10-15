@@ -1,6 +1,6 @@
 from utils.token import get_session_id_token
 from firebase_admin import auth
-from repositories.account_repository import get_account_by_uid
+from repositories.account_repository import AccountRepository
 
 
 def get_user_role(user_data):
@@ -27,6 +27,6 @@ def get_account_from_session(request):
 
     user = auth.get_user(uid)
 
-    account = get_account_by_uid(uid)
+    account = AccountRepository.get_account_by_uid(uid)
 
     return account
