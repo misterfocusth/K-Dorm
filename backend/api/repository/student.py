@@ -11,9 +11,9 @@ class StudentRepository:
         return student
 
     @staticmethod
-    def get_student_by_account_id(account_id: str) -> Student | None:
+    def get_student_by_account_id(account_uid: str) -> Student | None:
         try:
-            student = Student.objects.get(account_id=account_id)
+            student = Student.objects.get(account_id=account_uid)
         except Student.DoesNotExist:
             return None
 
@@ -32,6 +32,15 @@ class StudentRepository:
     def get_student_by_studentId(studentId: str) -> Student | None:
         try:
             student = Student.objects.get(studentId=studentId)
+        except Student.DoesNotExist:
+            return None
+
+        return student
+
+    @staticmethod
+    def get_student_by_uid(uid: str) -> Student | None:
+        try:
+            student = Student.objects.get(account__uid=uid)
         except Student.DoesNotExist:
             return None
 

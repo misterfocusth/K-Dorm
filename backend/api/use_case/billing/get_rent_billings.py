@@ -6,7 +6,7 @@ from exception.application_logic.client.not_found import NotFoundException
 from interfaces.context import Context
 from layer.use_case import usecase
 
-from repositories.student import StudentRepository
+from api.repository.student import StudentRepository
 
 
 @usecase(permissionChecker=permission_checker.get_billing)

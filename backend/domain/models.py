@@ -38,7 +38,7 @@ class Account(MyBaseModel):
     class Meta(MyBaseModel.Meta):
         db_table = "account"
 
-    uid = models.TextField(unique=True)
+    uid = models.TextField(unique=True, null=True)
     email = models.EmailField(unique=True)
     secret = models.TextField()
     salt = models.TextField()
@@ -57,8 +57,10 @@ class File(MyBaseModel):
 
     publiclyVisible = models.BooleanField(default=False)
 
-    visibleToStudents = models.ManyToManyField("Student", related_name="accessToFiles")
-    visibleToStaffs = models.ManyToManyField("Staff", related_name="accessToFiles")
+    visibleToStudents = models.ManyToManyField(
+        "Student", related_name="accessToFiles")
+    visibleToStaffs = models.ManyToManyField(
+        "Staff", related_name="accessToFiles")
     visibleToMaintenanceStaffs = models.ManyToManyField(
         "MaintenanceStaff", related_name="accessToFiles"
     )
@@ -67,11 +69,17 @@ class File(MyBaseModel):
     )
 
     activity = models.ForeignKey(
-        "Activity", on_delete=models.CASCADE, related_name="files"
+        'Activity',
+        on_delete=models.CASCADE,
+        related_name='files',
+        null=True,
     )
 
     maintenanceTicket = models.ForeignKey(
-        "MaintenanceTicket", on_delete=models.CASCADE, related_name="files"
+        'MaintenanceTicket',
+        on_delete=models.CASCADE,
+        related_name='files',
+        null=True,
     )
 
 
@@ -255,7 +263,10 @@ class MaintenanceTicket(MyBaseModel):
     )
 
     maintenanceStaff = models.ForeignKey(
-        "MaintenanceStaff", on_delete=models.CASCADE, related_name="maintenanceTickets"
+        'MaintenanceStaff',
+        on_delete=models.CASCADE,
+        related_name='maintenanceTickets',
+        null=True,
     )
 
 

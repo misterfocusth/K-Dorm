@@ -31,7 +31,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "components/pages/staff/account/EditStaffAccountDialogtsx"
   ],
   "exclude": [
     "node_modules"

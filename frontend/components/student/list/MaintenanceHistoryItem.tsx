@@ -1,95 +1,42 @@
+import { Separator } from "@/components/ui/separator";
 import { useMaintenanceTicketContext } from "@/contexts/MaintenanceTicketContext";
+import { getTHFormattedDateTime } from "@/libs/datetime";
 import { MaintenanceTicket } from "@/types";
 import { ChevronRight, CircleAlert, CircleCheck } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
 
 type MaintenanceHistoryItemProps = {
-  isResolved: boolean;
-  title: string;
-  description: string;
-  createdAt: string;
-  id: string;
+  maintenanceTicket: MaintenanceTicket;
   staffView?: boolean;
-  onClickListItem?: () => void;
 };
 
-const MaintenanceHistoryItem = ({
-  id,
-  isResolved,
-  title,
-  description,
-  createdAt,
-  staffView,
-  onClickListItem,
-}: MaintenanceHistoryItemProps) => {
+const MaintenanceHistoryItem = ({ maintenanceTicket, staffView }: MaintenanceHistoryItemProps) => {
   const { setSelectedTicket, selectedTicket } = useMaintenanceTicketContext();
+  const router = useRouter();
 
-  const formattedDate = useMemo(() => {
-    const date = new Date(createdAt);
-
-    const monthsThai = [
-      "ม.ค.",
-      "ก.พ.",
-      "มี.ค.",
-      "เม.ย.",
-      "พ.ค.",
-      "มิ.ย.",
-      "ก.ค.",
-      "ส.ค.",
-      "ก.ย.",
-      "ต.ค.",
-      "พ.ย.",
-      "ธ.ค.",
-    ];
-
-    const day = date.getDate();
-    const month = monthsThai[date.getMonth()];
-    const year = date.getFullYear() + 543;
-    const hours = date.getHours();
-    const minutes = date.getMinutes().toString().padStart(2, "0");
-
-    return `${day} ${month} ${year} - ${hours}:${minutes}`;
-  }, [createdAt]);
+  const formattedDate = useMemo(
+    () => getTHFormattedDateTime(maintenanceTicket.createdAt),
+    [maintenanceTicket.createdAt]
+  );
 
   const handleOnStaffSelectTicket = useCallback(() => {
-    console.log("Select ticket", selectedTicket);
+    setSelectedTicket(maintenanceTicket);
+  }, [maintenanceTicket, setSelectedTicket]);
 
-    const mockData: MaintenanceTicket = {
-      title: title,
-      description: description,
-      location: "ห้อง 201",
-      resolvedAt: new Date().toISOString(),
-      createdAt: createdAt,
-      maintenanceStaff: {
-        id: 1,
-        uid: "1",
-        email: "staff@kmitl.com",
-        firstName: "ศิลา",
-        lastName: "ภักดีวงษ์",
-        isDisabled: false,
-      },
-      student: {
-        id: 1,
-        uid: "1",
-        email: "staff@kmitl.com",
-        firstName: "ศิลา",
-        lastName: "ภักดีวงษ์",
-        isDisabled: false,
-        studentId: "65070219",
-        isOnBoarded: true,
-      },
-    };
-
-    setSelectedTicket(mockData);
-  }, [createdAt, description, setSelectedTicket, title, selectedTicket]);
+  const handleStudentSelectTicket = useCallback(() => {
+    router.push(`/student/maintenance/${maintenanceTicket.id}`);
+  }, [maintenanceTicket, router]);
 
   return (
     <div
-      className="flex flex-row items-center justify-between hover:bg-gray-100 cursor-pointer p-4 rounded-3xl"
-      onClick={onClickListItem ? onClickListItem : handleOnStaffSelectTicket}
+      className={`flex flex-row items-center justify-between hover:bg-gray-100 cursor-pointer p-2 lg:p-4 rounded-3xl gap-6 ${
+        selectedTicket?.id === maintenanceTicket.id && "bg-gray-100"
+      }`}
+      onClick={staffView ? handleOnStaffSelectTicket : handleStudentSelectTicket}
     >
       <div className="max-w-[20%]">
-        {isResolved ? (
+        {maintenanceTicket.isResolved ? (
           <div className="w-13 h-13 bg-[#84CC16] rounded-full text-white flex items-center justify-center p-2">
             <CircleCheck className="w-10 h-10" strokeWidth={2} />
           </div>
@@ -100,16 +47,37 @@ const MaintenanceHistoryItem = ({
         )}
       </div>
 
-      <div className="flex flex-col gap-1 max-w-[70%]">
-        <p>{title}</p>
+      <div className="flex flex-col gap-1 max-w-[70%] w-full">
+        <p>{maintenanceTicket.title}</p>
         <p className="text-gray-400 ">
-          {description.length > 100 ? description.slice(0, 100) + "..." : description}
+          {maintenanceTicket.description.length > 100
+            ? maintenanceTicket.description.slice(0, 100) + "..."
+            : maintenanceTicket.description}
         </p>
         <p className="text-gray-400">{formattedDate}</p>
-        {staffView && <p className="text-gray-400">เจ้าหน้าที่ผู้รับผิดชอบ: นายศิลา ภักดีวงษ์</p>}
+
+        {staffView && (
+          <div className="mt-1">
+            <p className="text-gray-400">
+              แจ้งโดย:{" "}
+              {maintenanceTicket.assignedBy.account.firstName +
+                " " +
+                maintenanceTicket.assignedBy.account.lastName}
+            </p>
+
+            <p className="text-gray-400">
+              เจ้าหน้าที่ผู้รับผิดชอบ:{" "}
+              {maintenanceTicket.assignedTo
+                ? maintenanceTicket.assignedTo.account.firstName +
+                  " " +
+                  maintenanceTicket.assignedBy.account.lastName
+                : "-"}
+            </p>
+          </div>
+        )}
       </div>
 
-      <div className="max-w-[10%]">
+      <div className="max-w-[10%] w-full">
         <ChevronRight className="w-8 h-8" />
       </div>
     </div>

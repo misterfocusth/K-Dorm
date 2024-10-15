@@ -1,11 +1,4 @@
-import { Account, Student } from "./Account";
+import { z } from "zod";
+import { maintenanceTicketSchema } from "@/schemas/maintenance";
 
-export type MaintenanceTicket = {
-  title: string;
-  description: string;
-  location?: string;
-  resolvedAt: string;
-  createdAt: string;
-  student: Student;
-  maintenanceStaff: Account;
-};
+export type MaintenanceTicket = z.infer<typeof maintenanceTicketSchema>;

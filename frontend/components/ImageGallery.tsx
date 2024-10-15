@@ -16,7 +16,7 @@ const ImageGallery = ({ imagesSrc }: { imagesSrc: string[] }) => {
   return (
     <div className="w-full overflow-y-auto flex justify-center items-center">
       <div className="flex flex-nowrap">
-        <ScrollArea className="w-full whitespace-nowrap rounded-md border">
+        <ScrollArea className="w-full whitespace-nowrap rounded-xl border">
           <div className="flex  space-x-4 p-4">
             {imagesSrc.map((image, index) => (
               <img
