@@ -297,6 +297,3 @@ backend/firebase/
 
 # Ignore myvenv 
 myvenv/
-
-# migration files
-migrations/
