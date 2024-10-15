@@ -30,7 +30,7 @@ def get_db_config():
                 "USER": tmpPostgres.username,
                 "PASSWORD": tmpPostgres.password,
                 "HOST": tmpPostgres.hostname,
-                "PORT": "5432",
+                "PORT": "6969",
             }
         }
     else:
