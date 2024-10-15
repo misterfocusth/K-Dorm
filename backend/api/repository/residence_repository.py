@@ -18,8 +18,8 @@ class ResidenceQuery(TypedDict):
     endDateFrom: NotRequired[DateTime]
     endDateTo: NotRequired[DateTime]
 
-    student_pk: NotRequired[int]
-    room_id: NotRequired[str]
+    studentPk: NotRequired[int]
+    roomId: NotRequired[str]
 
     recruitment_wave_id: NotRequired[str]
 
@@ -29,8 +29,8 @@ def get_list(**filter: Unpack[ResidenceQuery]) -> List[Residence]:
 
     if filter.get("student_id"):
         query = query.filter(student_id=filter.get("student_id"))
-    if filter.get("room_id"):
-        query = query.filter(room_id=filter.get("room_id"))
+    if filter.get("roomId"):
+        query = query.filter(room_id=filter.get("roomId"))
     if filter.get("recruitment_wave_id"):
         query = query.filter(recruitment_wave_id=filter.get("recruitment_wave_id"))
 

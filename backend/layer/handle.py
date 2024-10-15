@@ -29,7 +29,7 @@ from interfaces.context import Context
 from interfaces.request_with_context import RequestWithContext
 from exception.unknown_exception import UnknownException
 from api.use_case.auth import auth_uc as auth_uc
-from repositories import account
+from backend.repositories import account_repository
 import json
 
 
@@ -55,7 +55,7 @@ ROLE = Literal["STUDENT", "STAFF", "MAINTERNANCE_STAFF", "SECURITY_STAFF"]
 
 def handle(
     permission_checker: Optional[Callable[[RequestWithContext], bool]] = None,
-    serializer_config: Optional[SerializerConfig] = None,
+    serializer_config: SerializerConfig = {},
     only_authenticated: bool = False,
     only_role: List[ROLE] = [],
 ):
@@ -192,7 +192,6 @@ def handle(
                     return ErrorResponse(
                         status=500, error="Internal Server Error", message=str(e)
                     )
-
             try:
                 # execute the handle function
                 return handleFn(_req, *args, **kwargs)

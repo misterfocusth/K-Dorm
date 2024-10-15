@@ -1,25 +1,25 @@
 from typing import Literal, Optional
 from api.repository import rent_billing_repository
-from api.use_case.billing import permission_checker
+from backend.api.use_case.student import permission_checker
 from exception.application_logic.client.not_found import NotFoundException
 from layer.use_case import usecase
-from repositories.student import StudentRepository
+from backend.repositories.student_repository import StudentRepository
 from interfaces.context import Context
 
 
-@usecase(permissionChecker=permission_checker.get_billing)
+@usecase(permission_checker=permission_checker.themselves_or_is_staff_using_student_id)
 def get_usage_billings_by_student_id(
     ctx: Context,
     studentId: str,
     paid_status: Literal["PAID", "UNPAID", "ALL"] = "ALL",
 ):
 
-    student = StudentRepository.get_student_by_studentId(studentId)
+    student = StudentRepository.get_by_student_id(studentId)
     if student is None:
         raise NotFoundException("Student not found")
 
     return rent_billing_repository.get_list(
-        student_pk=student.pk,
+        studentPk=student.pk,
         paid_status=(
             True
             if paid_status == "PAID"

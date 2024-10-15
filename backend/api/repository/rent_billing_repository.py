@@ -12,7 +12,7 @@ from domain.models import RentBilling
 class RentBillingFilter(BillingQueryFilter):
     rentCostMin: NotRequired[float]
     rentCostMax: NotRequired[float]
-    student_pk: NotRequired[int]
+    studentPk: NotRequired[int]
 
 
 @update_fine_costs_decorator

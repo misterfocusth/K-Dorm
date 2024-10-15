@@ -4,16 +4,16 @@ from typing import List, TypedDict, cast
 
 from api.repository import rent_billing_repository
 from api.repository import usage_billing_repository
-from api.use_case.billing import permission_checker
+from backend.api.use_case.student import permission_checker
 from domain.models import BaseBillingModel, RentBilling, Account, Student
 from exception.application_logic.client.base import InvalidRequestException
-from exception.permission.unauthorized_action import UnauthorizedAction
+from exception.permission.unauthorized_action import UnauthorizedActionException
 from interfaces.request_with_context import RequestWithContext
 from rest_framework import permissions
 from interfaces.context import Context
 from layer.use_case import usecase
-from repositories.staff import StaffRepository
-from repositories.student import StudentRepository
+from backend.repositories.staff_repository import StaffRepository
+from backend.repositories.student_repository import StudentRepository
 
 
 class Stats(TypedDict):
@@ -29,18 +29,18 @@ class Stats(TypedDict):
 """
 
 
-@usecase(permission_checker.get_billing)
+@usecase(permission_checker=permission_checker.themselves_or_is_staff_using_student_id)
 def get_stats_by_student_id(ctx: Context, studentId: str) -> Stats:
 
-    student = StudentRepository.get_student_by_studentId(studentId)
+    student = StudentRepository.get_by_student_id(studentId)
     if student is None:
         raise InvalidRequestException("Student target not found")
 
     rent_billings = rent_billing_repository.get_list(
-        student_pk=student.pk, paid_status=False
+        studentPk=student.pk, paid_status=False
     )
     usage_billings = usage_billing_repository.get_list_by_student_pk(
-        student_pk=student.pk, paid_status=False
+        studentPk=student.pk, paid_status=False
     )
 
     total_rent_cost = 0

@@ -8,7 +8,7 @@
 # import domain.models as models
 
 # # Serializers
-# from backend.serializers._task_serializer import TaskSerializer
+# from serializers._task_serializer import TaskSerializer
 
 
 # @api_view(['GET'])

@@ -1,9 +1,9 @@
 from interfaces.context import Context
 from layer.use_case import usecase
-from repositories.student import StudentRepository
+from backend.repositories.student_repository import StudentRepository
 
 
 @usecase()
 def is_student(ctx: Context, accountId: str) -> bool:
-    student = StudentRepository.get_student_by_account_id(accountId)
+    student = StudentRepository.get_by_account_id(accountId)
     return bool(student)

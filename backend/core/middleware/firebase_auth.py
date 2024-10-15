@@ -5,8 +5,9 @@ from rest_framework.response import Response
 
 from firebase_admin import auth
 
-from backend.interfaces.request_with_context import RequestWithContext
-from repositories.account import AccountRepository
+from backend.domain.models import Account
+from interfaces.request_with_context import RequestWithContext
+from backend.repositories.account_repository import AccountRepository
 
 
 class FirebaseAuth:
@@ -23,9 +24,12 @@ class FirebaseAuth:
             session_token, check_revoked=True, clock_skew_seconds=30
         )
 
-        user = AccountRepository.get_account_by_uid(decodedToken["uid"])
+        user = AccountRepository.get_by_email(decodedToken["email"])
 
-        if user:
+        if user is not None:
+            if user.uid != decodedToken["uid"]:
+                AccountRepository.assign_uid(user, decodedToken["uid"])
+
             request.ctx.user = user
 
         response = self.get_response(request)

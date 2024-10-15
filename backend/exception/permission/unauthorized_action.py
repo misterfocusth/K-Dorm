@@ -1,7 +1,7 @@
 from exception.permission.base import PermissionDenied
 
 
-class UnauthorizedAction(PermissionDenied):
+class UnauthorizedActionException(PermissionDenied):
 
     @property
     def error_code(self) -> str:

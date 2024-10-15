@@ -11,7 +11,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from api.use_case.auth import auth_uc
 from interfaces.request_with_context import RequestWithContext
 from layer.handle import handle
-from repositories.account import AccountRepository
+from backend.repositories.account_repository import AccountRepository
 from interfaces.api_response import APIResponse
 from interfaces.error_response import ErrorResponse
 

@@ -1,5 +1,6 @@
 # Model
-from typing import Optional
+from typing import NotRequired, Optional, TypedDict
+from backend.exception.application_logic.client.not_found import NotFoundException
 from exception.application_logic.server.Illegal_operation import (
     IllegalOperationException,
 )
@@ -8,6 +9,12 @@ from domain.models import Account, Student, Staff
 from django.db.models import Model
 from exception.base_stackable_exception import StackableException
 from exception.unknown_exception import UnknownException
+
+
+class EditAccountPayload(TypedDict):
+    email: NotRequired[str]
+    firstName: NotRequired[str]
+    lastName: NotRequired[str]
 
 
 class AccountRepository:
@@ -23,17 +30,17 @@ class AccountRepository:
             raise e
 
     @staticmethod
-    def create_new_account(
+    def create(
         email: str,
-        first_name: str,
-        last_name: str,
+        firstName: str,
+        lastName: str,
         uid: Optional[str] = None,
     ):
         account = Account.objects.create(
             uid=uid,
             email=email,
-            firstName=first_name,
-            lastName=last_name,
+            firstName=firstName,
+            lastName=lastName,
         )
         account.save()
 
@@ -57,3 +64,16 @@ class AccountRepository:
             raise IllegalOperationException("Account already has a uid")
         account.uid = uid
         account.save()
+
+    @staticmethod
+    def edit_by_id(account_id: str, payload: EditAccountPayload) -> Account:
+        try:
+            account = Account.objects.get(id=account_id)
+            for key, value in payload.items():
+                setattr(account, key, value)
+            account.save()
+            return account
+        except Account.DoesNotExist:
+            raise NotFoundException("Account not found")
+        except Exception as e:
+            raise e

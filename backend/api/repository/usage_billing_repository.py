@@ -72,17 +72,17 @@ def _filter(
         query = query.filter(fineCost__lte=filter.get("fineCostMax"))
 
     if filter.get("residence_id"):
-        query = query.filter(room_id=filter.get("residence_id"))
+        query = query.filter(roomId=filter.get("residence_id"))
 
     return query
 
 
 @update_fine_costs_decorator
 def get_list_by_student_pk(
-    student_pk: int, **filter: Unpack[UsageBillingFilter]
+    studentPk: int, **filter: Unpack[UsageBillingFilter]
 ) -> List[UsageBilling]:
 
-    residences = residence_repository.get_list(student_pk=student_pk)
+    residences = residence_repository.get_list(studentPk=studentPk)
     if len(residences) == 0:
         return []
 
