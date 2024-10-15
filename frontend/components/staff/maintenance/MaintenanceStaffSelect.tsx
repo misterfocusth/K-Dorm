@@ -5,28 +5,36 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Account } from "@/types";
 import React, { Dispatch, SetStateAction } from "react";
 
 type MaintenanceStaffSelectProps = {
-  selectedStaff: string | null;
-  onSelectStaff: Dispatch<SetStateAction<any>>;
+  selectedStaff: Account | null;
+  onSelectStaff: Dispatch<SetStateAction<Account | null>>;
+  maintenanceStaffAccounts: Account[];
+  isLoading: boolean;
 };
 
-const MaintenanceStaffSelect = ({ selectedStaff, onSelectStaff }: MaintenanceStaffSelectProps) => {
+const MaintenanceStaffSelect = ({
+  selectedStaff,
+  onSelectStaff,
+  maintenanceStaffAccounts,
+  isLoading,
+}: MaintenanceStaffSelectProps) => {
   return (
-    <Select>
+    <Select disabled={isLoading}>
       <SelectTrigger className="w-full">
         <SelectValue placeholder="เลือกเจ้าหน้าที่ผู้รับผิดชอบ" />
       </SelectTrigger>
 
       <SelectContent>
-        {new Array(5).fill(0).map((_, index) => (
+        {maintenanceStaffAccounts.map((maintenanceStaff) => (
           <SelectItem
-            key={index}
-            onClick={() => onSelectStaff(`Staff ${index}`)}
-            value={index + ""}
+            key={maintenanceStaff.id + ""}
+            onClick={() => onSelectStaff(maintenanceStaff)}
+            value={maintenanceStaff.id + ""}
           >
-            Staff {index}
+            {maintenanceStaff.firstName + " " + maintenanceStaff.lastName}
           </SelectItem>
         ))}
       </SelectContent>

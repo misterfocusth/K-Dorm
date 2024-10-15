@@ -41,12 +41,12 @@ import useStaffAccount from "@/hooks/accout/useStaffAccount";
 const StaffAccountPage = () => {
   const { showCreateStaffAccountSection, setSelectedStaffAccount, openEditStaffAccountDialog } =
     useManageStaffAccountContext();
-  const { isLoading, isPending, staffAccounts, refetch } = useStaffAccount();
+  const { isLoading, isPending, accounts, refetch } = useStaffAccount();
 
   const [searchText, setSearchText] = useState<string>("");
   const [staffType, setStaffType] = useState<string>("ALL");
   const [accountStatus, setAccountStatus] = useState<string>("ALL");
-  const [filteredStaffs, setFilteredStaffs] = useState(staffAccounts);
+  const [filteredStaffs, setFilteredStaffs] = useState(accounts);
 
   const staffTableColumns: ColumnDef<Account>[] = useMemo(() => {
     return [
@@ -154,7 +154,7 @@ const StaffAccountPage = () => {
 
   const filterStaffAccounts = useCallback(
     (searchText: string, staffType: string, accountStatus: string) => {
-      let filtered = staffAccounts;
+      let filtered = accounts;
 
       if (!filtered) return;
 
@@ -180,7 +180,7 @@ const StaffAccountPage = () => {
       console.log("filtered", filtered);
       setFilteredStaffs(filtered);
     },
-    [staffAccounts]
+    [accounts]
   );
 
   useEffect(() => {

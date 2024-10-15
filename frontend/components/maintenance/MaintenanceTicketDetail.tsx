@@ -2,7 +2,8 @@ import { FC, useMemo, useState } from "react";
 import { Separator } from "../ui/separator";
 import MaintenanceStaffSelect from "../staff/maintenance/MaintenanceStaffSelect";
 import { getTHFormattedDateTime } from "@/libs/datetime";
-import { MaintenanceTicket } from "@/types";
+import { Account, MaintenanceTicket } from "@/types";
+import useStaffAccount from "@/hooks/accout/useStaffAccount";
 
 type MaintenanceTicketDetailProps = {
   maintenanceTicket: MaintenanceTicket;
@@ -13,7 +14,8 @@ const MaintenanceTicketDetail: FC<MaintenanceTicketDetailProps> = ({
   maintenanceTicket,
   staffView,
 }) => {
-  const [selectedStaff, setSelectedStaff] = useState<any | null>(null);
+  const [selectedStaff, setSelectedStaff] = useState<Account | null>(null);
+  const { isLoading, isFetching, maintenanceStaffAccounts } = useStaffAccount();
 
   const formattedCreateAt = useMemo(
     () => (maintenanceTicket?.createdAt ? getTHFormattedDateTime(maintenanceTicket.createdAt) : ""),
@@ -26,7 +28,7 @@ const MaintenanceTicketDetail: FC<MaintenanceTicketDetailProps> = ({
     [maintenanceTicket]
   );
 
-  if (!maintenanceTicket) return null;
+  if (!maintenanceTicket || !maintenanceStaffAccounts) return null;
 
   return (
     <div className="flex flex-col gap-4">
@@ -71,6 +73,8 @@ const MaintenanceTicketDetail: FC<MaintenanceTicketDetailProps> = ({
             <MaintenanceStaffSelect
               selectedStaff={selectedStaff}
               onSelectStaff={setSelectedStaff}
+              maintenanceStaffAccounts={maintenanceStaffAccounts}
+              isLoading={isLoading || isFetching}
             />
           </div>
         </div>
