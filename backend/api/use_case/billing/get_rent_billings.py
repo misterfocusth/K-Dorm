@@ -1,7 +1,7 @@
 from typing import List, Literal, Optional
 
 from api.repository import rent_billing_repository
-from api.use_case.student import permission_checker
+from backend.api.use_case import permission_checker
 from exception.application_logic.client.not_found import NotFoundException
 from interfaces.context import Context
 from layer.use_case import usecase
@@ -9,7 +9,9 @@ from layer.use_case import usecase
 from api.repository.student_repository import StudentRepository
 
 
-@usecase(permission_checker=permission_checker.themselves_or_is_staff_using_student_id)
+@usecase(
+    permission_checker=permission_checker.student_themselves_or_is_staff_using_student_id
+)
 def get_rent_billings(
     ctx: Context,
     studentId: Optional[str] = None,

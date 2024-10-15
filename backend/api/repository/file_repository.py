@@ -8,7 +8,7 @@ def create_flie(handle, note, path, maintenanceTicket=None, activity=None):
         note=note,
         path=path,
         maintenanceTicket=maintenanceTicket,
-        activity=activity
+        activity=activity,
     )
     file.save()
 

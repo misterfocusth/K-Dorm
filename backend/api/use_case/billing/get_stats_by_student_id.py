@@ -4,7 +4,7 @@ from typing import List, TypedDict, cast
 
 from api.repository import rent_billing_repository
 from api.repository import usage_billing_repository
-from api.use_case.student import permission_checker
+from backend.api.use_case import permission_checker
 from domain.models import BaseBillingModel, RentBilling, Account, Student
 from exception.application_logic.client.base import InvalidRequestException
 from exception.permission.unauthorized_action import UnauthorizedActionException
@@ -29,7 +29,9 @@ class Stats(TypedDict):
 """
 
 
-@usecase(permission_checker=permission_checker.themselves_or_is_staff_using_student_id)
+@usecase(
+    permission_checker=permission_checker.student_themselves_or_is_staff_using_student_id
+)
 def get_stats_by_student_id(ctx: Context, studentId: str) -> Stats:
 
     student = StudentRepository.get_by_student_id(studentId)

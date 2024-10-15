@@ -18,9 +18,7 @@ class AccountRepository:
         return account
 
     @staticmethod
-    def create_new_account(
-        email: str, first_name: str, last_name: str
-    ) -> Account | None:
+    def create(email: str, first_name: str, last_name: str) -> Account | None:
         account = Account.objects.create(
             email=email,
             firstName=first_name,

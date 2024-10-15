@@ -3,7 +3,7 @@ from typing import NotRequired, Optional, TypedDict
 from django.forms import model_to_dict
 
 
-from api.use_case.student import permission_checker
+from backend.api.use_case import permission_checker
 
 from domain.models import Account, Student
 from interfaces.context import Context
@@ -43,7 +43,9 @@ class ReturnType(TypedDict):
 
 
 @transaction.atomic
-@usecase(permission_checker=permission_checker.themselves_or_is_staff_using_student_id)
+@usecase(
+    permission_checker=permission_checker.student_themselves_or_is_staff_using_student_id
+)
 def edit_student(
     ctx: Context, studentPk: str, payload: EditStudentPayload
 ) -> ReturnType:
