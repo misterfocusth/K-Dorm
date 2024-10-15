@@ -2,7 +2,7 @@
 from django.db import transaction
 
 # Repositories
-from backend.api.repository.maintenance_repository import MaintenanceRepository
+from api.repository.maintenance_repository import MaintenanceRepository
 from api.repository.file_repository import create_flie
 from api.repository.firebase_storage import upload_file_to_bucket
 

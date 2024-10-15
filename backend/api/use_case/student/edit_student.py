@@ -3,15 +3,15 @@ from typing import NotRequired, Optional, TypedDict
 from django.forms import model_to_dict
 
 
-from backend.api.use_case.student import permission_checker
+from api.use_case.student import permission_checker
 
-from backend.domain.models import Account, Student
-from backend.interfaces.context import Context
-from backend.layer.use_case import usecase
-from backend.repositories import student_repository
-from backend.repositories import account_repository
-from backend.repositories.account_repository import AccountRepository
-from backend.repositories.student_repository import StudentRepository
+from domain.models import Account, Student
+from interfaces.context import Context
+from layer.use_case import usecase
+from api.repository import student_repository
+from api.repository import account_repository
+from api.repository.account_repository import AccountRepository
+from api.repository.student_repository import StudentRepository
 
 
 # Django

@@ -1,7 +1,7 @@
 # Model
 from domain.models import MaintenanceTicket
 from api.repository.student_repository import StudentRepository
-from backend.api.repository.mainternance_staff_repository import (
+from api.repository.mainternance_staff_repository import (
     MaintenanceStaffRepository,
 )
 import datetime

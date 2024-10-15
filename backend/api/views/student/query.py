@@ -1,12 +1,12 @@
 from rest_framework import serializers
 from rest_framework.decorators import api_view
-from backend.api.use_case.student import student_uc
-from backend.domain.models import Account, Student
-from backend.interfaces.api_response import APIResponse
+from api.use_case.student import student_uc
+from domain.models import Account, Student
+from interfaces.api_response import APIResponse
 from layer.handle import handle
 
 """Get requester student info"""
-from backend.interfaces.request_with_context import RequestWithContext
+from interfaces.request_with_context import RequestWithContext
 
 
 class _nested_studentSerializer(serializers.ModelSerializer):

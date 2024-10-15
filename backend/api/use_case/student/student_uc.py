@@ -1,9 +1,9 @@
-from backend.api.use_case.student.edit_student import edit_student as _edit_student
-from backend.api.use_case.student.onboard import onboard as _onboard
-from backend.api.use_case.student.get_student_from_ctx import (
+from api.use_case.student.edit_student import edit_student as _edit_student
+from api.use_case.student.onboard import onboard as _onboard
+from api.use_case.student.get_student_from_ctx import (
     get_student_from_ctx as _get_student_from_ctx,
 )
-from backend.api.use_case.student.create_students import (
+from api.use_case.student.create_students import (
     create_students as _create_students,
 )
 

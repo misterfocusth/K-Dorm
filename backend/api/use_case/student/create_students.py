@@ -1,11 +1,11 @@
 from typing import List, TypedDict
-from backend.api.use_case.auth import auth_uc
-from backend.domain.models import Account
-from backend.interfaces.context import Context
-from backend.interfaces.request_with_context import RequestWithContext
-from backend.layer.use_case import usecase
-from backend.repositories.account_repository import AccountRepository
-from backend.repositories.student_repository import StudentRepository
+from api.use_case.auth import auth_uc
+from domain.models import Account
+from interfaces.context import Context
+from interfaces.request_with_context import RequestWithContext
+from layer.use_case import usecase
+from api.repository.account_repository import AccountRepository
+from api.repository.student_repository import StudentRepository
 
 
 class Payload(TypedDict):

@@ -12,8 +12,6 @@ from typing import (
     TypedDict,
     cast,
 )
-from rest_framework.request import Request
-from rest_framework.views import APIView
 from rest_framework import serializers
 
 from api.use_case.auth import is_staff
@@ -25,9 +23,7 @@ from exception.uncaught_exception import UncaughtException
 from interfaces.api_response import APIResponse
 from interfaces.error_response import ErrorResponse
 from interfaces.api_response import APIResponse
-from interfaces.context import Context
 from interfaces.request_with_context import RequestWithContext
-from exception.unknown_exception import UnknownException
 from api.use_case.auth import auth_uc as auth_uc
 import json
 

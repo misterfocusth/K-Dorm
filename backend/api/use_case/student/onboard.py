@@ -1,9 +1,9 @@
-from backend.api.use_case.student import permission_checker
-from backend.exception.auth.unauthenticated import UnauthenticatedException
-from backend.exception.permission.unauthorized_action import UnauthorizedActionException
-from backend.interfaces.context import Context
-from backend.layer.use_case import usecase
-from backend.repositories.student_repository import StudentRepository
+from api.use_case.student import permission_checker
+from exception.auth.unauthenticated import UnauthenticatedException
+from exception.permission.unauthorized_action import UnauthorizedActionException
+from interfaces.context import Context
+from layer.use_case import usecase
+from api.repository.student_repository import StudentRepository
 
 
 @usecase()

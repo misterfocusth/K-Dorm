@@ -1,7 +1,7 @@
-from backend.domain.models import Account
-from backend.interfaces.context import Context
-from backend.interfaces.request_with_context import RequestWithContext
-from backend.layer.use_case import usecase
+from domain.models import Account
+from interfaces.context import Context
+from interfaces.request_with_context import RequestWithContext
+from layer.use_case import usecase
 
 
 @usecase()

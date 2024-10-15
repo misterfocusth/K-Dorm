@@ -2,8 +2,8 @@ from exception.application_logic.client.not_found import NotFoundException
 from exception.permission.unauthorized_action import UnauthorizedActionException
 from interfaces.context import Context
 from interfaces.request_with_context import RequestWithContext
-from backend.repositories.staff_repository import StaffRepository
-from backend.repositories.student_repository import StudentRepository
+from api.repository.staff_repository import StaffRepository
+from api.repository.student_repository import StudentRepository
 
 
 def themselves_or_is_staff_using_student_id(ctx: Context, studentId: str) -> bool:

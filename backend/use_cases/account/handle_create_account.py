@@ -4,7 +4,7 @@ from django.db import transaction
 # Repositories
 from api.repository.account import AccountRepository
 from api.repository.staff_repository import StaffRepository
-from backend.api.repository.mainternance_staff_repository import (
+from api.repository.mainternance_staff_repository import (
     MaintenanceStaffRepository,
 )
 from api.repository.security_staff_repository import SecurityStaffRepository

@@ -2,9 +2,9 @@ from urllib import response
 from rest_framework.decorators import api_view
 
 from api.use_case.auth import auth_uc
-from backend.api.use_case.student import student_uc
-from backend.domain import models
-from backend.interfaces.api_response import APIResponse
+from api.use_case.student import student_uc
+from domain import models
+from interfaces.api_response import APIResponse
 from interfaces.request_with_context import RequestWithContext
 from layer.handle import handle
 

@@ -1,7 +1,7 @@
 from typing import List, Literal, Optional
 
 from api.repository import rent_billing_repository
-from backend.api.use_case.student import permission_checker
+from api.use_case.student import permission_checker
 from exception.application_logic.client.not_found import NotFoundException
 from interfaces.context import Context
 from layer.use_case import usecase
