@@ -35,20 +35,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { getApiService } from "@/libs/tsr-react-query";
-import { QUERY_KEYS } from "@/constants";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import useStaffAccount from "@/hooks/accout/useStaffAccount";
 
 const StaffAccountPage = () => {
   const { showCreateStaffAccountSection, setSelectedStaffAccount, openEditStaffAccountDialog } =
     useManageStaffAccountContext();
-
-  const { isLoading, isPending, data, refetch } =
-    getApiService().account.getAllStaffAccount.useQuery({
-      queryKey: QUERY_KEYS.account.getAllStaffAccounts,
-    });
-
-  const staffAccounts = useMemo(() => data?.body.result, [data]);
+  const { isLoading, isPending, staffAccounts, refetch } = useStaffAccount();
 
   const [searchText, setSearchText] = useState<string>("");
   const [staffType, setStaffType] = useState<string>("ALL");
@@ -194,15 +187,11 @@ const StaffAccountPage = () => {
     filterStaffAccounts(searchText, staffType, accountStatus);
   }, [searchText, staffType, accountStatus, filterStaffAccounts]);
 
-  useEffect(() => {
-    console.log(staffAccounts);
-  }, [staffAccounts]);
-
   if (isLoading || isPending) return <LoadingSpinner loading />;
 
   return (
     <div className="p-10">
-      <EditStaffAccountDialog />
+      <EditStaffAccountDialog refetch={refetch} />
 
       <p className="text-2xl font-bold">จัดการบัญชีการเข้าสู่ระบบของพนักงาน</p>
 

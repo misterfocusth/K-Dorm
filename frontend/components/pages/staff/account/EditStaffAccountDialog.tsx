@@ -30,8 +30,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useCallback } from "react";
+import { useCallback, useTransition } from "react";
 import { Switch } from "@/components/ui/switch";
+import { getApiService } from "@/libs/tsr-react-query";
+import { useStaffAccountMutation } from "@/hooks/mutation/useStaffAccountMutation";
+import { Loader2 } from "lucide-react";
 
 const editStaffAccountFormSchema = z.object({
   firstName: z.string().min(1, {
@@ -49,7 +52,14 @@ const editStaffAccountFormSchema = z.object({
   isDisabled: z.boolean().default(false),
 });
 
-const EditStaffAccountDialog = () => {
+type EditStaffAccountDialogProps = {
+  refetch: () => void;
+};
+
+const EditStaffAccountDialog = ({ refetch }: EditStaffAccountDialogProps) => {
+  const [isPending, startTransition] = useTransition();
+  const { mutateAsync } = useStaffAccountMutation();
+
   const { selectedStaffAccount, isShowEditStaffAccountDialog, hideEditStaffAccountDialog } =
     useManageStaffAccountContext();
 
@@ -70,11 +80,30 @@ const EditStaffAccountDialog = () => {
     },
   });
 
-  const onSubmit = useCallback((values: z.infer<typeof editStaffAccountFormSchema>) => {
-    console.log(values);
-  }, []);
+  const onSubmit = useCallback(
+    (values: z.infer<typeof editStaffAccountFormSchema>) => {
+      startTransition(async () => {
+        values.isDisabled = !values.isDisabled;
 
-  if (!isShowEditStaffAccountDialog) return null;
+        const result = await mutateAsync({
+          body: values,
+          params: {
+            id: selectedStaffAccount?.id + "",
+          },
+        });
+
+        if (result.body) {
+          console.log(result.body);
+          form.reset();
+          hideEditStaffAccountDialog();
+          refetch();
+        }
+      });
+    },
+    [selectedStaffAccount, startTransition, mutateAsync, form, hideEditStaffAccountDialog, refetch]
+  );
+
+  if (!isShowEditStaffAccountDialog || !selectedStaffAccount) return null;
 
   return (
     <Dialog
@@ -188,7 +217,8 @@ const EditStaffAccountDialog = () => {
                 >
                   ยกเลิก
                 </Button>
-                <Button type="submit" className="rounded-xl">
+                <Button type="submit" className="rounded-xl" disabled={isPending}>
+                  {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   บันทึก
                 </Button>
               </div>
