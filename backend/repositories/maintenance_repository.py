@@ -14,8 +14,8 @@ def create_maintenance_ticket(title, description, location, student):
     return maintenance_ticket
 
 
-def get_maintenance_ticket_by_student(student):
-    return MaintenanceTicket.objects.filter(student=student).all()
+def get_maintenance_ticket_by_student(user):
+    return MaintenanceTicket.objects.filter(student__account=user).all()
 
 
 def get_all_maintenance_tickets():

@@ -48,7 +48,8 @@ def handle(
 ):
     def decorator(
         handleFn: Callable[
-            Concatenate[RequestWithContext, PathParams], APIResponse | ErrorResponse
+            Concatenate[RequestWithContext,
+                        PathParams], APIResponse | ErrorResponse
         ]
     ):
         # transform the a request without context to a request with context

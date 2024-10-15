@@ -19,7 +19,7 @@ from layer.handle import handle
 
 
 @api_view(['POST', 'GET'])
-@handle(only_authenticated=True, only_role=["STUDENT"])
+@handle(only_authenticated=True)
 def student_maintenance_ticket(request: RequestWithContext) -> APIResponse | ErrorResponse:
     try:
         if request.method == 'POST':
@@ -45,8 +45,8 @@ def student_maintenance_ticket(request: RequestWithContext) -> APIResponse | Err
 
 
 @api_view(['GET'])
-@handle(only_authenticated=True, only_role=["STUDENT"])
-def student_maintenance_ticket_detail(request, pk):
+@handle(only_authenticated=True)
+def student_maintenance_ticket_detail(request, pk) -> APIResponse | ErrorResponse:
     result = handle_get_maintenance_ticket_by_id(request, pk)
     if result is not None:
         serialized_data = serialize(data=result)
@@ -58,8 +58,8 @@ def student_maintenance_ticket_detail(request, pk):
 
 
 @api_view(['POST', 'GET'])
-@handle(only_authenticated=True, only_role=["STUDENT"])
-def staff_maintenance_tickets(request):
+@handle(only_authenticated=True)
+def staff_maintenance_tickets(request) -> APIResponse | ErrorResponse:
     try:
         if request.method == 'GET':
             result = handle_get_all_maintenance_tickets(request)
