@@ -26,7 +26,7 @@ const StaffMaintenancePage = () => {
   const [orderBy, setOrderBy] = useState<string | null>(null);
   const { selectedTicket } = useMaintenanceTicketContext();
 
-  const { isLoading, isFetching, data } =
+  const { isLoading, isFetching, data, refetch } =
     getApiService().maintenance.getAllMaintenanceTickets.useQuery({
       queryKey: QUERY_KEYS.maintenance.getAllMaintenanceTickets,
     });
@@ -137,7 +137,7 @@ const StaffMaintenancePage = () => {
       </div>
 
       <div className="col-span-3 px-14 2xl:px-20">
-        {selectedTicket && <ManageMaintenanceTicket />}
+        {selectedTicket && <ManageMaintenanceTicket refetch={refetch} />}
       </div>
     </div>
   );

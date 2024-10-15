@@ -20,7 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
-import { ImageIcon, Trash2 } from "lucide-react";
+import { ImageIcon, Loader2, Trash2 } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 // Route Guard HOC
@@ -39,6 +39,8 @@ const newMaintainanceTiketFormSchema = z.object({
 });
 
 const NewMaintenanceTicketPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const router = useRouter();
   const mutation = useCreateMaintenanceMutation();
 
@@ -72,6 +74,8 @@ const NewMaintenanceTicketPage = () => {
 
   const onSubmit = useCallback(
     (values: z.infer<typeof newMaintainanceTiketFormSchema>) => {
+      setIsLoading(true);
+
       const formData = new FormData();
 
       formData.append("title", values.title);
@@ -91,7 +95,10 @@ const NewMaintenanceTicketPage = () => {
         .then(() => {
           router.push("/student/maintenance");
         })
-        .catch((err) => console.error(err));
+        .catch((err) => {
+          setIsLoading(false);
+          console.error(err);
+        });
     },
     [selectedImages, mutation, router]
   );
@@ -205,7 +212,8 @@ const NewMaintenanceTicketPage = () => {
             )}
           />
 
-          <Button type="submit" className="w-full rounded-xl">
+          <Button type="submit" className="w-full rounded-xl" disabled={isLoading}>
+            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             แจ้งซ่อม
           </Button>
         </form>

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { baseSchema } from "./base-schema";
-import { accountSchema, studentSchema } from "./account";
+import { accountSchema } from "./account";
 import { fileSchema } from "./file";
 
 export const maintenanceTicketSchema = baseSchema.extend({

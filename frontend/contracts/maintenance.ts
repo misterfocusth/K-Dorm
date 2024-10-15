@@ -13,7 +13,7 @@ import { ErrorResponse, Response } from "@/interface/api-response";
 const getMaintenanceTickets = maintenanceTicketSchema.array();
 const getMaintenanceTicketDetailSchema = maintenanceTicketSchema;
 
-type GetMaintenanceTickets = z.infer<typeof getMaintenanceTickets>;
+export type GetMaintenanceTickets = z.infer<typeof getMaintenanceTickets>;
 type GetMaintenanceTicketDetail = z.infer<typeof getMaintenanceTicketDetailSchema>;
 
 const c = initContract();

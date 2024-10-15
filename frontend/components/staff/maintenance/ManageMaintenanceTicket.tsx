@@ -6,14 +6,18 @@ import { useMaintenanceTicketMutation } from "@/hooks/mutation/useMaintenanceTic
 import { Account, MaintenanceTicket } from "@/types";
 import { useCallback, useMemo, useState } from "react";
 
-const ManageMaintenanceTicket = () => {
+type ManageMaintenanceTicketProps = {
+  refetch: () => void;
+};
+
+const ManageMaintenanceTicket = ({ refetch }: ManageMaintenanceTicketProps) => {
   const [selectedStaff, setSelectedStaff] = useState<Account | null>(null);
 
   const { selectedTicket, setSelectedTicket } = useMaintenanceTicketContext();
   const { mutateAsync } = useMaintenanceTicketMutation();
 
   const imagesSrc = useMemo(
-    () => selectedTicket?.files.map((file) => file.path),
+    () => (selectedTicket?.files ? selectedTicket?.files.map((file) => file.path) : []),
     [selectedTicket?.files]
   );
 
@@ -22,7 +26,6 @@ const ManageMaintenanceTicket = () => {
   }, []);
 
   const handleUpdateMaintenanceTicket = async () => {
-    console.log(selectedStaff, selectedTicket);
     if (!selectedStaff || !selectedTicket) {
       return;
     }
@@ -32,7 +35,7 @@ const ManageMaintenanceTicket = () => {
         title: selectedTicket.title,
         description: selectedTicket.description,
         location: selectedTicket.location,
-        maintenanceStaffId: selectedStaff.id + "",
+        maintenanceStaffId: selectedStaff.maintenanceStaff.id + "",
       },
       params: {
         id: selectedTicket.id + "",
@@ -40,7 +43,9 @@ const ManageMaintenanceTicket = () => {
     });
 
     if (result) {
-      setSelectedTicket(result.body as MaintenanceTicket);
+      // @ts-expect-error - Fix Types
+      setSelectedTicket(result.body.result as MaintenanceTicket);
+      refetch();
     }
   };
 
