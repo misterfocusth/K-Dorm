@@ -146,7 +146,7 @@ def handle(
                             )
                         _req.ctx.store["QUERY"] = data.validated_data
                         _req.ctx.store["QUERY_serializer"] = data
-                    if body_serializer:
+                    if body_serializer and request.data is not None:
                         data = body_serializer(data=_req.data)
                         if not data.is_valid():
                             raise ValidationException(

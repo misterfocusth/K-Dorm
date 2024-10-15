@@ -7,7 +7,7 @@ from backend.exception.auth.unauthenticated import UnauthenticatedException
 from backend.interfaces.context import Context
 from backend.layer.use_case import usecase
 
-from .create import create
+from .create import create_ticket
 
 
 class UpdateMainternanceTicketPayload(TypedDict):

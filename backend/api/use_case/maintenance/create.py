@@ -20,7 +20,7 @@ class CreateMaintenanceTicketPayload(TypedDict):
 
 @transaction.atomic
 @usecase(only_authenticated=True)
-def create(request, payload: CreateMaintenanceTicketPayload):
+def create_ticket(request, payload: CreateMaintenanceTicketPayload):
 
     # Create Maintenance Ticket
     maintenance_ticket = MaintenanceRepository.create_maintenance_ticket(
