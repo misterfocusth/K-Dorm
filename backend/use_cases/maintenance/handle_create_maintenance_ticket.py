@@ -2,7 +2,7 @@
 from django.db import transaction
 
 # Repositories
-from repositories.maintenance_repository import create_maintenance_ticket
+from repositories.maintenance_repository import MaintenanceRepository
 from repositories.file_repository import create_flie
 from repositories.firebase_storage_repository import upload_file_to_bucket
 
@@ -15,11 +15,11 @@ def handle_create_maintenance_ticket(request, serializer):
     validated_data = serializer.validated_data
 
     # Create Maintenance Ticket
-    maintenance_ticket = create_maintenance_ticket(
+    maintenance_ticket = MaintenanceRepository.create_maintenance_ticket(
         title=validated_data['title'],
         description=validated_data['description'],
         location=validated_data['location'],
-        student=request.user.student
+        user=request.ctx.user
     )
 
     # Upload and Save Files
