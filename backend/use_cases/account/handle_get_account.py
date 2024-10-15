@@ -1,4 +1,4 @@
-from repositories.account_repository import AccountRepository
+from api.repository.account import AccountRepository
 
 
 def handle_get_all_staff_accounts(request):

@@ -2,7 +2,10 @@
 from django.db import transaction
 
 # Repositories
-from repositories.account_repository import AccountRepository
+from api.repository.account import AccountRepository
+from api.repository.staff import StaffRepository
+from api.repository.mainternance_staff import MaintenanceStaffRepository
+from api.repository.security_staff import SecurityStaffRepository
 
 # Utils
 from utils.firebase_storage import get_bucket_location
@@ -24,9 +27,11 @@ def handle_create_account(request, serializer):
     if validated_data['type'] == "STAFF":
         AccountRepository.create_new_staff_account(account=account)
     elif validated_data['type'] == "MAINTENANCE_STAFF":
-        AccountRepository.create_new_maintenance_staff_account(account=account)
+        MaintenanceStaffRepository.create_new_maintenance_staff_account(
+            account=account)
     elif validated_data['type'] == "SECURITY_STAFF":
-        AccountRepository.create_new_security_staff_account(account=account)
+        SecurityStaffRepository.create_new_security_staff_account(
+            account=account)
 
     account.refresh_from_db()
 

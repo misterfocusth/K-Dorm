@@ -1,7 +1,7 @@
 # Model
 from domain.models import MaintenanceTicket
-from repositories.student import StudentRepository
-from repositories.account_repository import AccountRepository
+from api.repository.student import StudentRepository
+from api.repository.mainternance_staff import MaintenanceStaffRepository
 import datetime
 
 
@@ -42,7 +42,7 @@ class MaintenanceRepository:
         maintenance_staff_id = data['maintenanceStaffId']
         print('maintenance_staff_id', maintenance_staff_id)
 
-        maintenance_staff = AccountRepository.get_maintenance_staff_account_by_id(
+        maintenance_staff = MaintenanceStaffRepository.get_maintenance_staff_account_by_id(
             maintenance_staff_id)
         print('maintenance_staff', maintenance_staff)
 

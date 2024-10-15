@@ -1,7 +1,7 @@
 from serializers.account_serializer import UpdateSerializer
 from rest_framework.request import Request
 from interfaces.request_with_context import RequestWithContext
-from repositories.account_repository import AccountRepository
+from api.repository.account import AccountRepository
 
 
 def handle_edit_staff_account(request: RequestWithContext, serializer, id: int):

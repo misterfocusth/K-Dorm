@@ -12,8 +12,8 @@ from interfaces.request_with_context import RequestWithContext
 from rest_framework import permissions
 from interfaces.context import Context
 from layer.use_case import usecase
-from repositories.staff import StaffRepository
-from repositories.student import StudentRepository
+from api.repository.staff import StaffRepository
+from api.repository.student import StudentRepository
 
 
 class Stats(TypedDict):

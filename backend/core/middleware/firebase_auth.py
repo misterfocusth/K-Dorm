@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from firebase_admin import auth
 
 from interfaces.request_with_context import RequestWithContext
-from repositories.account import AccountRepository
+from api.repository.account import AccountRepository
 
 
 class FirebaseAuth:
@@ -17,7 +17,8 @@ class FirebaseAuth:
         cookie_token = request.COOKIES.get("session_id_token")
         header_token = request.headers.get("Authorization")
 
-        session_token = header_token.split(" ")[1] if header_token else cookie_token
+        session_token = header_token.split(
+            " ")[1] if header_token else cookie_token
 
         decodedToken = auth.verify_id_token(
             session_token, check_revoked=True, clock_skew_seconds=30

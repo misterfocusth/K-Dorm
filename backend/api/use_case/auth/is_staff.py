@@ -1,6 +1,6 @@
 from interfaces.context import Context
 from layer.use_case import usecase
-from repositories.staff import StaffRepository
+from api.repository.staff import StaffRepository
 
 
 @usecase()

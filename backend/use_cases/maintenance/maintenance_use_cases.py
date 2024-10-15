@@ -1,4 +1,4 @@
-from repositories.maintenance_repository import MaintenanceRepository
+from api.repository.maintenance import MaintenanceRepository
 from interfaces.request_with_context import RequestWithContext
 
 

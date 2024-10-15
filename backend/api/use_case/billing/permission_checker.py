@@ -2,8 +2,8 @@ from exception.application_logic.client.not_found import NotFoundException
 from exception.permission.unauthorized_action import UnauthorizedAction
 from interfaces.context import Context
 from interfaces.request_with_context import RequestWithContext
-from repositories.staff import StaffRepository
-from repositories.student import StudentRepository
+from api.repository.staff import StaffRepository
+from api.repository.student import StudentRepository
 
 
 def get_billing(ctx: Context, studentId: str) -> bool:

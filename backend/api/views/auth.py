@@ -11,7 +11,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from api.use_case.auth import auth_uc
 from interfaces.request_with_context import RequestWithContext
 from layer.handle import handle
-from repositories.account import AccountRepository
+from api.repository.account import AccountRepository
 from interfaces.api_response import APIResponse
 from interfaces.error_response import ErrorResponse
 
@@ -27,6 +27,8 @@ from utils import account_utils
 @handle()
 def signin(request: RequestWithContext):
     try:
+        # result = auth_uc.AuthUseCase.signin(request, request)
+
         account = request.ctx.user
         serializer = AuthUserSerializer(account)
         user_data = serializer.data

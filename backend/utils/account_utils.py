@@ -1,6 +1,6 @@
 from utils.token import get_session_id_token
 from firebase_admin import auth
-from repositories.account_repository import AccountRepository
+from api.repository.account import AccountRepository
 
 
 def get_user_role(user_data):
