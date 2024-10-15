@@ -7,9 +7,9 @@ from rest_framework.exceptions import AuthenticationFailed
 
 
 # Interfaces
-from api.repository import account_repository
-from api.repository.account import AccountRepository
+
 from api.use_case.staff import staff_uc
+from api.repository.account_repository import AccountRepository
 from interfaces.api_response import APIResponse
 from interfaces.error_response import ErrorResponse
 
@@ -30,7 +30,7 @@ class CreateStaffSerializer(serializers.Serializer):
     type = serializers.CharField(required=True)
 
     def validate_email(self, value):
-        account = AccountRepository.get_account_by_email(value)
+        account = AccountRepository.get_by_email(value)
         if account is None:
             raise serializers.ValidationError("Staff with this ID already exists.")
         else:
