@@ -226,4 +226,4 @@ const NewMaintenanceTicketPage = () => {
   );
 };
 
-export default withRoleGuard(NewMaintenanceTicketPage, ["STUDENT"]);
+export default withRoleGuard(NewMaintenanceTicketPage, { requiredRoles: ["STUDENT"] });

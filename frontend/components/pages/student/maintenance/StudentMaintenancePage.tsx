@@ -149,4 +149,4 @@ const StudentMaintenancePage = () => {
   );
 };
 
-export default withRoleGuard(StudentMaintenancePage, ["STUDENT"]);
+export default withRoleGuard(StudentMaintenancePage, { requiredRoles: ["STUDENT"] });

@@ -15,12 +15,11 @@ import Image from "next/image";
 import { useCallback, useContext, useTransition } from "react";
 
 const LoginPage = () => {
-  const [isPending, startTransition] = useTransition();
 
-  const { loginWithGoogle } = useContext(AuthContext);
+  const { loginWithGoogle, isLoading: isPending } = useContext(AuthContext);
 
-  const handleSignIn = useCallback(() => {
-    startTransition(async () => await loginWithGoogle());
+  const handleSignIn = useCallback(async () => {
+    await loginWithGoogle();
   }, [loginWithGoogle]);
 
   return (
@@ -48,4 +47,4 @@ const LoginPage = () => {
   );
 };
 
-export default withRoleGuard(LoginPage, ["STUDENT"], true);
+export default withRoleGuard(LoginPage, { requiredRoles: ["STUDENT"], isPublic: true });

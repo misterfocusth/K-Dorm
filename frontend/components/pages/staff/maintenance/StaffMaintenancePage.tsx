@@ -143,4 +143,4 @@ const StaffMaintenancePage = () => {
   );
 };
 
-export default withRoleGuard(StaffMaintenancePage, ["STAFF", "MAINTENANCE_STAFF"]);
+export default withRoleGuard(StaffMaintenancePage, { requiredRoles: ["STAFF", "MAINTENANCE_STAFF"] });

@@ -28,7 +28,8 @@ import { Loader2 } from "lucide-react";
 import { useCallback, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { set, z } from "zod";
-import { useToast } from "@/hooks/use-toast";
+// import { useToast } from "@/hooks/use-toast";
+import { toast } from 'sonner'
 
 const staffLoginFormSchema = z.object({
   email: z.string().email({
@@ -42,7 +43,6 @@ const staffLoginFormSchema = z.object({
 const StaffLoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { loginWithEmailAndPassword, loginWithGoogle } = useContext(AuthContext);
-  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof staffLoginFormSchema>>({
     resolver: zodResolver(staffLoginFormSchema),
@@ -58,22 +58,19 @@ const StaffLoginPage = () => {
 
       loginWithEmailAndPassword(values.email, values.password)
         .then(() => {
-          toast({
-            title: "เข้าสู่ระบบสำเร็จ",
+          toast.success("เข้าสู่ระบบสำเร็จ", {
             description: "เข้าสู่ระบบด้วย Staff Account สำเร็จ",
           });
         })
         .catch((error) => {
           setIsLoading(false);
 
-          toast({
-            variant: "destructive",
-            title: "เข้าสู่ระบบไม่สำเร็จ",
+          toast.error("เข้าสู่ระบบไม่สำเร็จ", {
             description: error.message,
           });
         });
     },
-    [loginWithEmailAndPassword, toast]
+    [loginWithEmailAndPassword]
   );
 
   const handleSignInWithGoogle = useCallback(() => {
@@ -81,21 +78,19 @@ const StaffLoginPage = () => {
 
     loginWithGoogle()
       .then(() => {
-        toast({
-          title: "เข้าสู่ระบบสำเร็จ",
+        toast.success("เข้าสู่ระบบสำเร็จ", {
           description: "เข้าสู่ระบบด้วย Google Account สำเร็จ",
         });
       })
       .catch((error) => {
         setIsLoading(false);
 
-        toast({
-          variant: "destructive",
-          title: "เข้าสู่ระบบไม่สำเร็จ",
+        toast.error("เข้าสู่ระบบไม่สำเร็จ", {
           description: error.message,
         });
+
       });
-  }, [loginWithGoogle, toast]);
+  }, [loginWithGoogle]);
 
   return (
     <div className="grid grid-cols-2 h-full w-full p-6 shadow-lg">
@@ -168,4 +163,4 @@ const StaffLoginPage = () => {
   );
 };
 
-export default withRoleGuard(StaffLoginPage, [...STAFF_ROLES], true);
+export default withRoleGuard(StaffLoginPage, { requiredRoles: [...STAFF_ROLES], isPublic: true });

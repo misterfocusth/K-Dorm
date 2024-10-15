@@ -193,10 +193,15 @@ def handle(
                 return handleFn(_req, *args, **kwargs)
 
             except StackableException as e:
+                print("========STACKABLE EXCEPTION========")
+                print(e.error_code)
+                print(e.message)
                 return ErrorResponse(
                     status=e.error_status, error=e.error_code, message=e.message
                 )
             except Exception as e:
+                print("========UNKNOWN EXCEPTION========")
+                print(e)
                 exception = UncaughtException(
                     message="Uncaught exception, internal server error"
                 )

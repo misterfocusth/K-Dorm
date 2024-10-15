@@ -40,8 +40,8 @@ class Account(MyBaseModel):
 
     uid = models.TextField(unique=True, null=True, default=None)
     email = models.EmailField(unique=True)
-    secret = models.TextField()
-    salt = models.TextField()
+    secret = models.TextField(null=True)
+    salt = models.TextField(null=True)
     firstName = models.CharField(max_length=255)
     lastName = models.CharField(max_length=255)
     isDisabled = models.BooleanField(default=False)

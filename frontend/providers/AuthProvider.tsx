@@ -38,6 +38,7 @@ import { useToast } from "@/hooks/use-toast";
 import { toast, Toaster, useSonner } from "sonner";
 
 interface IAuthContext {
+  isLoading: boolean;
   currentUser: Account | null;
   role: Role | null;
   loginWithGoogle: () => Promise<void>;
@@ -46,6 +47,7 @@ interface IAuthContext {
 }
 
 const initialState: IAuthContext = {
+  isLoading: false,
   currentUser: null,
   role: null,
   loginWithGoogle: () => {
@@ -68,12 +70,24 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentUser, setCurrentUser] = useState<Account | null>(null);
   const [role, setRole] = useState<Role | null>(null);
 
-  const { toasts } = useSonner()
+  const [interval, _setInterval] = useState<NodeJS.Timeout>()
+
 
   const getUserIdAndSessionIdToken = async (fbCredential: UserCredential) => {
     try {
       const uid = fbCredential.user?.uid;
       const sessionIdToken = await fbCredential.user?.getIdToken();
+
+      // Clear interval
+      if (interval) {
+        clearInterval(interval)
+      }
+
+      _setInterval(setInterval(async () => {
+
+        fbCredential.user?.getIdToken();
+      }, 30000))
+
       return { uid, sessionIdToken };
     } catch (error) {
       throw new Error("Error getting user id and session id token");
@@ -126,6 +140,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       await handleUserAuthentication(uid, sessionIdToken);
     } catch (error) {
       console.error("Error signing in with Google", error);
+      toast.error("เกิดข้อผิิดพลาดในการเข้าสู่ระบบ กรุณาตรวจสอบอีเมลที่ใช้อีกครั้งหนึ่ง")
       throw error;
     } finally {
       setIsLoading(false);
@@ -188,7 +203,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ currentUser, loginWithEmailAndPassword, loginWithGoogle, logout, role }}
+      value={{ currentUser, loginWithEmailAndPassword, loginWithGoogle, logout, role, isLoading }}
     >
       {children}
     </AuthContext.Provider>

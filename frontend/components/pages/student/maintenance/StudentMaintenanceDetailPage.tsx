@@ -85,4 +85,4 @@ const StudentMaintenanceDetailPage = ({ id }: StudentMaintenanceDetailPageProps)
   );
 };
 
-export default withRoleGuard(StudentMaintenanceDetailPage, ["STUDENT"]);
+export default withRoleGuard(StudentMaintenanceDetailPage, { requiredRoles: ["STUDENT"] });

@@ -246,4 +246,4 @@ const StaffAccountPage = () => {
   );
 };
 
-export default withRoleGuard(StaffAccountPage, ["STAFF"]);
+export default withRoleGuard(StaffAccountPage, { requiredRoles: ["STAFF"] });
