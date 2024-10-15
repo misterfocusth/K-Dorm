@@ -5,7 +5,7 @@ from rest_framework import serializers
 from domain.models import MaintenanceTicket
 
 # Serializer
-from serializers.account_serializer import StudentSerializer, MaintenanceStaffSerializer
+from serializers.account_serializer import StudentSerializer, MaintenanceStaffWithAccoutSerializer
 from serializers.file_serializer import FileSerializer
 
 
@@ -30,8 +30,8 @@ class MaintenanceSerializer(serializers.ModelSerializer):
     files = FileSerializer(many=True, read_only=True)
     assignedBy = StudentSerializer(
         many=False, read_only=True, source='student')
-    assignedTo = MaintenanceStaffSerializer(
-        many=False, read_only=True, source='maintenance_staff')
+    assignedTo = MaintenanceStaffWithAccoutSerializer(
+        many=False, read_only=True, source='maintenanceStaff')
 
 
 class CreateSerializer(serializers.Serializer):

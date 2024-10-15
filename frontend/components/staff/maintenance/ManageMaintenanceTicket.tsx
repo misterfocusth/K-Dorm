@@ -2,15 +2,47 @@ import ImageGallery from "@/components/ImageGallery";
 import MaintenanceTicketDetail from "@/components/maintenance/MaintenanceTicketDetail";
 import { Button } from "@/components/ui/button";
 import { useMaintenanceTicketContext } from "@/contexts/MaintenanceTicketContext";
-import { useMemo } from "react";
+import { useMaintenanceTicketMutation } from "@/hooks/mutation/useMaintenanceTicketMutation";
+import { Account, MaintenanceTicket } from "@/types";
+import { useCallback, useMemo, useState } from "react";
 
 const ManageMaintenanceTicket = () => {
+  const [selectedStaff, setSelectedStaff] = useState<Account | null>(null);
+
   const { selectedTicket, setSelectedTicket } = useMaintenanceTicketContext();
+  const { mutateAsync } = useMaintenanceTicketMutation();
 
   const imagesSrc = useMemo(
     () => selectedTicket?.files.map((file) => file.path),
     [selectedTicket?.files]
   );
+
+  const handleSelectStaff = useCallback((staff: Account) => {
+    setSelectedStaff(staff);
+  }, []);
+
+  const handleUpdateMaintenanceTicket = async () => {
+    console.log(selectedStaff, selectedTicket);
+    if (!selectedStaff || !selectedTicket) {
+      return;
+    }
+
+    const result = await mutateAsync({
+      body: {
+        title: selectedTicket.title,
+        description: selectedTicket.description,
+        location: selectedTicket.location,
+        maintenanceStaffId: selectedStaff.id + "",
+      },
+      params: {
+        id: selectedTicket.id + "",
+      },
+    });
+
+    if (result) {
+      setSelectedTicket(result.body as MaintenanceTicket);
+    }
+  };
 
   if (!selectedTicket) {
     return null;
@@ -24,7 +56,12 @@ const ManageMaintenanceTicket = () => {
         <ImageGallery imagesSrc={imagesSrc || []} />
 
         <div className="mt-8">
-          <MaintenanceTicketDetail staffView maintenanceTicket={selectedTicket} />
+          <MaintenanceTicketDetail
+            staffView
+            maintenanceTicket={selectedTicket}
+            selectedStaff={selectedStaff}
+            onSelectStaff={handleSelectStaff}
+          />
         </div>
 
         <div className="flex flex-row items-center justify-end gap-4 mt-8">
@@ -32,7 +69,9 @@ const ManageMaintenanceTicket = () => {
             ยกเลิก / ปิด
           </Button>
           {!selectedTicket?.isResolved && (
-            <Button className="bg-[#84CC16] text-white">ดำเนินการซ่อมแล้ว</Button>
+            <Button className="bg-[#84CC16] text-white" onClick={handleUpdateMaintenanceTicket}>
+              ดำเนินการซ่อมแล้ว
+            </Button>
           )}
         </div>
       </div>

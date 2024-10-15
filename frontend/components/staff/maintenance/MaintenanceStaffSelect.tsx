@@ -6,17 +6,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Account } from "@/types";
-import React, { Dispatch, SetStateAction } from "react";
 
 type MaintenanceStaffSelectProps = {
-  selectedStaff: Account | null;
-  onSelectStaff: Dispatch<SetStateAction<Account | null>>;
+  onSelectStaff: (staff: Account) => void;
   maintenanceStaffAccounts: Account[];
   isLoading: boolean;
 };
 
 const MaintenanceStaffSelect = ({
-  selectedStaff,
   onSelectStaff,
   maintenanceStaffAccounts,
   isLoading,

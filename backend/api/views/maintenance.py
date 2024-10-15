@@ -44,7 +44,7 @@ def student_maintenance_ticket(request: RequestWithContext) -> APIResponse | Err
     return ErrorResponse(status=status.HTTP_405_METHOD_NOT_ALLOWED, error="METHOD_NOT_ALLOWED", message="Method not allowed")
 
 
-@api_view(['GET', "POST"])
+@api_view(['GET', "PUT"])
 @handle(only_authenticated=True)
 def student_maintenance_ticket_detail(request, pk) -> APIResponse | ErrorResponse:
     if request.method == 'GET':

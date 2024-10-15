@@ -46,15 +46,15 @@ class StaffSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class MaintenanceStaffSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MaintenanceStaff
-        fields = '__all__'
-
-
 class SecurityStaffSerializer(serializers.ModelSerializer):
     class Meta:
         model = SecurityStaff
+        fields = '__all__'
+
+
+class MaintenanceStaffSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MaintenanceStaff
         fields = '__all__'
 
 
@@ -71,6 +71,14 @@ class AccountSerializer(serializers.ModelSerializer):
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
+        fields = '__all__'
+
+    account = AccountSerializer()
+
+
+class MaintenanceStaffWithAccoutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MaintenanceStaff
         fields = '__all__'
 
     account = AccountSerializer()

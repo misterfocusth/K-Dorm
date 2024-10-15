@@ -2,6 +2,7 @@
 from domain.models import MaintenanceTicket
 from repositories.student import StudentRepository
 from repositories.account_repository import AccountRepository
+import datetime
 
 
 class MaintenanceRepository:
@@ -36,16 +37,25 @@ class MaintenanceRepository:
     @staticmethod
     def update_maintenance_ticker_by_id(id, data):
         maintenance_ticket = MaintenanceTicket.objects.filter(id=id).first()
+        print('maintenance_ticket', maintenance_ticket)
 
-        maintenance_staff_id = data.get('maintenance_staff_id')
+        maintenance_staff_id = data['maintenanceStaffId']
+        print('maintenance_staff_id', maintenance_staff_id)
+
         maintenance_staff = AccountRepository.get_maintenance_staff_account_by_id(
             maintenance_staff_id)
+        print('maintenance_staff', maintenance_staff)
 
         if maintenance_ticket and maintenance_staff:
-            maintenance_ticket.title = data.get('title')
-            maintenance_ticket.description = data.get('description')
-            maintenance_ticket.location = data.get('location')
-            maintenance_ticket.maintenanceStaff = maintenance_staff.account.id
+            print('maintenance_ticket and maintenance_staff')
+
+            maintenance_ticket.title = data['title']
+            maintenance_ticket.description = data['description']
+            maintenance_ticket.location = data['location']
+            maintenance_ticket.maintenanceStaff = maintenance_staff  # type: ignore
+            maintenance_ticket.isResolved = True
+            maintenance_ticket.resolvedAt = datetime.datetime.now()
+
             maintenance_ticket.save()
             return maintenance_ticket
         else:

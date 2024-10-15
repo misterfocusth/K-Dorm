@@ -8,13 +8,16 @@ import useStaffAccount from "@/hooks/accout/useStaffAccount";
 type MaintenanceTicketDetailProps = {
   maintenanceTicket: MaintenanceTicket;
   staffView?: boolean;
+  selectedStaff: Account | null;
+  onSelectStaff: (staff: Account) => void;
 };
 
 const MaintenanceTicketDetail: FC<MaintenanceTicketDetailProps> = ({
   maintenanceTicket,
   staffView,
+  selectedStaff,
+  onSelectStaff,
 }) => {
-  const [selectedStaff, setSelectedStaff] = useState<Account | null>(null);
   const { isLoading, isFetching, maintenanceStaffAccounts } = useStaffAccount();
 
   const formattedCreateAt = useMemo(
@@ -58,9 +61,9 @@ const MaintenanceTicketDetail: FC<MaintenanceTicketDetailProps> = ({
         <div className="flex flex-row justify-between">
           <p className="flex-1 text-gray-400">สถานะ</p>
           {maintenanceTicket.isResolved ? (
-            <p className="flex-1 text-[#84CC16] font-bold">ดำเนินการซ่อมแล้ว</p>
+            <p className="flex-1 text-[#84CC16] font-bold text-end">ดำเนินการซ่อมแล้ว</p>
           ) : (
-            <p className="flex-1 text-[#9E9E9E] font-bold">ยังไม่ดำเนินการซ่อม</p>
+            <p className="flex-1 text-[#9E9E9E] font-bold text-end">ยังไม่ดำเนินการซ่อม</p>
           )}
         </div>
       )}
@@ -71,8 +74,7 @@ const MaintenanceTicketDetail: FC<MaintenanceTicketDetailProps> = ({
 
           <div className="flex-1">
             <MaintenanceStaffSelect
-              selectedStaff={selectedStaff}
-              onSelectStaff={setSelectedStaff}
+              onSelectStaff={onSelectStaff}
               maintenanceStaffAccounts={maintenanceStaffAccounts}
               isLoading={isLoading || isFetching}
             />
@@ -82,7 +84,7 @@ const MaintenanceTicketDetail: FC<MaintenanceTicketDetailProps> = ({
 
       {!staffView ||
         (maintenanceTicket.resolvedAt && maintenanceTicket.assignedTo && (
-          <div>
+          <div className="flex flex-col gap-4">
             <div className="flex flex-row justify-between">
               <p className="flex-1 text-gray-400">ดำเนินการซ่อมโดย</p>
               <p className="flex-1 text-end">

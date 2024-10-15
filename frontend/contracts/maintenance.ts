@@ -59,4 +59,21 @@ export const maintenanceTicketContract = c.router({
     },
     summary: "Get all maintenance tickets",
   },
+  updateMaintenanceTicketById: {
+    method: "PUT",
+    path: "/student/maintenance/:id",
+    pathParams: z.object({
+      id: z.string(),
+    }),
+    body: z.object({
+      title: z.string(),
+      description: z.string(),
+      location: z.string(),
+      maintenanceStaffId: z.string(),
+    }),
+    responses: {
+      200: c.type<Response<GetMaintenanceTicketDetail>>(),
+      400: c.type<ErrorResponse<{ code: string; message: string }>>(),
+    },
+  },
 });
