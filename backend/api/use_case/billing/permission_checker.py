@@ -8,7 +8,7 @@ from repositories.student import StudentRepository
 
 def get_billing(ctx: Context, studentId: str) -> bool:
     user = ctx.user
-    if user is None:
+    if user == None or user.uid == None:
         raise UnauthorizedAction("Not logged in")
 
     isStaff = bool(StaffRepository.get_staff_by_account_id(user.uid))

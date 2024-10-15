@@ -15,7 +15,8 @@
 # def get_tasks(request):
 #     tasks = models.Task.objects.all()
 #     serializer = TaskSerializer(tasks, many=True)
-#     return Response(status=200, data={"result": serializer.data})
+#     return Response(status=200, data={"result":
+# erializer.data})
 
 
 # class Task(APIView):

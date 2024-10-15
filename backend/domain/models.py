@@ -38,7 +38,7 @@ class Account(MyBaseModel):
     class Meta(MyBaseModel.Meta):
         db_table = "account"
 
-    uid = models.TextField(unique=True)
+    uid = models.TextField(unique=True, null=True, default=None)
     email = models.EmailField(unique=True)
     secret = models.TextField()
     salt = models.TextField()
