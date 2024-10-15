@@ -67,11 +67,17 @@ class File(MyBaseModel):
     )
 
     activity = models.ForeignKey(
-        "Activity", on_delete=models.CASCADE, related_name="files"
+        "Activity",
+        on_delete=models.CASCADE,
+        related_name="files",
+        null=True,
     )
 
     maintenanceTicket = models.ForeignKey(
-        "MaintenanceTicket", on_delete=models.CASCADE, related_name="files"
+        "MaintenanceTicket",
+        on_delete=models.CASCADE,
+        related_name="files",
+        null=True,
     )
 
 
@@ -255,7 +261,10 @@ class MaintenanceTicket(MyBaseModel):
     )
 
     maintenanceStaff = models.ForeignKey(
-        "MaintenanceStaff", on_delete=models.CASCADE, related_name="maintenanceTickets"
+        "MaintenanceStaff",
+        on_delete=models.CASCADE,
+        related_name="maintenanceTickets",
+        null=True,
     )
 
 

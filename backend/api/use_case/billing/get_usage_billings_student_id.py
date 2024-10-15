@@ -3,7 +3,7 @@ from api.repository import rent_billing_repository
 from backend.api.use_case.student import permission_checker
 from exception.application_logic.client.not_found import NotFoundException
 from layer.use_case import usecase
-from backend.repositories.student_repository import StudentRepository
+from api.repository.student_repository import StudentRepository
 from interfaces.context import Context
 
 

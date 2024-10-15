@@ -2,7 +2,7 @@
 import { initContract } from "@ts-rest/core";
 
 // Schemas
-import { accountSchema } from "@/schemas/account";
+import { accountSchema, studentSchema } from "@/schemas/account";
 import { baseSchema } from "@/schemas/base-schema";
 
 // Zod
@@ -10,7 +10,6 @@ import { z } from "zod";
 
 // Interfaces
 import { ErrorResponse, Response } from "@/interface/api-response";
-import { studentSchema } from "@/schemas/student";
 
 const signInResultSchema = baseSchema.extend({
   user: accountSchema.extend({

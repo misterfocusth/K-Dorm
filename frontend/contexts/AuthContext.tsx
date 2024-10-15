@@ -7,16 +7,12 @@ import { useCallback, useEffect, useState, createContext, useContext } from "rea
 import {
   GoogleAuthProvider,
   signInWithPopup,
-  onAuthStateChanged as _onAuthStateChanged,
   signInWithEmailAndPassword,
   UserCredential,
 } from "firebase/auth";
 
 // Firebase Config
 import { firebaseAuth } from "../libs/firebase/config";
-
-// TS-Rest
-import { api } from "../libs/tsr-react-query";
 
 // Actions
 import { createSession, removeSession } from "@/actions/authActions";
@@ -37,6 +33,7 @@ import {
   STUDENT_LOGIN_ROUTE,
 } from "@/constants";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { getApiService } from "@/libs/tsr-react-query";
 
 interface IAuthContext {
   currentUser: Account | null;
@@ -82,7 +79,6 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const handleUserAuthentication = async (uid: string, sessionIdToken: string) => {
     await createSession(uid, sessionIdToken);
     const currentUser = await getCurrentUserData(sessionIdToken);
-
     if (currentUser) {
       setCurrentUser(currentUser.user);
       setRole(currentUser.role as Role);
@@ -97,9 +93,9 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
     try {
       if (!sessionIdToken) {
-        userData = await api.authentication.getMe.query();
+        userData = await getApiService().authentication.getMe.query();
       } else {
-        userData = await api.authentication.signIn.mutate({
+        userData = await getApiService().authentication.signIn.mutate({
           body: null,
           extraHeaders: {
             Authorization: `Bearer ${sessionIdToken}`,
@@ -127,26 +123,30 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       await handleUserAuthentication(uid, sessionIdToken);
     } catch (error) {
       console.error("Error signing in with Google", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const loginWithEmailAndPassword = useCallback(async (email: string, password: string) => {
-    try {
-      const result = await signInWithEmailAndPassword(firebaseAuth, email, password);
-
-      if (!result || !result.user) throw new Error("Credentials sign in failed");
-
-      const { uid, sessionIdToken } = await getUserIdAndSessionIdToken(result);
-      await handleUserAuthentication(uid, sessionIdToken);
-    } catch (error) {
-      console.error("Error signing in with credentials", error);
       throw error;
     } finally {
       setIsLoading(false);
     }
   }, []);
+
+  const loginWithEmailAndPassword = useCallback(
+    async (email: string, password: string) => {
+      try {
+        const result = await signInWithEmailAndPassword(firebaseAuth, email, password);
+
+        if (!result || !result.user) throw new Error("Credentials sign in failed");
+
+        const { uid, sessionIdToken } = await getUserIdAndSessionIdToken(result);
+        await handleUserAuthentication(uid, sessionIdToken);
+      } catch (error) {
+        console.error("Error signing in with credentials", error);
+        throw error;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [router]
+  );
 
   const logout = useCallback(async () => {
     try {
@@ -166,7 +166,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (error) {
       console.error("Error signing out with Google", error);
     }
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     (async () => {

@@ -7,7 +7,8 @@ from firebase_admin import auth
 
 from backend.domain.models import Account
 from interfaces.request_with_context import RequestWithContext
-from backend.repositories.account_repository import AccountRepository
+from interfaces.request_with_context import RequestWithContext
+from api.repository.account_repository import AccountRepository
 
 
 class FirebaseAuth:

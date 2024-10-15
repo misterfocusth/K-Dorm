@@ -66,13 +66,17 @@ try:
 
     if not env["FIREBASE_ADMIN_PATH"]:
         raise Exception("Firebase configuration credentials not found.")
-    firebaseAdminConfigFile = Path(str(BASE_DIR) + "/" + env["FIREBASE_ADMIN_PATH"])
+
+    firebase_admin_path = get_env("FIREBASE_ADMIN_PATH") or ""
+    firebaseAdminConfigFile = Path(str(BASE_DIR) + "/" + firebase_admin_path)
 
     with firebaseAdminConfigFile.open() as f:
         firebaseAdminConfig = json.load(f)
 
     creds = firebase_admin.credentials.Certificate(firebaseAdminConfig)
-    default_app = firebase_admin.initialize_app(credential=creds)
+    default_app = firebase_admin.initialize_app(creds, {
+        "storageBucket": get_env('FIREBASE_STORAGE_BUCKET'),
+    })
 except Exception:
     raise Exception(
         "Firebase configuration credentials not found. Please add the configuration to the environment variables."

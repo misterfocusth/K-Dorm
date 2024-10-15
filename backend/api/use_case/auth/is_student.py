@@ -1,6 +1,6 @@
+from backend.api.repository.student_repository import StudentRepository
 from interfaces.context import Context
 from layer.use_case import usecase
-from backend.repositories.student_repository import StudentRepository
 
 
 @usecase()

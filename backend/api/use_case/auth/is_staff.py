@@ -1,9 +1,9 @@
 from interfaces.context import Context
 from layer.use_case import usecase
-from backend.repositories.staff_repository import StaffRepository
+from api.repository.staff_repository import StaffRepository
 
 
 @usecase()
 def is_staff(ctx: Context, accountId: str):
-    staff = StaffRepository.get_staff_by_account_id(accountId)
+    staff = StaffRepository.get_staff_by_uid(accountId)
     return bool(staff)

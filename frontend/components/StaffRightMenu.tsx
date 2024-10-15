@@ -10,7 +10,7 @@ const StaffRightMenu = () => {
     await logout();
   }, [logout]);
   return (
-    <div className="bg-orange-100 h-full flex flex-col justify-end items-center">
+    <div className="bg-orange-50 border h-full flex flex-col justify-end items-center">
       <Button
         variant="ghost"
         size="icon"

@@ -1,7 +1,6 @@
 "use client";
 
 import { useTasks } from "@/hooks/useTasks";
-import { api } from "@/libs/tsr-react-query";
 import Image from "next/image";
 
 export default function Home() {

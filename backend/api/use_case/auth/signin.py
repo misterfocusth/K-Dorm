@@ -12,12 +12,10 @@ from firebase_admin import auth
 from exception.auth.account_doesnt_exist import AccountDoesntExistException
 from interfaces.context import Context
 from layer.use_case import usecase
-from backend.repositories.staff_repository import StaffRepository
-from backend.repositories.student_repository import StudentRepository
 import utils.token as token_utils
 
 # Repository
-from backend.repositories.account_repository import AccountRepository
+from api.repository.account import AccountRepository
 
 
 @usecase()

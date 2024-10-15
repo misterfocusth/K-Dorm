@@ -29,7 +29,6 @@ from interfaces.context import Context
 from interfaces.request_with_context import RequestWithContext
 from exception.unknown_exception import UnknownException
 from api.use_case.auth import auth_uc as auth_uc
-from backend.repositories import account_repository
 import json
 
 

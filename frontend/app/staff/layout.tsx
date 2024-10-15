@@ -32,7 +32,7 @@ const StaffLayout = ({
           </div>
         )}
 
-        <div className="w-full ">
+        <div className="w-full max-h-[100dvh] overflow-auto">
           {children}
           <Toaster />
         </div>
