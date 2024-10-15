@@ -40,20 +40,6 @@ class UpdateSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
 
-class AccountSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Account
-        fields = '__all__'
-
-
-class StudentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Student
-        fields = '__all__'
-
-    account = AccountSerializer()
-
-
 class StaffSerializer(serializers.ModelSerializer):
     class Meta:
         model = Staff
@@ -70,3 +56,21 @@ class SecurityStaffSerializer(serializers.ModelSerializer):
     class Meta:
         model = SecurityStaff
         fields = '__all__'
+
+
+class AccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = '__all__'
+
+    staff = StaffSerializer()
+    maintenanceStaff = MaintenanceStaffSerializer()
+    securityStaff = SecurityStaffSerializer()
+
+
+class StudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = '__all__'
+
+    account = AccountSerializer()

@@ -16,6 +16,7 @@ from interfaces.error_response import ErrorResponse
 
 # Serializer
 from serializers.account_serializer import get_serializer_class, serialize
+from serializers.user_serializer import AuthUserSerializer
 
 # Decorators
 from core.middleware.decorators.authenticated_user_only import authenticated_user_only

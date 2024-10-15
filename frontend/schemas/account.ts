@@ -9,6 +9,11 @@ export const accountSchema = baseSchema.extend({
   firstName: z.string(),
   lastName: z.string(),
   isDisabled: z.boolean().default(false),
+
+  student: z.object({}).nullable(),
+  staff: z.object({}).nullable(),
+  securityStaff: z.object({}).nullable(),
+  maintenanceStaff: z.object({}).nullable(),
 });
 
 export const studentSchema = accountSchema.extend({

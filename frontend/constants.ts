@@ -19,4 +19,8 @@ export const QUERY_KEYS = {
     getMaintenanceTicketById: ["maintenance", "getMaintenanceTicketById"],
     getStudentMaintenanceTickets: ["maintenance", "getStudentMaintenanceTickets"],
   },
+  account: {
+    getAllStaffAccounts: ["account", "getAllStaffAccounts"],
+    getStaffAccountById: ["account", "getStaffAccountById"],
+  },
 };

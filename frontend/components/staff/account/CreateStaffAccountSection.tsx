@@ -23,6 +23,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { getApiService } from "@/libs/tsr-react-query";
+import { Loader2 } from "lucide-react";
 
 const createStaffFormSchema = z.object({
   email: z.string().email({
@@ -38,7 +40,12 @@ const createStaffFormSchema = z.object({
     message: "กรุณากรอกนามสกุล",
   }),
 });
-const CreateStaffAccountSection = () => {
+
+type CreateStaffAccountSectionProps = {
+  refetch: () => void;
+};
+
+const CreateStaffAccountSection = ({ refetch }: CreateStaffAccountSectionProps) => {
   const [isPending, startTransition] = useTransition();
 
   const { isShowCreateStaffAccountSection, hideCreateStaffAccountSection } =
@@ -46,11 +53,35 @@ const CreateStaffAccountSection = () => {
 
   const form = useForm<z.infer<typeof createStaffFormSchema>>({
     resolver: zodResolver(createStaffFormSchema),
+    defaultValues: {
+      email: "",
+      type: "STAFF",
+      firstName: "",
+      lastName: "",
+    },
   });
 
-  const onSubmit = useCallback((values: z.infer<typeof createStaffFormSchema>) => {
-    console.log(values);
-  }, []);
+  const onSubmit = useCallback(
+    (values: z.infer<typeof createStaffFormSchema>) => {
+      startTransition(async () => {
+        const result = await getApiService().account.createStaffAccount.mutate({
+          body: values,
+        });
+
+        if (result.body) {
+          hideCreateStaffAccountSection();
+          form.reset();
+          refetch();
+        }
+      });
+    },
+    [form, startTransition, refetch, hideCreateStaffAccountSection]
+  );
+
+  const handleCancelCreateAccount = useCallback(() => {
+    hideCreateStaffAccountSection();
+    form.reset();
+  }, [hideCreateStaffAccountSection, form]);
 
   if (!isShowCreateStaffAccountSection) {
     return null;
@@ -132,10 +163,11 @@ const CreateStaffAccountSection = () => {
           </div>
 
           <div className="flex flex-row items-center gap-4 justify-end">
-            <Button className="rounded-xl bg-gray-400" onClick={hideCreateStaffAccountSection}>
+            <Button className="rounded-xl bg-gray-400" onClick={handleCancelCreateAccount}>
               ยกเลิก
             </Button>
-            <Button type="submit" className="rounded-xl">
+            <Button type="submit" className="rounded-xl" disabled={isPending}>
+              {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               เพิ่มพนักงาน
             </Button>
           </div>

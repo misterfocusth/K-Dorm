@@ -35,94 +35,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-const staffs: Account[] = [
-  {
-    id: 1,
-    email: "staff@kmitl.ac.th",
-    firstName: "System",
-    lastName: "Admin",
-    isDisabled: false,
-    staff: true,
-    uid: "1",
-  },
-  {
-    id: 2,
-    email: "sila.pak@kmitl.ac.th",
-    firstName: "Sila",
-    lastName: "Pakdeewong",
-    isDisabled: false,
-    maintenanceStaff: true,
-    uid: "2",
-  },
-  {
-    id: 3,
-    email: "focus.pak@kmitl.ac.th",
-    firstName: "Focus",
-    lastName: "Pakdeewong",
-    isDisabled: false,
-    securityStaff: true,
-    uid: "3",
-  },
-  {
-    id: 4,
-    email: "saruta.to@kmitl.ac.th",
-    firstName: "Saruta",
-    lastName: "Torat",
-    isDisabled: true,
-    staff: true,
-    uid: "4",
-  },
-  {
-    id: 1,
-    email: "staff@kmitl.ac.th",
-    firstName: "System",
-    lastName: "Admin",
-    isDisabled: false,
-    staff: true,
-    uid: "1",
-  },
-  {
-    id: 2,
-    email: "sila.pak@kmitl.ac.th",
-    firstName: "Sila",
-    lastName: "Pakdeewong",
-    isDisabled: false,
-    maintenanceStaff: true,
-    uid: "2",
-  },
-  {
-    id: 3,
-    email: "focus.pak@kmitl.ac.th",
-    firstName: "Focus",
-    lastName: "Pakdeewong",
-    isDisabled: false,
-    securityStaff: true,
-    uid: "3",
-  },
-  {
-    id: 4,
-    email: "saruta.to@kmitl.ac.th",
-    firstName: "Saruta",
-    lastName: "Torat",
-    isDisabled: true,
-    staff: true,
-    uid: "4",
-  },
-];
+import { getApiService } from "@/libs/tsr-react-query";
+import { QUERY_KEYS } from "@/constants";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const StaffAccountPage = () => {
-  const {
-    selectedStaffAccount,
-    showCreateStaffAccountSection,
-    setSelectedStaffAccount,
-    openEditStaffAccountDialog,
-  } = useManageStaffAccountContext();
+  const { showCreateStaffAccountSection, setSelectedStaffAccount, openEditStaffAccountDialog } =
+    useManageStaffAccountContext();
+
+  const { isLoading, isPending, data, refetch } =
+    getApiService().account.getAllStaffAccount.useQuery({
+      queryKey: QUERY_KEYS.account.getAllStaffAccounts,
+    });
+
+  const staffAccounts = useMemo(() => data?.body.result, [data]);
 
   const [searchText, setSearchText] = useState<string>("");
   const [staffType, setStaffType] = useState<string>("ALL");
   const [accountStatus, setAccountStatus] = useState<string>("ALL");
-  const [filteredStaffs, setFilteredStaffs] = useState<Account[]>(staffs);
+  const [filteredStaffs, setFilteredStaffs] = useState(staffAccounts);
 
   const staffTableColumns: ColumnDef<Account>[] = useMemo(() => {
     return [
@@ -230,36 +161,44 @@ const StaffAccountPage = () => {
 
   const filterStaffAccounts = useCallback(
     (searchText: string, staffType: string, accountStatus: string) => {
-      let filtered = staffs;
+      let filtered = staffAccounts;
 
       if (!filtered) return;
 
       if (searchText) {
         filtered = filtered.filter(
-          (staff) =>
+          (staff: Account) =>
             staff.email.includes(searchText) ||
             staff.firstName.includes(searchText) ||
             staff.lastName.includes(searchText)
         );
       }
 
-      if (staffType !== "STAFF") filtered = filtered.filter((staff) => !!staff.staff);
-      if (staffType !== "MAINTENANCE_STAFF")
+      if (staffType === "STAFF") filtered = filtered.filter((staff) => !!staff.staff);
+      else if (staffType === "MAINTENANCE_STAFF")
         filtered = filtered.filter((staff) => !!staff.maintenanceStaff);
-      if (staffType !== "SECURITY_STAFF")
+      else if (staffType === "SECURITY_STAFF")
         filtered = filtered.filter((staff) => !!staff.securityStaff);
 
       if (accountStatus === "ENABLED") filtered = filtered.filter((staff) => !staff.isDisabled);
-      if (accountStatus === "DISABLED") filtered = filtered.filter((staff) => staff.isDisabled);
+      else if (accountStatus === "DISABLED")
+        filtered = filtered.filter((staff) => staff.isDisabled);
 
+      console.log("filtered", filtered);
       setFilteredStaffs(filtered);
     },
-    []
+    [staffAccounts]
   );
 
   useEffect(() => {
     filterStaffAccounts(searchText, staffType, accountStatus);
   }, [searchText, staffType, accountStatus, filterStaffAccounts]);
+
+  useEffect(() => {
+    console.log(staffAccounts);
+  }, [staffAccounts]);
+
+  if (isLoading || isPending) return <LoadingSpinner loading />;
 
   return (
     <div className="p-10">
@@ -308,11 +247,11 @@ const StaffAccountPage = () => {
         </Button>
       </div>
 
-      <div className="mt-8">{<CreateStaffAccountSection />}</div>
+      <div className="mt-8">{<CreateStaffAccountSection refetch={refetch} />}</div>
 
       {/* STAFF ACCOUNT TABLE */}
       <div className="mt-8">
-        <StaffAccountTable columns={staffTableColumns} data={staffs} />
+        <StaffAccountTable columns={staffTableColumns} data={filteredStaffs || []} />
       </div>
     </div>
   );
