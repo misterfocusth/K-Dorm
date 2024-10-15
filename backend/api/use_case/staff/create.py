@@ -7,7 +7,7 @@ from api.repository.staff_repository import StaffRepository
 from api.repository.security_staff_repository import SecurityStaffRepository
 
 # Utils
-from backend.api.repository.maintenance_staff_repository import (
+from api.repository.maintenance_staff_repository import (
     MaintenanceStaffRepository,
 )
 from utils.firebase_storage import get_bucket_location

@@ -1,12 +1,10 @@
 # Model
 from typing import NotRequired, TypedDict
 from xml.dom import NotFoundErr
-from backend.api.repository.maintenance_staff_repository import (
+from api.repository.maintenance_staff_repository import (
     MaintenanceStaffRepository,
 )
-from backend.api.use_case.maintenance.maintenance_uc import get_maintenance_ticket_by_id
-from backend.api.views import maintenance
-from backend.exception.application_logic.client.not_found import NotFoundException
+from exception.application_logic.client.not_found import NotFoundException
 from domain.models import Account, MaintenanceTicket
 from api.repository.student_repository import StudentRepository
 import datetime

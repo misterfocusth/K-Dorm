@@ -1,11 +1,11 @@
 from typing import TypedDict
 from api.repository.maintenance_repository import MaintenanceRepository
-from backend.api.repository.maintenance_staff_repository import (
+from api.repository.maintenance_staff_repository import (
     MaintenanceStaffRepository,
 )
-from backend.exception.auth.unauthenticated import UnauthenticatedException
-from backend.interfaces.context import Context
-from backend.layer.use_case import usecase
+from exception.auth.unauthenticated import UnauthenticatedException
+from interfaces.context import Context
+from layer.use_case import usecase
 
 from .create import create_ticket
 

@@ -15,6 +15,7 @@ from typing import (
 from rest_framework import serializers
 
 from api.use_case.auth import is_staff
+from exception.auth.base import AuthenticationFailure
 from exception.application_logic.client.validation import ValidationException
 from exception.auth.unauthenticated import UnauthenticatedException
 from exception.base_stackable_exception import StackableException
@@ -190,6 +191,7 @@ def handle(
             try:
                 # execute the handle function
                 return handleFn(_req, *args, **kwargs)
+
             except StackableException as e:
                 return ErrorResponse(
                     status=e.error_status, error=e.error_code, message=e.message

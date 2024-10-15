@@ -1,8 +1,8 @@
-from backend.api.repository.maintenance_repository import MaintenanceRepository
-from backend.api.repository.maintenance_staff_repository import (
+from api.repository.maintenance_repository import MaintenanceRepository
+from api.repository.maintenance_staff_repository import (
     MaintenanceStaffRepository,
 )
-from backend.domain.models import MaintenanceStaff
+from domain.models import MaintenanceStaff
 from exception.application_logic.client.not_found import NotFoundException
 from exception.permission.unauthorized_action import UnauthorizedActionException
 from interfaces.context import Context

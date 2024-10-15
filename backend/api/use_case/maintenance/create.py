@@ -8,7 +8,7 @@ from api.repository.file_repository import create_flie
 from api.repository.firebase_storage import upload_file_to_bucket
 
 # Utils
-from backend.layer.use_case import usecase
+from layer.use_case import usecase
 from utils.firebase_storage import get_bucket_location
 
 

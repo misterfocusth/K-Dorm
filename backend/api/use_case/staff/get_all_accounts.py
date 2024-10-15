@@ -1,5 +1,5 @@
-from backend.api.repository.staff_repository import StaffRepository
-from backend.layer.use_case import usecase
+from api.repository.staff_repository import StaffRepository
+from layer.use_case import usecase
 
 
 @usecase(only_authenticated=True)

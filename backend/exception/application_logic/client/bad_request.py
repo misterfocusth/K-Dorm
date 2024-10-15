@@ -1,5 +1,5 @@
 from xml.sax.handler import property_encoding
-from backend.exception.application_logic.client.base import InvalidRequestException
+from exception.application_logic.client.base import InvalidRequestException
 
 
 class BadRequestException(InvalidRequestException):

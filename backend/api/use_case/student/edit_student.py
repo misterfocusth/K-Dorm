@@ -3,7 +3,7 @@ from typing import NotRequired, Optional, TypedDict
 from django.forms import model_to_dict
 
 
-from backend.api.use_case import permission_checker
+from api.use_case import permission_checker
 
 from domain.models import Account, Student
 from interfaces.context import Context

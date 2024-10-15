@@ -7,9 +7,9 @@ from rest_framework.exceptions import AuthenticationFailed
 
 
 # Interfaces
-from backend.api.repository import account_repository
-from backend.api.repository.account import AccountRepository
-from backend.api.use_case.staff import staff_uc
+from api.repository import account_repository
+from api.repository.account import AccountRepository
+from api.use_case.staff import staff_uc
 from interfaces.api_response import APIResponse
 from interfaces.error_response import ErrorResponse
 
@@ -17,7 +17,6 @@ from interfaces.error_response import ErrorResponse
 from serializers.account_serializer import get_serializer_class, serialize
 
 # Decorators
-from core.middleware.decorators.authenticated_user_only import authenticated_user_only
 from layer.handle import handle
 
 from django.core.exceptions import ObjectDoesNotExist

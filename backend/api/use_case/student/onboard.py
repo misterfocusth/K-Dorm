@@ -1,4 +1,4 @@
-from backend.api.use_case import permission_checker
+from api.use_case import permission_checker
 from exception.auth.unauthenticated import UnauthenticatedException
 from exception.permission.unauthorized_action import UnauthorizedActionException
 from interfaces.context import Context

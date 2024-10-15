@@ -4,10 +4,10 @@ from rest_framework import status
 from rest_framework import serializers
 
 # Use-Cases
-from backend.api.use_case.maintenance import maintenance_uc
-from backend.domain.models import MaintenanceTicket
-from backend.exception.application_logic.client.not_found import NotFoundException
-from backend.exception.application_logic.server.Illegal_operation import (
+from api.use_case.maintenance import maintenance_uc
+from domain.models import MaintenanceTicket
+from exception.application_logic.client.not_found import NotFoundException
+from exception.application_logic.server.Illegal_operation import (
     IllegalOperationException,
 )
 from interfaces.request_with_context import RequestWithContext

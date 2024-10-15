@@ -4,7 +4,7 @@ from typing import List, TypedDict, cast
 
 from api.repository import rent_billing_repository
 from api.repository import usage_billing_repository
-from backend.api.use_case import permission_checker
+from api.use_case import permission_checker
 from domain.models import BaseBillingModel, RentBilling, Account, Student
 from exception.application_logic.client.base import InvalidRequestException
 from exception.permission.unauthorized_action import UnauthorizedActionException
