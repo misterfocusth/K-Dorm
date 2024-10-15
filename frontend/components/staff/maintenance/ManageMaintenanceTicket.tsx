@@ -64,7 +64,6 @@ const ManageMaintenanceTicket = ({ refetch }: ManageMaintenanceTicketProps) => {
           <MaintenanceTicketDetail
             staffView
             maintenanceTicket={selectedTicket}
-            selectedStaff={selectedStaff}
             onSelectStaff={handleSelectStaff}
           />
         </div>

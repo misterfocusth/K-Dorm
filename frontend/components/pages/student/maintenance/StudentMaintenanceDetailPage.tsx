@@ -7,7 +7,6 @@ import withRoleGuard from "@/components/hoc/withRoleGuard";
 import ImageGallery from "@/components/ImageGallery";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import MaintenanceTicketDetail from "@/components/maintenance/MaintenanceTicketDetail";
-import { Separator } from "@/components/ui/separator";
 import { QUERY_KEYS } from "@/constants";
 
 // Context

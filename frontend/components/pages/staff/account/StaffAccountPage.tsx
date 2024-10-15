@@ -41,7 +41,7 @@ import useStaffAccount from "@/hooks/accout/useStaffAccount";
 const StaffAccountPage = () => {
   const { showCreateStaffAccountSection, setSelectedStaffAccount, openEditStaffAccountDialog } =
     useManageStaffAccountContext();
-  const { isLoading, isPending, accounts, refetch } = useStaffAccount();
+  const { isLoading, isFetching, accounts, refetch } = useStaffAccount();
 
   const [searchText, setSearchText] = useState<string>("");
   const [staffType, setStaffType] = useState<string>("ALL");
@@ -187,7 +187,7 @@ const StaffAccountPage = () => {
     filterStaffAccounts(searchText, staffType, accountStatus);
   }, [searchText, staffType, accountStatus, filterStaffAccounts]);
 
-  if (isLoading || isPending) return <LoadingSpinner loading />;
+  if (isLoading || isFetching) return <LoadingSpinner loading />;
 
   return (
     <div className="p-10">

@@ -8,14 +8,12 @@ import useStaffAccount from "@/hooks/accout/useStaffAccount";
 type MaintenanceTicketDetailProps = {
   maintenanceTicket: MaintenanceTicket;
   staffView?: boolean;
-  selectedStaff: Account | null;
-  onSelectStaff: (staff: Account) => void;
+  onSelectStaff?: (staff: Account) => void;
 };
 
 const MaintenanceTicketDetail: FC<MaintenanceTicketDetailProps> = ({
   maintenanceTicket,
   staffView,
-  selectedStaff,
   onSelectStaff,
 }) => {
   const { isLoading, isFetching, maintenanceStaffAccounts } = useStaffAccount();
@@ -73,11 +71,13 @@ const MaintenanceTicketDetail: FC<MaintenanceTicketDetailProps> = ({
           <p className="flex-1 text-gray-400">เจ้าหน้าที่ผู้รับผิดชอบ</p>
 
           <div className="flex-1">
-            <MaintenanceStaffSelect
-              onSelectStaff={onSelectStaff}
-              maintenanceStaffAccounts={maintenanceStaffAccounts}
-              isLoading={isLoading || isFetching}
-            />
+            {onSelectStaff && (
+              <MaintenanceStaffSelect
+                onSelectStaff={onSelectStaff}
+                maintenanceStaffAccounts={maintenanceStaffAccounts}
+                isLoading={isLoading || isFetching}
+              />
+            )}
           </div>
         </div>
       )}
