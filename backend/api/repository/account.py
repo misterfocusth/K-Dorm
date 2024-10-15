@@ -51,3 +51,8 @@ class AccountRepository:
     def get_all_staff_accounts():
         staff_accounts = Account.objects.filter(student__isnull=True).all()
         return staff_accounts
+
+    @staticmethod
+    def get_account_by_email(email: str) -> Account | None:
+        account = Account.objects.filter(email=email).first()
+        return account

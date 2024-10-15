@@ -15,6 +15,12 @@ def handle_edit_staff_account(request: RequestWithContext, serializer, id: int):
     account.firstName = validated_data['firstName']
     account.lastName = validated_data['lastName']
     account.isDisabled = validated_data['isDisabled']
+
+    # set null current binded google account uid
+    if validated_data['email'] != account.email:
+        print('email changed', validated_data['email'], account.email)
+        account.uid = None
+
     account.email = validated_data['email']
 
     account.save()

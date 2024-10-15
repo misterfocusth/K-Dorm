@@ -26,6 +26,14 @@ class FirebaseAuth:
 
         user = AccountRepository.get_account_by_uid(decodedToken["uid"])
 
+        # HANDLE: First time logged in for staff, maintenance_staff, security_staff (Binding uid)
+        if user is None:
+            user = AccountRepository.get_account_by_email(
+                decodedToken["email"])
+            if user is not None:
+                user.uid = decodedToken["uid"]
+                user.save()
+
         if user:
             request.ctx.user = user
 

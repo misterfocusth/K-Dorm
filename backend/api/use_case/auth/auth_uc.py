@@ -12,3 +12,6 @@ signin = _signin
 class AuthUseCase:
     @staticmethod
     def signin(request: RequestWithContext, serializer):
+        print("request", request)
+        print("request.ctx", request.ctx)
+        print("request.ctx.user", request.ctx.user)
