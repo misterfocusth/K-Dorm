@@ -34,6 +34,8 @@ import {
 } from "@/constants";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { getApiService } from "@/libs/tsr-react-query";
+import { useToast } from "@/hooks/use-toast";
+import { toast, Toaster, useSonner } from "sonner";
 
 interface IAuthContext {
   currentUser: Account | null;
@@ -66,6 +68,8 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentUser, setCurrentUser] = useState<Account | null>(null);
   const [role, setRole] = useState<Role | null>(null);
 
+  const { toasts } = useSonner()
+
   const getUserIdAndSessionIdToken = async (fbCredential: UserCredential) => {
     try {
       const uid = fbCredential.user?.uid;
@@ -83,8 +87,6 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       setCurrentUser(currentUser.user);
       setRole(currentUser.role as Role);
       router.push(currentUser.role === "STUDENT" ? STUDENT_HOME_ROUTE : STAFF_HOME_ROUTE);
-    } else {
-      throw new Error("Error retrieving user data");
     }
   };
 
@@ -107,6 +109,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       return userDataResult.result;
     } catch (error) {
       console.error("Error getting user session", error);
+      toast.error("เกิดข้อผิิดพลาดในการเข้าสู่ระบบ กรุณาตรวจสอบอีเมลที่ใช้อีกครั้งหนึ่ง")
       await removeSession();
     }
   }, []);

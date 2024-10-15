@@ -1,5 +1,5 @@
 // Context
-import { NavbarContext } from "@/contexts/NavbarContext";
+import { NavbarContext } from "@/providers/NavbarProvider";
 
 // Icon
 import { ChevronLeft } from "lucide-react";

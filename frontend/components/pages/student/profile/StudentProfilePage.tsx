@@ -7,8 +7,8 @@ import withRoleGuard from "@/components/hoc/withRoleGuard";
 import { Button } from "@/components/ui/button";
 
 // Contexts
-import { AuthContext } from "@/contexts/AuthContext";
-import { NavbarContext } from "@/contexts/NavbarContext";
+import { AuthContext } from "@/providers/AuthProvider";
+import { NavbarContext } from "@/providers/NavbarProvider";
 import { useStudentProfileImage } from "@/hooks/useStudentProfileImage";
 import Image from "next/image";
 

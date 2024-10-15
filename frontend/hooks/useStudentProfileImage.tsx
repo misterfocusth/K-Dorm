@@ -1,4 +1,4 @@
-import { useAuthContext } from "@/contexts/AuthContext";
+import { useAuthContext } from "@/providers/AuthProvider";
 
 // Firebase Config
 import { firebaseAuth } from "../libs/firebase/config";

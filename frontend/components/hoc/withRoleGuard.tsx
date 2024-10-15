@@ -9,7 +9,7 @@ import {
 } from "@/constants";
 
 // Context
-import { useAuthContext } from "@/contexts/AuthContext";
+import { useAuthContext } from "@/providers/AuthProvider";
 
 // Type
 import { Role } from "@/types";

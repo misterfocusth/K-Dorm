@@ -1,14 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-// React Query
-import RQClientProvider from "@/providers/RQClientProvider";
-
-// Context
-import AuthContextProvider from "@/contexts/AuthContext";
-
-// Font
 import { Noto_Sans_Thai } from "next/font/google";
+import { GlobalProvider } from "./GlobalProvider";
 
 const notoSansThai = Noto_Sans_Thai({ subsets: ["latin"] });
 
@@ -27,9 +21,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <main className={notoSansThai.className}>
-          <RQClientProvider>
-            <AuthContextProvider>{children}</AuthContextProvider>
-          </RQClientProvider>
+          <GlobalProvider>
+            {children}
+          </GlobalProvider>
         </main>
       </body>
     </html>

@@ -20,24 +20,24 @@ interface IManageStaffAccountContext {
 
 const initialState: IManageStaffAccountContext = {
   isShowCreateStaffAccountSection: false,
-  showCreateStaffAccountSection: () => {},
-  hideCreateStaffAccountSection: () => {},
+  showCreateStaffAccountSection: () => { },
+  hideCreateStaffAccountSection: () => { },
 
   isShowEditStaffAccountDialog: false,
-  openEditStaffAccountDialog: () => {},
-  hideEditStaffAccountDialog: () => {},
+  openEditStaffAccountDialog: () => { },
+  hideEditStaffAccountDialog: () => { },
 
   isOpenDeleteStaffAccountModal: false,
-  openDeleteStaffAccountModal: () => {},
-  closeDeleteStaffAccountModal: () => {},
+  openDeleteStaffAccountModal: () => { },
+  closeDeleteStaffAccountModal: () => { },
 
   selectedStaffAccount: null,
-  setSelectedStaffAccount: () => {},
+  setSelectedStaffAccount: () => { },
 };
 
 export const ManageStaffAccountContext = createContext<IManageStaffAccountContext>(initialState);
 
-export const ManageStaffAccountContextProvider = ({ children }: { children: ReactNode }) => {
+export const ManageStaffAccountProvider = ({ children }: { children: ReactNode }) => {
   const [isShowCreateStaffAccountSection, setIsOpenCreateStaffAccountModal] =
     useState<boolean>(false);
   const [isShowEditStaffAccountDialog, setIsOpenUpdateStaffAccountModal] = useState<boolean>(false);

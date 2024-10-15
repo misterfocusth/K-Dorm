@@ -1,6 +1,6 @@
 "use client";
 
-import { NavbarContext } from "@/contexts/NavbarContext";
+import { NavbarContext } from "@/providers/NavbarProvider";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChangeEvent, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";

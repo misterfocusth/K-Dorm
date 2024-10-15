@@ -8,12 +8,12 @@ interface IMaintenanceTicketContext {
 
 const initialState: IMaintenanceTicketContext = {
   selectedTicket: null,
-  setSelectedTicket: () => {},
+  setSelectedTicket: () => { },
 };
 
 export const MaintenanceTicketContext = createContext<IMaintenanceTicketContext>(initialState);
 
-const MaintenanceTicketContextProvider = ({ children }: { children: React.ReactNode }) => {
+const MaintenanceTicketProvider = ({ children }: { children: React.ReactNode }) => {
   const [selectedTicket, setSelectedTicket] = useState<MaintenanceTicket | null>(null);
 
   return (
@@ -23,6 +23,6 @@ const MaintenanceTicketContextProvider = ({ children }: { children: React.ReactN
   );
 };
 
-export default MaintenanceTicketContextProvider;
+export default MaintenanceTicketProvider;
 
 export const useMaintenanceTicketContext = () => useContext(MaintenanceTicketContext);

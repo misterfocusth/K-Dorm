@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 // Contexts
-import { AuthContext } from "@/contexts/AuthContext";
+import { AuthContext } from "@/providers/AuthProvider";
 
 // Types
 import { STAFF_ROLES } from "@/types";

@@ -24,16 +24,16 @@ const initialState: INavbarContext = {
   isShowBottomNavbar: false,
   headerNavbarTitle: "",
   currentActiveBottomNavbarIndex: 0,
-  setShowHeaderNavbar: () => {},
-  setShowBottomNavbar: () => {},
-  setHeaderNavbarTitle: () => {},
-  setShowStudentHomeNavbar: () => {},
-  resetNavbarContext: () => {},
+  setShowHeaderNavbar: () => { },
+  setShowBottomNavbar: () => { },
+  setHeaderNavbarTitle: () => { },
+  setShowStudentHomeNavbar: () => { },
+  resetNavbarContext: () => { },
 };
 
 export const NavbarContext = createContext<INavbarContext>(initialState);
 
-export const NavbarContextProvider = ({ children }: { children: React.ReactNode }) => {
+export const NavbarProvider = ({ children }: { children: React.ReactNode }) => {
   const [isShowStudentHomeNavbar, setShowStudentHomeNavbar] = useState<boolean>(false);
   const [isShowHeaderNavbar, setShowHeaderNavbar] = useState<boolean>(false);
   const [isShowBottomNavbar, setShowBottomNavbar] = useState<boolean>(false);

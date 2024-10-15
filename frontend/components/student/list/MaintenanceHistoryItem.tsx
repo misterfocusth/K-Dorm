@@ -1,5 +1,5 @@
 import { Separator } from "@/components/ui/separator";
-import { useMaintenanceTicketContext } from "@/contexts/MaintenanceTicketContext";
+import { useMaintenanceTicketContext } from "@/providers/MaintenanceTicketProvider";
 import { getTHFormattedDateTime } from "@/libs/datetime";
 import { MaintenanceTicket } from "@/types";
 import { ChevronRight, CircleAlert, CircleCheck } from "lucide-react";
@@ -30,9 +30,8 @@ const MaintenanceHistoryItem = ({ maintenanceTicket, staffView }: MaintenanceHis
 
   return (
     <div
-      className={`flex flex-row items-center justify-between hover:bg-gray-100 cursor-pointer p-2 lg:p-4 rounded-3xl gap-6 ${
-        selectedTicket?.id === maintenanceTicket.id && "bg-gray-100"
-      }`}
+      className={`flex flex-row items-center justify-between hover:bg-gray-100 cursor-pointer p-2 lg:p-4 rounded-3xl gap-6 ${selectedTicket?.id === maintenanceTicket.id && "bg-gray-100"
+        }`}
       onClick={staffView ? handleOnStaffSelectTicket : handleStudentSelectTicket}
     >
       <div className="max-w-[20%]">
@@ -69,8 +68,8 @@ const MaintenanceHistoryItem = ({ maintenanceTicket, staffView }: MaintenanceHis
               เจ้าหน้าที่ผู้รับผิดชอบ:{" "}
               {maintenanceTicket.assignedTo
                 ? maintenanceTicket.assignedTo.account.firstName +
-                  " " +
-                  maintenanceTicket.assignedBy.account.lastName
+                " " +
+                maintenanceTicket.assignedBy.account.lastName
                 : "-"}
             </p>
           </div>

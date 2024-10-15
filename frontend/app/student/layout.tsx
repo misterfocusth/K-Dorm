@@ -11,7 +11,7 @@ import StudentHeader from "@/components/StudentHeader";
 import StudentNavbar from "@/components/StudentNavbar";
 
 // Context
-import { NavbarContextProvider } from "@/contexts/NavbarContext";
+import { NavbarProvider } from "@/providers/NavbarProvider";
 
 const StudentLayout = ({
   children,
@@ -20,7 +20,7 @@ const StudentLayout = ({
 }>) => {
   return (
     <main className={cn("h-[100dvh] max-w-md")}>
-      <NavbarContextProvider>
+      <NavbarProvider>
         <StudentHeader />
 
         <div className="h-full z-0">{children}</div>
@@ -28,7 +28,7 @@ const StudentLayout = ({
         <div className="fixed bottom-0 w-full max-w-md z-10">
           <StudentNavbar />
         </div>
-      </NavbarContextProvider>
+      </NavbarProvider>
     </main>
   );
 };

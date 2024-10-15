@@ -5,7 +5,7 @@ import withRoleGuard from "@/components/hoc/withRoleGuard";
 import { Button } from "@/components/ui/button";
 
 // Contexts
-import { AuthContext } from "@/contexts/AuthContext";
+import { AuthContext } from "@/providers/AuthProvider";
 import { Loader2 } from "lucide-react";
 
 // Next

@@ -1,4 +1,4 @@
-import { useManageStaffAccountContext } from "@/contexts/ManageStaffAccountContext";
+import { useManageStaffAccountContext } from "@/providers/ManageStaffAccountProvider";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -72,10 +72,10 @@ const EditStaffAccountDialog = ({ refetch }: EditStaffAccountDialogProps) => {
       type: !selectedStaffAccount
         ? "STAFF"
         : selectedStaffAccount.staff
-        ? "STAFF"
-        : selectedStaffAccount.maintenanceStaff
-        ? "MAINTENANCE_STAFF"
-        : "SECURITY_STAFF",
+          ? "STAFF"
+          : selectedStaffAccount.maintenanceStaff
+            ? "MAINTENANCE_STAFF"
+            : "SECURITY_STAFF",
       isDisabled: !selectedStaffAccount?.isDisabled,
     },
   });

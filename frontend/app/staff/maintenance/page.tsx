@@ -1,13 +1,13 @@
 "use client";
 
 import StaffMaintenancePage from "@/components/pages/staff/maintenance/StaffMaintenancePage";
-import MaintenanceTicketContextProvider from "@/contexts/MaintenanceTicketContext";
+import MaintenanceTicketProvider from "@/providers/MaintenanceTicketProvider";
 
 const Page = () => {
   return (
-    <MaintenanceTicketContextProvider>
+    <MaintenanceTicketProvider>
       <StaffMaintenancePage />
-    </MaintenanceTicketContextProvider>
+    </MaintenanceTicketProvider>
   );
 };
 
