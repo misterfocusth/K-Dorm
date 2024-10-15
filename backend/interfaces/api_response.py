@@ -6,8 +6,6 @@ class APIResponse(Response):
         if data is None:
             data = {}
 
-        responses_data = {
-            'result': data
-        }
+        responses_data = {"result": data}
 
         super().__init__(data=responses_data, status=status, **kwargs)

@@ -40,7 +40,7 @@ class CreateStudentSerializerResponse(serializers.ModelSerializer):
 @handle(only_role=["STAFF"], serializer_config={"BODY": CreateStudentSerializerPayload})
 def create_students(request: RequestWithContext):
     accounts = student_uc.create_students(
-        request, payloads=request.ctx.store["BODY_data"]["students"]
+        request, payloads=request.ctx.store["BODY"]["students"]
     )
 
     response_serializer = CreateStudentSerializerResponse(accounts, many=True)
@@ -60,7 +60,7 @@ class EditStudentSerializer(serializers.Serializer):
 def edit_student(request: RequestWithContext, student_pk: str):
 
     student = student_uc.edit_student(
-        request, student_pk, payload=request.ctx.store["BODY_data"]
+        request, student_pk, payload=request.ctx.store["BODY"]
     )
 
     response_serializer = CreateStudentSerializerResponse(instance=student)

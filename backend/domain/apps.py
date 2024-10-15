@@ -4,5 +4,5 @@ from django.apps import AppConfig
 
 
 class CustomModelsConfig(AppConfig):
-    name = 'domain'
+    name = "domain"
     verbose_name = "domain_models"

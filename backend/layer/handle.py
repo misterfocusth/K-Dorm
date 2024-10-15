@@ -40,7 +40,7 @@ class SerializerConfig(TypedDict):
 
 PathParams = ParamSpec("PathParams")
 
-ROLE = Literal["STUDENT", "STAFF", "MAINTERNANCE_STAFF", "SECURITY_STAFF"]
+ROLE = Literal["STUDENT", "STAFF", "maintenance_STAFF", "SECURITY_STAFF"]
 
 """
     handle function decorator, places above the view function to handle the request

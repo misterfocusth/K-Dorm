@@ -23,7 +23,8 @@ def authenticated_user_only(view_func):
         try:
             session_id_token = get_session_id_token(request)
             decoded_token = auth.verify_id_token(
-                session_id_token, clock_skew_seconds=30)
+                session_id_token, clock_skew_seconds=30
+            )
 
             uid = decoded_token["uid"]
 
