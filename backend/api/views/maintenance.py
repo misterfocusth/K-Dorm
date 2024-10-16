@@ -114,8 +114,8 @@ def student_maintenance_ticket_detail(
     elif request.method == "PUT":
         result = maintenance_uc.update_details(
             request, pk, request.ctx.store["BODY"])
-        serialized_data = MaintenanceSerializer(data=result)
-        return APIResponse(stsatus=status.HTTP_200_OK, data=serialized_data.data)
+        serialized_data = serialize(data=result)
+        return APIResponse(status=status.HTTP_200_OK, data=serialized_data)
     raise IllegalOperationException()
 
 

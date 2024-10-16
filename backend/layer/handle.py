@@ -125,7 +125,8 @@ def handle(
                 if not result:
 
                     return ErrorResponse.fromException(
-                        PermissionDenied("Permission denied for unknown reason")
+                        PermissionDenied(
+                            "Permission denied for unknown reason")
                     )
 
             # serializer

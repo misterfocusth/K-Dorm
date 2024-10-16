@@ -14,6 +14,7 @@ class UpdateMaintenanceTicketPayload(TypedDict):
     title: str
     description: str
     location: str
+    maintenanceStaffId: str
 
 
 class MaintenanceRepository:
@@ -45,6 +46,7 @@ class MaintenanceRepository:
 
     @staticmethod
     def update_maintenance_ticker_by_id(id: str, data: UpdateMaintenanceTicketPayload):
+
         try:
             maintenance_ticket = MaintenanceTicket.objects.filter(
                 id=id).first()
@@ -52,17 +54,18 @@ class MaintenanceRepository:
             if maintenance_ticket == None:
                 raise MaintenanceTicket.DoesNotExist
 
-            maintenance_staff_id = data.get("maintenanceStaffId")
+            maintenance_staff_id = data['maintenanceStaffId']
+            print("maintenance_staff_id", maintenance_staff_id)
 
             if maintenance_staff_id != None:
                 maintenance_staff = MaintenanceStaffRepository.get_by_id(
-                    maintenance_staff_id
+                    id=int(maintenance_staff_id)
                 )
 
                 if maintenance_staff:
-                    print("maintenance_ticket and maintenance_staff")
 
                     maintenance_ticket.maintenanceStaff = maintenance_staff  # type: ignore
+                    maintenance_ticket.isResolved = True
 
                     maintenance_ticket.save()
                     return maintenance_ticket
@@ -74,9 +77,12 @@ class MaintenanceRepository:
             maintenance_ticket.location = data["location"]
             maintenance_ticket.isResolved = True
             maintenance_ticket.resolvedAt = datetime.datetime.now()
+
+            maintenance_ticket.save()
         except MaintenanceTicket.DoesNotExist as e:
             raise NotFoundException("Maintenance Ticket not found")
         except Exception as e:
+            print(e)
             raise e
 
     @staticmethod
