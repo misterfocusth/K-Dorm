@@ -67,7 +67,7 @@ const StudentActivityPage = () => {
               <p>ชั่วโมงกิจกรรมจิตอาสา</p>
               <p
                 className="text-xs underline text-[#9E9E9E]"
-                onClick={() => router.push("/student/activity/all/1")}
+                onClick={() => router.push("/student/activity/all?category=VOLUNTEER")}
               >
                 ดูกิจกรรมที่เคยเข้าร่วม
               </p>
@@ -91,7 +91,7 @@ const StudentActivityPage = () => {
               <p>กิจกรรมอื่นๆ ที่เข้าร่วม</p>
               <p
                 className="text-xs underline text-[#9E9E9E]"
-                onClick={() => router.push("/student/activity/all/2")}
+                onClick={() => router.push("/student/activity/all?category=ACTIVITY")}
               >
                 ดูกิจกรรมที่เคยเข้าร่วม
               </p>
@@ -115,7 +115,7 @@ const StudentActivityPage = () => {
               <p>การประพฤติมิชอบ</p>
               <p
                 className="text-xs underline text-[#9E9E9E]"
-                onClick={() => router.push("/student/activity/all/3")}
+                onClick={() => router.push("/student/activity/all?category=ALL")}
               >
                 ดูประวัติ
               </p>
@@ -132,13 +132,13 @@ const StudentActivityPage = () => {
 
           <Select onValueChange={() => {}}>
             <SelectTrigger className="flex-1">
-              <SelectValue placeholder="สถานะ" />
+              <SelectValue placeholder="ดูตามประเภท" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
                 <SelectItem value="1">ทั้งหมด</SelectItem>
-                <SelectItem value="2">ซ่อมแล้ว</SelectItem>
-                <SelectItem value="3">ยังไม่ซ่อม</SelectItem>
+                <SelectItem value="2">กิจกรรม</SelectItem>
+                <SelectItem value="3">จิตอาสา</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
