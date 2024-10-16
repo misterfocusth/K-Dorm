@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button'
 import { useRenderModal } from '@/providers/ModalProvider'
 import { MutateBuildingModal } from './MutateBuildingModal'
 import Link from 'next/link'
+import { useDeleteBuilding } from '../hooks/useDeleteBuilding'
+import { toast } from 'sonner'
 
 interface Building {
     id: number
@@ -70,6 +72,20 @@ interface RowProps extends Building {
 const Row: React.FC<RowProps> = ({ id, name, roomCount }) => {
 
     const { open } = useRenderModal(<MutateBuildingModal building_id={`${id}`} name={name} />)
+    const { mutateAsync: deleteBuilding } = useDeleteBuilding()
+
+
+    const handleDelete = async () => {
+
+        const ok = await deleteBuilding(`${id}`)
+        if (ok) {
+            toast.success('ลบข้อมูลสำเร็จ')
+        } else {
+            toast.error('ลบข้อมูลไม่สำเร็จ')
+        }
+    }
+
+
 
     return (
         <TableRow>
@@ -77,7 +93,7 @@ const Row: React.FC<RowProps> = ({ id, name, roomCount }) => {
             <TableCell>{roomCount}</TableCell>
             <TableCell className='w-[280px] justify-end items-center flex gap-x-4'>
                 <EditIcon className='cursor-pointer' onClick={open} />
-                <DeleteIcon />
+                <DeleteIcon className='cursor-pointer' onClick={handleDelete} />
                 <Link href={`/staff/building/${id}`}>
                     <Button>
                         จัดห้องพักในตึก

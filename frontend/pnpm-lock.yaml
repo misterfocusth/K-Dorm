@@ -8,6 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@autoform/react':
+        specifier: ^1.2.0
+        version: 1.2.0
+      '@autoform/zod':
+        specifier: ^1.1.2
+        version: 1.1.2
       '@hookform/resolvers':
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
@@ -210,6 +216,15 @@ packages:
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
+
+  '@autoform/core@1.1.2':
+    resolution: {integrity: sha512-cdomb7+AkdQMEoP0yTUsLAXE0+GpzdpstCuWeqJtTZ2+9RIHptyPIqDar512KI1KbK7887rxl4vih4M8XLqWYQ==}
+
+  '@autoform/react@1.2.0':
+    resolution: {integrity: sha512-so3wUGpPsQSB5MRk9x70oaho3oXAJW1lO2rwJYN5BGNZH9t+4DWIaLms6nnO8EF2Qc6s866VEkbVwB3Nn0vl+g==}
+
+  '@autoform/zod@1.1.2':
+    resolution: {integrity: sha512-VKz+WNRGehOZcepPXK/UIMbiS2nGzq179PU1TDs4UWJZZV1+zyYcHXfX1qz/iNz+Y9+1CQiGgMi+b7tnGavZIA==}
 
   '@babel/runtime@7.25.6':
     resolution: {integrity: sha512-VBj9MYyDb9tuLq7yzqjgzt6Q+IBQLrGZfdjOekyEirZPHxXWoTSGUTMrpsfi58Up73d13NfYLv8HT9vmznjzhQ==}
@@ -3155,6 +3170,21 @@ packages:
 snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
+
+  '@autoform/core@1.1.2': {}
+
+  '@autoform/react@1.2.0':
+    dependencies:
+      '@autoform/core': 1.1.2
+      '@autoform/zod': 1.1.2
+      '@hookform/resolvers': 3.9.0(react-hook-form@7.53.0(react@18.3.1))
+      react: 18.3.1
+      react-hook-form: 7.53.0(react@18.3.1)
+
+  '@autoform/zod@1.1.2':
+    dependencies:
+      '@autoform/core': 1.1.2
+      zod: 3.23.8
 
   '@babel/runtime@7.25.6':
     dependencies:

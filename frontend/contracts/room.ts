@@ -27,7 +27,7 @@ export const roomContract = c.router({
 		path: "/staff/room",
 		body: z.object({
 			rooms: roomSchema
-				.omit({ id: true })
+				.pick({ name: true, floor: true })
 				.extend({
 					building_id: z.string(),
 				})

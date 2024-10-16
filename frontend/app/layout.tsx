@@ -19,8 +19,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        <main className={notoSansThai.className}>
+      <body className={notoSansThai.className}>
+        <main >
           <GlobalProvider>
             {children}
           </GlobalProvider>

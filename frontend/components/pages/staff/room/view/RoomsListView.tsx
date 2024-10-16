@@ -1,14 +1,16 @@
 'use client'
 
 import { Button } from "@/components/ui/button"
-import { useRoomsByBuilding } from "../hooks/useRoomsByBuilding"
-import { buildingContract } from "@/contracts/building"
-import { RoomsTable, RoomsTableProps } from "../components/RoomsTable"
+import { RoomsTable } from "../components/RoomsTable"
 import { getApiService } from "@/libs/tsr-react-query"
 import { useMemo } from "react"
 import { Skeleton } from "@/components/ui/skeleton"
 import { match } from "ts-pattern"
 import { TableEmpty, TableLoading } from "@/components/ui/table"
+import { useRenderModal } from "@/providers/ModalProvider"
+import { CreateRoomsModal } from "../components/CreateRoomModal"
+import { useRoomsByBuilding } from "../hooks/useRoomsByBuilding"
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 
 interface Props {
     building_id: string
@@ -16,32 +18,23 @@ interface Props {
 
 export const RoomsListView: React.FC<Props> = ({ building_id }) => {
 
-    console.log('building_id :>> ', building_id);
 
-    const query = getApiService().building.getWithRooms.useQuery({
-        queryKey: ['building-with-rooms'],
-        queryData: {
-            params: {
-                id: building_id
-            }
-        }
-    })
-
-    const data = useMemo(() => {
-        if (query.data?.status !== 200)
-            return undefined
-        const name = query.data.body.result.name
-        const rooms = query.data.body.result.rooms
-
-        return {
-            name, rooms
-        }
-    }, [query.data?.body.result.name, query.data?.body.result.rooms, query.data?.status])
-
-
+    const { data } = useRoomsByBuilding(building_id)
+    const { open } = useRenderModal(<CreateRoomsModal building_id={building_id} />)
 
     return (
-        <div className="flex flex-col gap-y-2 h-full">
+        <div className="flex flex-col gap-y-8 h-full">
+            <Breadcrumb>
+                <BreadcrumbList>
+                    <BreadcrumbItem>
+                        <BreadcrumbLink href="/staff/building">ตึกทั้งหมด</BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                        <BreadcrumbLink href={`/staff/building/${building_id}`}>ตึก {data?.name ?? "-"}</BreadcrumbLink>
+                    </BreadcrumbItem>
+                </BreadcrumbList>
+            </Breadcrumb>
             <div className="flex w-full">
                 <div className="flex flex-col w-full">
                     <h1 className="text-3xl font-medium flex gap-x-2">
@@ -52,12 +45,11 @@ export const RoomsListView: React.FC<Props> = ({ building_id }) => {
                     </span>
                 </div>
                 <div className="flex items-end justify-end pl-auto">
-                    <Button >
+                    <Button onClick={open} >
                         เพิ่มห้องใหม่
                     </Button>
                 </div>
             </div>
-
             <div className="flex-grow mt-2">
                 {
                     match({
@@ -70,7 +62,7 @@ export const RoomsListView: React.FC<Props> = ({ building_id }) => {
                             isPending: true
                         }, () => <TableLoading />)
                         .otherwise(() => <>
-                            <RoomsTable rooms={data!.rooms} />
+                            <RoomsTable building_id={building_id} rooms={data!.rooms} />
                         </>)
                 }
             </div>
