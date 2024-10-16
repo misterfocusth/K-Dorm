@@ -1,13 +1,13 @@
 from rest_framework import serializers
 from rest_framework.decorators import api_view
 
-from backend.api.use_case.auth import auth_uc
-from backend.api.use_case.student import student_uc
-from backend.exception.application_logic.client.bad_request import BadRequestException
-from backend.exception.application_logic.server.Illegal_operation import (
+from api.use_case.auth import auth_uc
+from api.use_case.student import student_uc
+from exception.application_logic.client.bad_request import BadRequestException
+from exception.application_logic.server.Illegal_operation import (
     IllegalOperationException,
 )
-from backend.exception.auth.unauthenticated import UnauthenticatedException
+from exception.auth.unauthenticated import UnauthenticatedException
 from serializers.utils import serialize_unwrap
 from domain.models import Account, Student
 from interfaces.api_response import APIResponse

@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view
 from api.use_case.auth import auth_uc
 from api.use_case.student import student_uc
 from api.views.student.details import GetInfoResponseSerializer
-from backend.exception.auth.unauthenticated import UnauthenticatedException
+from exception.auth.unauthenticated import UnauthenticatedException
 from exception.application_logic.server.Illegal_operation import (
     IllegalOperationException,
 )

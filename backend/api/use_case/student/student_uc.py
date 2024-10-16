@@ -4,7 +4,7 @@ from api.use_case.student.onboard import onboard
 from api.use_case.student.get_student_from_ctx import get_student_from_ctx
 from api.use_case.student.create_students import create_students
 from api.repository.student_repository import StudentRepository
-from backend.api.use_case import permission_checker
+from api.use_case import permission_checker
 from interfaces.context import Context
 from interfaces.request_with_context import RequestWithContext
 from layer.use_case import usecase
