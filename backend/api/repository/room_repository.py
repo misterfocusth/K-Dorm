@@ -36,7 +36,9 @@ class RoomRepository:
         return room
 
     @staticmethod
-    def edit(id: str, floor: Optional[int], name: Optional[str]) -> Room | None:
+    def edit(
+        id: str, floor: Optional[int] = None, name: Optional[str] = None
+    ) -> Room | None:
         room = Room.objects.get(id=id)
         if room is None:
             return None
