@@ -1,18 +1,21 @@
 import { match } from 'ts-pattern'
 import { Table, TableCaption, TableHeader, TableRow, TableHead, TableBody, TableCell, TableLoading, TableEmpty } from "@/components/ui/table"
 import React, { ReactNode } from "react"
+import { DeleteIcon, EditIcon } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { useRenderModal } from '@/providers/ModalProvider'
+import { MutateBuildingModal } from './MutateBuildingModal'
 
+interface Building {
+    id: number
+    name: string
+    roomCount: number
+}
 interface Props {
-    buildings: {
-        id: number
-        name: string
-        roomCount: number
-    }[] | undefined
+    buildings: Building[] | undefined
 }
 
 export const BuildingDashboardTable: React.FC<Props> = ({ buildings }) => {
-
-    console.log('buildings :>> ', buildings);
 
     return (
         <>
@@ -43,22 +46,41 @@ export const BuildingDashboardTable: React.FC<Props> = ({ buildings }) => {
                                             <TableHead className='w-[280px]'></TableHead>
                                         </TableRow>
                                     </TableHeader>
-                                    {buildings?.map(
-                                        building => (
-                                            <TableBody className='h-full'>
-                                                <TableRow key={building.id}>
-                                                    <TableCell className="font-medium">{building.name}</TableCell>
-                                                    <TableCell>{building.roomCount}</TableCell>
-                                                    <TableCell className='w-[280px]'></TableCell>
-                                                </TableRow>
-                                            </TableBody>
-                                        )
-                                    )}
+                                    <TableBody className='h-full'>
+                                        {buildings?.map(
+                                            building => (
+                                                <Row key={building.id} {...building} />
+                                            )
+                                        )}
+                                    </TableBody>
                                 </Table >
                             </>
                         )
                     })
             }
         </>
+    )
+}
+
+interface RowProps extends Building {
+
+}
+
+const Row: React.FC<RowProps> = ({ id, name, roomCount }) => {
+
+    const { open } = useRenderModal(<MutateBuildingModal building_id={`${id}`} name={name} />)
+
+    return (
+        <TableRow>
+            <TableCell className="font-medium">{name}</TableCell>
+            <TableCell>{roomCount}</TableCell>
+            <TableCell className='w-[280px] justify-end items-center flex gap-x-4'>
+                <EditIcon className='cursor-pointer' onClick={open} />
+                <DeleteIcon />
+                <Button>
+                    จัดห้องพักในตึก
+                </Button>
+            </TableCell>
+        </TableRow>
     )
 }

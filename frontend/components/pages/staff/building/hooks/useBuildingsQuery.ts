@@ -7,7 +7,6 @@ export const useBuildingsQuery = () => {
         queryKey: ["buildings"]
     })
 
-    console.log('query :>> ', query);
 
     const buildings = useMemo(() => {
         if (query.data?.status === 200) {

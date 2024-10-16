@@ -55,7 +55,7 @@ export const buildingContract = c.router({
 			id: z.string(),
 		}),
 		responses: {
-			200: c.type<Response<GetBuildingSchema>>(),
+			200: c.type<Response<undefined>>(),
 			400: c.type<ErrorResponse>(),
 		},
 	},

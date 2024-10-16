@@ -93,12 +93,19 @@ def handle(
                 if len(only_role) > 0:
                     found = False
                     if "STUDENT" in only_role:
-                        if auth_uc.is_student(_req, accountId=_req.ctx.user.uid):
+                        if auth_uc.is_student(_req, accountId=_req.ctx.user.pk):
                             found = True
                     if "STAFF" in only_role:
-                        if auth_uc.is_staff(_req, accountId=_req.ctx.user.uid):
+                        if auth_uc.is_staff(_req, accountId=_req.ctx.user.pk):
                             found = True
-                    # TOOD: The rest roles
+                    if "MAINTENANCE_STAFF" in only_role:
+                        if auth_uc.is_maintenance_staff(
+                            _req, accountId=_req.ctx.user.pk
+                        ):
+                            found = True
+                    if "SECURITY_STAFF" in only_role:
+                        if auth_uc.is_security_staff(_req, accountId=_req.ctx.user.pk):
+                            found = True
 
                     if not found:
                         unauthticated = UnauthenticatedException(

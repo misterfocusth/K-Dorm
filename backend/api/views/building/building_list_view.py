@@ -2,6 +2,7 @@ from rest_framework import serializers
 from rest_framework.decorators import api_view
 from api.use_case.building import building_uc
 from api.views.student import serializer
+from serializers.utils import serialize_unwrap
 from domain.models import Building, Room
 from exception.application_logic.server.Illegal_operation import (
     IllegalOperationException,
@@ -19,7 +20,7 @@ class CreateBuildingPayloadSerializer(serializers.Serializer):
 class GetBuildingResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Building
-        fields = ["id", "name"]
+        fields = ["id", "name", "roomCount"]
 
     roomCount = serializers.IntegerField(
         source="room_set.count", read_only=True, default=0
@@ -36,19 +37,14 @@ def view(request: RequestWithContext):
     if request.method == "GET":
         buildings = building_uc.get_list(request)
 
-        response = GetBuildingResponseSerializer(buildings, many=True)
-        if not response.is_valid():
-            raise UnexpectedException("Response is not valid")
+        response = serialize_unwrap(buildings, GetBuildingResponseSerializer, many=True)
 
-        return APIResponse(response.validated_data)
+        return APIResponse(response)
 
     elif request.method == "POST":
-        building = building_uc.create(
-            request, name=request.ctx.store["BODY"]["name"])
+        building = building_uc.create(request, name=request.ctx.store["BODY"]["name"])
 
-        response = GetBuildingResponseSerializer(building)
-        if not response.is_valid():
-            raise UnexpectedException("Response is not valid")
+        response = GetBuildingResponseSerializer(data=building)
 
         return APIResponse(response.validated_data, status=201)
 

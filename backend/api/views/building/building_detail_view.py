@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 
 from api.use_case.auth import auth_uc
 from api.use_case.building import building_uc
+from serializers.utils import serialize_unwrap
 from domain.models import Building, Room
 from exception.application_logic.server.Illegal_operation import (
     IllegalOperationException,
@@ -32,6 +33,12 @@ class EditBuildingSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=255)
 
 
+class BuildingResponseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Building
+        fields = ["id", "name"]
+
+
 @api_view(["PATCH", "GET", "DELETE"])
 @handle(
     serializer_config={"BODY": EditBuildingSerializer},
@@ -49,7 +56,10 @@ def view(request: RequestWithContext, building_id: str):
     # GET
     if request.method == "GET":
         building = building_uc.get_by_id(request, building_id)
-        return APIResponse(building)
+
+        response = serialize_unwrap(building, BuildingResponseSerializer)
+
+        return APIResponse(response)
 
     is_staff = auth_uc.is_staff(request, user.pk)
 
@@ -57,15 +67,18 @@ def view(request: RequestWithContext, building_id: str):
     if request.method == "PATCH" and is_staff:
         payload = request.ctx.store["BODY"]
         building = building_uc.edit(request, building_id, name=payload["name"])
-        return APIResponse(building)
+
+        response = serialize_unwrap(building, BuildingResponseSerializer)
+
+        return APIResponse(response)
 
     # Delete
     if request.method == "DELETE" and is_staff:
         building = building_uc.delete(request, building_id)
-        return APIResponse(building)
+
+        return APIResponse(None)
 
     if not is_staff:
-        raise UnauthorizedActionException(
-            "User must be staff to perform this action")
+        raise UnauthorizedActionException("User must be staff to perform this action")
 
     raise IllegalOperationException("Method not allowed")
