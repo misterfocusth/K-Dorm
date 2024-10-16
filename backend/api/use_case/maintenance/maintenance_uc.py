@@ -14,6 +14,7 @@ class UpdateMainternanceTicketPayload(TypedDict):
     description: str
     location: str
     title: str
+    maintenanceStaffId: str
 
 
 @usecase()
@@ -24,6 +25,7 @@ def update_details(context: Context, pk: str, payload: UpdateMainternanceTicketP
             "description": payload["description"],
             "location": payload["location"],
             "title": payload["title"],
+            "maintenanceStaffId": payload['maintenanceStaffId']
         },
     )
 

@@ -1,23 +1,34 @@
 from rest_framework import serializers
 from rest_framework.decorators import api_view
-from backend.api.use_case.room import room_uc
-from backend.domain.models import Room
-from backend.exception.application_logic.server.base import UnexpectedException
-from backend.interfaces.api_response import APIResponse
-from backend.interfaces.request_with_context import RequestWithContext
-from backend.layer.handle import handle
+from api.use_case.room import room_uc
+from serializers.utils import serialize_unwrap
+from domain.models import Room
+from exception.application_logic.server.base import UnexpectedException
+from interfaces.api_response import APIResponse
+from interfaces.request_with_context import RequestWithContext
+from layer.handle import handle
 
 
-class CreateRoomPayloadSerializer(serializers.ModelSerializer):
+class _nested_CreateRoomPayloadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
         fields = ["floor", "name", "building_id"]
 
+    building_id = serializers.CharField()
 
-class CreateRoomResponseSerializer(serializers.ModelSerializer):
+
+class CreateRoomPayloadSerializer(serializers.Serializer):
+    rooms = _nested_CreateRoomPayloadSerializer(many=True)
+
+
+class _nested_CreateRoomPayloadResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
-        fields = ["id", "floor", "name", "building_id"]
+        fields = ["floor", "name", "building_id", "id"]
+
+
+class CreateRoomResponseSerializer(serializers.Serializer):
+    rooms = _nested_CreateRoomPayloadResponseSerializer(many=True)
 
 
 @api_view(["POST"])
@@ -29,15 +40,11 @@ class CreateRoomResponseSerializer(serializers.ModelSerializer):
 def view(request: RequestWithContext):
     payload = request.ctx.store["BODY"]
 
-    room = room_uc.create(
-        request,
-        floor=payload["floor"],
-        name=payload["name"],
-        building_id=payload["building_id"],
-    )
+    to_create_rooms = payload["rooms"]
 
-    response = CreateRoomResponseSerializer(room)
-    if not response.is_valid():
-        raise UnexpectedException("Response is not valid")
+    print(to_create_rooms)
+    rooms = room_uc.createMany(request, to_create_rooms)
 
-    return APIResponse(response.validated_data, status=201)
+    response = serialize_unwrap({"rooms": rooms}, CreateRoomResponseSerializer)
+
+    return APIResponse(response, status=201)

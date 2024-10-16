@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.db.models.manager import BaseManager
 from typing import List, NotRequired, TypedDict, Unpack
 from domain.models import RentBilling, Residence
@@ -55,7 +56,44 @@ def get_list(**filter: Unpack[ResidenceQuery]) -> List[Residence]:
     return list(query.all())
 
 
-def get_by_id(
-    residence_id: str,
-) -> Residence:
-    return Residence.objects.get(id=residence_id)
+class ResidenceRepository:
+
+    @staticmethod
+    def get_by_id(
+        residence_id: str,
+    ) -> Residence:
+        return Residence.objects.get(id=residence_id)
+
+    @staticmethod
+    def get_by_room_id(
+        room_id: str,
+    ) -> List[Residence]:
+        residences = Residence.objects.filter(room_id=room_id).all()
+        return list(residences)
+
+    @staticmethod
+    def get_by_student_id(
+        student_id: str,
+    ) -> List[Residence]:
+        residences = Residence.objects.filter(student_id=student_id).all()
+        return list(residences)
+
+    @staticmethod
+    def get_complete_overlap(
+        start_date: DateTime,
+        end_date: DateTime,
+    ) -> List[Residence]:
+        residences = Residence.objects.filter(
+            Q(startDate__lte=start_date) & Q(endDate__gte=end_date)
+        ).all()
+        return list(residences)
+
+    @staticmethod
+    def get_partial_overlap(
+        start_date: DateTime,
+        end_date: DateTime,
+    ) -> List[Residence]:
+        residences = Residence.objects.filter(
+            Q(startDate__lte=start_date) | Q(endDate__gte=end_date)
+        ).all()
+        return list(residences)

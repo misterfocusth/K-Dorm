@@ -11,6 +11,8 @@ from api.repository.firebase_storage import upload_file_to_bucket
 from layer.use_case import usecase
 from utils.firebase_storage import get_bucket_location
 
+from interfaces.context import Context
+
 
 class CreateMaintenanceTicketPayload(TypedDict):
     title: str
@@ -20,18 +22,18 @@ class CreateMaintenanceTicketPayload(TypedDict):
 
 @transaction.atomic
 @usecase(only_authenticated=True)
-def create_ticket(request, payload: CreateMaintenanceTicketPayload):
+def create_ticket(context: Context, payload: CreateMaintenanceTicketPayload, files):
 
     # Create Maintenance Ticket
     maintenance_ticket = MaintenanceRepository.create_maintenance_ticket(
         title=payload["title"],
         description=payload["description"],
         location=payload["location"],
-        user=request.ctx.user,
+        user=context.user,
     )
 
     # Upload and Save Files
-    uploaded_files = request.FILES.getlist("files")
+    uploaded_files = files
 
     for file in uploaded_files:
         bucket_location = get_bucket_location(

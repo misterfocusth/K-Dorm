@@ -7,16 +7,12 @@ from typing import (
     Optional,
     ParamSpec,
     Set,
-    Tuple,
     Type,
     TypedDict,
     cast,
 )
 from rest_framework import serializers
 
-from api.use_case.auth import is_staff
-from exception.unknown_exception import UnknownException
-from exception.auth.base import AuthenticationFailure
 from exception.application_logic.client.validation import ValidationException
 from exception.auth.unauthenticated import UnauthenticatedException
 from exception.base_stackable_exception import StackableException
@@ -42,7 +38,7 @@ class SerializerConfig(TypedDict):
 
 PathParams = ParamSpec("PathParams")
 
-ROLE = Literal["STUDENT", "STAFF", "MAINTENANCE_STAFF", "SECURITY_STAFF"]
+ROLE = Literal["STUDENT", "STAFF", "maintenance_STAFF", "SECURITY_STAFF"]
 
 """
     handle function decorator, places above the view function to handle the request
@@ -97,12 +93,19 @@ def handle(
                 if len(only_role) > 0:
                     found = False
                     if "STUDENT" in only_role:
-                        if auth_uc.is_student(_req, accountId=_req.ctx.user.uid):
+                        if auth_uc.is_student(_req, accountId=_req.ctx.user.pk):
                             found = True
                     if "STAFF" in only_role:
-                        if auth_uc.is_staff(_req, accountId=_req.ctx.user.uid):
+                        if auth_uc.is_staff(_req, accountId=_req.ctx.user.pk):
                             found = True
-                    # TOOD: The rest roles
+                    if "MAINTENANCE_STAFF" in only_role:
+                        if auth_uc.is_maintenance_staff(
+                            _req, accountId=_req.ctx.user.pk
+                        ):
+                            found = True
+                    if "SECURITY_STAFF" in only_role:
+                        if auth_uc.is_security_staff(_req, accountId=_req.ctx.user.pk):
+                            found = True
 
                     if not found:
                         unauthticated = UnauthenticatedException(
@@ -115,10 +118,10 @@ def handle(
                 try:
                     result = permission_checker(_req)
                 except PermissionDenied as e:
-                    return ErrorResponse.fromException(e)
+                    return ErrorResponse(e.message, e.error_code, status=e.error_status)
                 except Exception as e:
-                    return ErrorResponse.fromException(
-                        UnknownException("Something went wrong")
+                    return ErrorResponse(
+                        status=500, error="Internal Server Error", message=str(e)
                     )
 
                 if not result:
@@ -134,46 +137,42 @@ def handle(
                 post_serializer = serializer_config.get("POST")
                 patch_serializer = serializer_config.get("PATCH")
                 put_serializer = serializer_config.get("PUT")
+
+                NO_BODY_METHODS = ["GET", "HEAD", "OPTIONS", "DELETE"]
+
                 try:
                     if query_serializer:
                         data = query_serializer(data=request.GET.dict())
                         if not data.is_valid():
-                            raise ValidationException(
-                                json.dumps(cast(dict, data.error_messages))
-                            )
+                            raise ValidationException(data.error_messages.__str__())
                         _req.ctx.store["QUERY"] = data.validated_data
                         _req.ctx.store["QUERY_serializer"] = data
-                    if body_serializer and request.data is not None:
+                    if (
+                        body_serializer
+                        and request.data is not None
+                        and request.method not in NO_BODY_METHODS
+                    ):
                         data = body_serializer(data=_req.data)
                         if not data.is_valid():
-                            raise ValidationException(
-                                json.dumps(cast(dict, data.error_messages))
-                            )
+                            raise ValidationException(data.error_messages.__str__())
                         _req.ctx.store["BODY"] = data.validated_data
                         _req.ctx.store["BODY_serializer"] = data
                     if post_serializer and request.method == "POST":
                         data = post_serializer(data=_req.data)
                         if not data.is_valid():
-                            raise ValidationException(
-                                json.dumps(cast(dict, data.error_messages))
-                            )
+                            raise ValidationException(data.error_messages.__str__())
                         _req.ctx.store["BODY"] = data.validated_data
                         _req.ctx.store["BODY_serializer"] = data
-
                     if patch_serializer and request.method == "PATCH":
                         data = patch_serializer(data=_req.data)
                         if not data.is_valid():
-                            raise ValidationException(
-                                json.dumps(cast(dict, data.error_messages))
-                            )
+                            raise ValidationException(data.error_messages.__str__())
                         _req.ctx.store["BODY"] = data.validated_data
                         _req.ctx.store["BODY_serializer"] = data
                     if put_serializer and request.method == "PUT":
                         data = put_serializer(data=_req.data)
                         if not data.is_valid():
-                            raise ValidationException(
-                                json.dumps(cast(dict, data.error_messages))
-                            )
+                            raise ValidationException(data.error_messages.__str__())
                         _req.ctx.store["BODY"] = data.validated_data
                         _req.ctx.store["BODY_serializer"] = data
 
@@ -186,7 +185,9 @@ def handle(
                     )
             try:
                 # execute the handle function
+                print("lol")
                 return handleFn(_req, *args, **kwargs)
+
             except StackableException as e:
                 print("========STACKABLE EXCEPTION========")
                 print(e.error_code)
@@ -195,7 +196,7 @@ def handle(
             except Exception as e:
                 print("========UNKNOWN EXCEPTION========")
                 print(e)
-                exception = UnknownException(
+                exception = UncaughtException(
                     message="Uncaught exception, internal server error"
                 )
                 return ErrorResponse.fromException(exception)
