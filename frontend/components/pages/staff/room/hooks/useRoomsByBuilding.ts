@@ -3,7 +3,7 @@ import { useMemo } from "react";
 
 export const useRoomsByBuilding = (buildingId: string) => {
 	const query = getApiService().building.getWithRooms.useQuery({
-		queryKey: ["building-with-rooms", buildingId],
+		queryKey: ["building-rooms", buildingId],
 		queryData: {
 			params: {
 				id: buildingId,
@@ -17,7 +17,7 @@ export const useRoomsByBuilding = (buildingId: string) => {
 		} else {
 			return undefined;
 		}
-	}, [query]);
+	}, [query.data?.body.result, query.data?.status]);
 
 	return { ...query, data: response };
 };

@@ -1,3 +1,4 @@
+from time import clock_getres
 from typing import List, Optional, TypedDict
 from api.repository.room_repository import RoomRepository
 from domain.models import Room
@@ -45,6 +46,7 @@ def createMany(ctx: Context, rooms: List[CreateRoomPayload]):
     new_rooms: List[Room] = []
 
     for room in rooms:
+        print(room)
         new_room = RoomRepository.create(
             room["floor"], room["name"], room["building_id"]
         )
@@ -65,7 +67,6 @@ def edit(
     room_id: str,
     floor: Optional[int],
     name: Optional[str],
-    building_id: Optional[str],
 ):
     room = RoomRepository.get_by_id(room_id)
     if room is None:
@@ -74,19 +75,11 @@ def edit(
         room.floor = floor
     if name is not None:
         room.name = name
-    if building_id is not None:
-        building = RoomRepository.get_by_id(building_id)
-        if building is None:
-            raise NotFoundException("Building not found")
-        room.building.id = building_id
     room.save()
     return room
 
 
 @usecase(only_authenticated=True)
 def delete(ctx: Context, id: str):
-    room = RoomRepository.get_by_id(id)
-    if room is None:
-        return None
-    room.delete()
+    room = RoomRepository.delete(id)
     return room

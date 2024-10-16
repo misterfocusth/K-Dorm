@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_framework.decorators import api_view
 from api.use_case.room import room_uc
+from serializers.utils import serialize_unwrap
 from domain.models import Room
 from exception.application_logic.server.base import UnexpectedException
 from interfaces.api_response import APIResponse
@@ -13,6 +14,8 @@ class _nested_CreateRoomPayloadSerializer(serializers.ModelSerializer):
         model = Room
         fields = ["floor", "name", "building_id"]
 
+    building_id = serializers.CharField()
+
 
 class CreateRoomPayloadSerializer(serializers.Serializer):
     rooms = _nested_CreateRoomPayloadSerializer(many=True)
@@ -24,7 +27,7 @@ class _nested_CreateRoomPayloadResponseSerializer(serializers.ModelSerializer):
         fields = ["floor", "name", "building_id", "id"]
 
 
-class CreateRoomResponseSerializer(serializers.ModelSerializer):
+class CreateRoomResponseSerializer(serializers.Serializer):
     rooms = _nested_CreateRoomPayloadResponseSerializer(many=True)
 
 
@@ -39,8 +42,9 @@ def view(request: RequestWithContext):
 
     to_create_rooms = payload["rooms"]
 
+    print(to_create_rooms)
     rooms = room_uc.createMany(request, to_create_rooms)
 
-    response = CreateRoomResponseSerializer(rooms)
+    response = serialize_unwrap({"rooms": rooms}, CreateRoomResponseSerializer)
 
-    return APIResponse(response.data, status=201)
+    return APIResponse(response, status=201)

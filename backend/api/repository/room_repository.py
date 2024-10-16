@@ -31,7 +31,9 @@ class RoomRepository:
 
     @staticmethod
     def create(floor: int, name: str, building_id: str) -> Room:
+        print(building_id)
         room = Room.objects.create(floor=floor, name=name, building_id=building_id)
+        print(room)
         room.save()
         return room
 

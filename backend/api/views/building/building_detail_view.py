@@ -1,3 +1,4 @@
+from time import clock_getres
 from rest_framework import serializers
 from rest_framework.decorators import api_view
 
@@ -93,6 +94,8 @@ def staff_view(request: RequestWithContext, building_id: str):
 
     # Delete
     if request.method == "DELETE" and is_staff:
+        print(building_id)
+
         building = building_uc.delete(request, building_id)
 
         return APIResponse(None)

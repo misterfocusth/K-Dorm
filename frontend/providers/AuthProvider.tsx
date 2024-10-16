@@ -123,6 +123,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       return userDataResult.result;
     } catch (error) {
       console.error("Error getting user session", error);
+      setCurrentUser(null);
       toast.error("เกิดข้อผิดพลาดในการเข้าสู่ระบบ กรุณาตรวจสอบอีเมลที่ใช้อีกครั้งหนึ่ง");
       await removeSession();
     }
