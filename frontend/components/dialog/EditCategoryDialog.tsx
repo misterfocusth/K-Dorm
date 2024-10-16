@@ -35,81 +35,54 @@ import { Switch } from "@/components/ui/switch";
 import { getApiService } from "@/libs/tsr-react-query";
 import { useStaffAccountMutation } from "@/hooks/mutation/useStaffAccountMutation";
 import { Loader2 } from "lucide-react";
+import { useActivityCategoryContext } from "@/providers/ActivityCategoryProvider";
 
-const editStaffAccountFormSchema = z.object({
-  firstName: z.string().min(1, {
-    message: "กรุณากรอกชื่อจริง",
+const editCategoryFormSchema = z.object({
+  handle: z.string().min(1, {
+    message: "กรุณากรอกไอดีของประเภทกิจกรรม",
   }),
-  lastName: z.string().min(1, {
-    message: "กรุณากรอกนามสกุล",
+  name: z.string().min(1, {
+    message: "กรุณากรอกชื่อของประเภทกิจกรรม",
   }),
-  email: z.string().email({
-    message: "กรุณากรอกอีเมลให้ถูกต้อง",
-  }),
-  type: z.enum(["STAFF", "MAINTENANCE_STAFF", "SECURITY_STAFF"], {
-    message: "กรุณาเลือกประเภทของพนักงาน",
-  }),
-  isDisabled: z.boolean().default(false),
+  visibleToStudents: z.boolean().default(false),
+  visibleToStaffs: z.boolean().default(false),
+  visibleToSecurityStaffs: z.boolean().default(false),
 });
 
-type EditStaffAccountDialogProps = {
+type EditCategoryDialogProps = {
   refetch: () => void;
 };
 
-const EditStaffAccountDialog = ({ refetch }: EditStaffAccountDialogProps) => {
+const EditCategoryDialog = ({ refetch }: EditCategoryDialogProps) => {
   const [isPending, startTransition] = useTransition();
   const { mutateAsync } = useStaffAccountMutation();
 
-  const { selectedStaffAccount, isShowEditStaffAccountDialog, hideEditStaffAccountDialog } =
-    useManageStaffAccountContext();
+  const { selectedCategory, isShowEditCategoryModal, hideEditCategoryModal } =
+    useActivityCategoryContext();
 
-  const form = useForm<z.infer<typeof editStaffAccountFormSchema>>({
-    resolver: zodResolver(editStaffAccountFormSchema),
+  const form = useForm<z.infer<typeof editCategoryFormSchema>>({
+    resolver: zodResolver(editCategoryFormSchema),
     values: {
-      firstName: selectedStaffAccount?.firstName ?? "",
-      lastName: selectedStaffAccount?.lastName ?? "",
-      email: selectedStaffAccount?.email ?? "",
-      type: !selectedStaffAccount
-        ? "STAFF"
-        : selectedStaffAccount.staff
-        ? "STAFF"
-        : selectedStaffAccount.maintenanceStaff
-        ? "MAINTENANCE_STAFF"
-        : "SECURITY_STAFF",
-      isDisabled: !selectedStaffAccount?.isDisabled,
+      handle: selectedCategory?.handle ?? "",
+      name: selectedCategory?.name ?? "",
+      visibleToStudents: selectedCategory?.visibleToStudents ?? false,
+      visibleToStaffs: selectedCategory?.visibleToStaffs ?? false,
+      visibleToSecurityStaffs: selectedCategory?.visibleToSecurityStaffs ?? false,
     },
   });
 
-  const onSubmit = useCallback(
-    (values: z.infer<typeof editStaffAccountFormSchema>) => {
-      startTransition(async () => {
-        values.isDisabled = !values.isDisabled;
+  const onSubmit = useCallback(async (values: z.infer<typeof editCategoryFormSchema>) => {
+    console.log(values);
+  }, []);
 
-        const result = await mutateAsync({
-          body: values,
-          params: {
-            id: selectedStaffAccount?.id + "",
-          },
-        });
-
-        if (result.body) {
-          form.reset();
-          hideEditStaffAccountDialog();
-          refetch();
-        }
-      });
-    },
-    [selectedStaffAccount, startTransition, mutateAsync, form, hideEditStaffAccountDialog, refetch]
-  );
-
-  if (!isShowEditStaffAccountDialog || !selectedStaffAccount) return null;
+  //   if (!isShowEditCategoryModal || !selectedCategory) return null;
 
   return (
     <Dialog
-      open={isShowEditStaffAccountDialog}
+      open={isShowEditCategoryModal}
       onOpenChange={() => {
         form.reset();
-        hideEditStaffAccountDialog();
+        hideEditCategoryModal();
       }}
     >
       <DialogContent className="max-w-2xl">
@@ -123,12 +96,12 @@ const EditStaffAccountDialog = ({ refetch }: EditStaffAccountDialogProps) => {
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
               <FormField
                 control={form.control}
-                name="firstName"
+                name="handle"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel>ชื่อจริง</FormLabel>
+                    <FormLabel>ไอดีของประเภทกิจกรรม</FormLabel>
                     <FormControl>
-                      <Input placeholder="John" {...field} />
+                      <Input placeholder="ENTER_CHECKIN" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -137,12 +110,12 @@ const EditStaffAccountDialog = ({ refetch }: EditStaffAccountDialogProps) => {
 
               <FormField
                 control={form.control}
-                name="lastName"
+                name="name"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel>นามสกุล</FormLabel>
+                    <FormLabel>ชื่อกิจกรรม</FormLabel>
                     <FormControl>
-                      <Input placeholder="Doe" {...field} />
+                      <Input placeholder="เข้าหอพัก" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -151,49 +124,54 @@ const EditStaffAccountDialog = ({ refetch }: EditStaffAccountDialogProps) => {
 
               <FormField
                 control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>อีเมล (Google Account)</FormLabel>
-                    <FormControl>
-                      <Input placeholder="staff_1@kmitl.ac.th" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="type"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>ประเภทของพนักงาน</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="เลือกประเภทของพนักงาน" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="STAFF">เจ้าหน้าที่</SelectItem>
-                        <SelectItem value="MAINTENANCE_STAFF">เจ้าหน้าที่ซ่อมบำรุง</SelectItem>
-                        <SelectItem value="SECURITY_STAFF">เจ้าหน้าที่รักษาความปลอดภัย</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="isDisabled"
+                name="visibleToStudents"
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 mt-2">
                     <div className="space-y-0.5">
-                      <FormLabel className="text-base">สถานะของบัญชี</FormLabel>
-                      <FormDescription>เปิด / ปิด การใช้งานบัญชี</FormDescription>
+                      <FormLabel className="text-base">แสดงสำหรับนักศึกษา</FormLabel>
+                      <FormDescription>เปิดการใช้งานหมวดหมู่นี้สำหรับนักศึกษา</FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        aria-readonly
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="visibleToStaffs"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 mt-2">
+                    <div className="space-y-0.5">
+                      <FormLabel className="text-base">แสดงสำหรับพนักงาน</FormLabel>
+                      <FormDescription>เปิดการใช้งานหมวดหมู่นี้สำหรับพนักงาน</FormDescription>
+                    </div>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        aria-readonly
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="visibleToSecurityStaffs"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 mt-2">
+                    <div className="space-y-0.5">
+                      <FormLabel className="text-base">แสดงสำหรับพนักงานรักษาความปลอดภัย</FormLabel>
+                      <FormDescription>
+                        เปิดการใช้งานหมวดหมู่นี้สำหรับพนักงานรักษาความปลอดภัย
+                      </FormDescription>
                     </div>
                     <FormControl>
                       <Switch
@@ -211,7 +189,7 @@ const EditStaffAccountDialog = ({ refetch }: EditStaffAccountDialogProps) => {
                   className="rounded-xl bg-gray-400"
                   onClick={() => {
                     form.reset();
-                    hideEditStaffAccountDialog();
+                    hideEditCategoryModal();
                   }}
                 >
                   ยกเลิก
@@ -229,4 +207,4 @@ const EditStaffAccountDialog = ({ refetch }: EditStaffAccountDialogProps) => {
   );
 };
 
-export default EditStaffAccountDialog;
+export default EditCategoryDialog;

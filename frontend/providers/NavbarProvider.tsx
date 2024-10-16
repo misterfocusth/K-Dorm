@@ -3,7 +3,7 @@ import { BOTTOM_NAVBAR_PATHS } from "@/config/navbar";
 import { usePathname } from "next/navigation";
 
 // React
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 interface INavbarContext {
   isShowStudentHomeNavbar: boolean;
@@ -24,11 +24,11 @@ const initialState: INavbarContext = {
   isShowBottomNavbar: false,
   headerNavbarTitle: "",
   currentActiveBottomNavbarIndex: 0,
-  setShowHeaderNavbar: () => { },
-  setShowBottomNavbar: () => { },
-  setHeaderNavbarTitle: () => { },
-  setShowStudentHomeNavbar: () => { },
-  resetNavbarContext: () => { },
+  setShowHeaderNavbar: () => {},
+  setShowBottomNavbar: () => {},
+  setHeaderNavbarTitle: () => {},
+  setShowStudentHomeNavbar: () => {},
+  resetNavbarContext: () => {},
 };
 
 export const NavbarContext = createContext<INavbarContext>(initialState);
@@ -75,3 +75,5 @@ export const NavbarProvider = ({ children }: { children: React.ReactNode }) => {
     </NavbarContext.Provider>
   );
 };
+
+export const useNavbarContext = () => useContext(NavbarContext);

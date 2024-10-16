@@ -66,6 +66,7 @@ class MaintenanceRepository:
 
                     maintenance_ticket.maintenanceStaff = maintenance_staff  # type: ignore
                     maintenance_ticket.isResolved = True
+                    maintenance_ticket.resolvedAt = datetime.datetime.now()
 
                     maintenance_ticket.save()
                     return maintenance_ticket

@@ -57,8 +57,10 @@ class File(MyBaseModel):
 
     publiclyVisible = models.BooleanField(default=False)
 
-    visibleToStudents = models.ManyToManyField("Student", related_name="accessToFiles")
-    visibleToStaffs = models.ManyToManyField("Staff", related_name="accessToFiles")
+    visibleToStudents = models.ManyToManyField(
+        "Student", related_name="accessToFiles")
+    visibleToStaffs = models.ManyToManyField(
+        "Staff", related_name="accessToFiles")
     visibleToMaintenanceStaffs = models.ManyToManyField(
         "MaintenanceStaff", related_name="accessToFiles"
     )
@@ -244,9 +246,8 @@ class Activity(MyBaseModel):
     student = models.ForeignKey(
         "Student", on_delete=models.CASCADE, related_name="activities"
     )
-
-    category = models.ForeignKey(
-        "ActivityCategory", on_delete=models.CASCADE, related_name="activities"
+    categories = models.ManyToManyField(
+        "ActivityCategory", related_name="activities"
     )
 
 

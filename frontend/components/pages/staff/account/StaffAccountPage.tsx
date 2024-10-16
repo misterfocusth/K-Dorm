@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useManageStaffAccountContext } from "@/providers/ManageStaffAccountProvider";
-import { Account } from "@/types";
+import { Account, STAFF_ROLES } from "@/types";
 import { UserPlusIcon } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import EditStaffAccountDialog from "./EditStaffAccountDialog";
@@ -247,5 +247,5 @@ const StaffAccountPage = () => {
 };
 
 export default withRoleGuard(StaffAccountPage, {
-  requiredRoles: ["STAFF"],
+  requiredRoles: [...STAFF_ROLES],
 });

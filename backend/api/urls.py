@@ -6,9 +6,9 @@ from django.urls import path
 from api.views.building import building_list_view
 from api.views.room import room_detail_view, room_list_view
 from api.views.building import building_detail_view
-from api.use_case.recruitment_wave import recruitment_wave_uc
 from api.views.recruitmenet_wave import recruitment_wave_list_view
 from api.views.recruitmenet_wave import recruitment_wave_detail_view
+from api.views.activity_category import activity_category_list_view
 
 urlpatterns = [
     # Tasks API Route
@@ -54,4 +54,13 @@ urlpatterns += [
 urlpatterns += [
     path("staff/account", account.staff_account),
     path("staff/account/<int:id>", account.edit_staff_account),
+]
+
+# ACTIVITY CATEGORY URLS
+urlpatterns += [
+    path(
+        "staff/activity_category/<str:activity_category_id>",
+        activity_category_list_view.detail_view,
+    ),
+    path("staff/activity_category", activity_category_list_view.view),
 ]
