@@ -1,3 +1,4 @@
+import { getCookieByName } from "@/libs/cookie";
 import { ActivityCategory } from "@/types/Activity";
 import { createContext, Dispatch, SetStateAction, useCallback, useContext, useState } from "react";
 
@@ -8,7 +9,7 @@ interface IActivityCategoryContext {
   isShowCreateCategorySection: boolean;
   showEditCategoryModal: () => void;
   hideEditCategoryModal: () => void;
-  deleteCategoryById: (id: number) => void;
+  deleteCategoryById: (id: number, refetch: () => void) => void;
   showCreateCategorySection: () => void;
   hideCreateCategorySection: () => void;
 }
@@ -40,11 +41,24 @@ const ActivityCategoryProvider = ({ children }: { children: React.ReactNode }) =
     setIsShowEditCategoryModal(false);
   };
 
-  const deleteCategoryById = useCallback((id: number) => {
-    console.log(`Delete category by id: ${id}`);
+  const deleteCategoryById = useCallback((id: number, refetch: () => void) => {
     const confirm = window.confirm("Are you sure you want to delete this category?");
+
     if (confirm) {
-      console.log(`Delete category by id: ${id}`);
+      const result = fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/staff/activity_category/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getCookieByName("session_id_token")}`,
+          },
+        }
+      )
+        .then((res) => {
+          refetch();
+        })
+        .catch((err) => console.error(err));
     }
   }, []);
 

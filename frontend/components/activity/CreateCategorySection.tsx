@@ -28,6 +28,7 @@ import { getApiService } from "@/libs/tsr-react-query";
 import { Loader2 } from "lucide-react";
 import { useActivityCategoryContext } from "@/providers/ActivityCategoryProvider";
 import { Switch } from "../ui/switch";
+import { useMutation } from "@tanstack/react-query";
 
 const createCategoryFormSchema = z.object({
   handle: z.string().min(1, {
@@ -51,6 +52,10 @@ const CreateCategorySection = ({ refetch }: CreateCategorySectionProps) => {
   const { showCreateCategorySection, isShowCreateCategorySection, hideCreateCategorySection } =
     useActivityCategoryContext();
 
+  const { mutateAsync } = useMutation({
+    mutationFn: getApiService().activityCategory.createActivityCategory.mutate,
+  });
+
   const form = useForm<z.infer<typeof createCategoryFormSchema>>({
     resolver: zodResolver(createCategoryFormSchema),
     defaultValues: {
@@ -63,7 +68,18 @@ const CreateCategorySection = ({ refetch }: CreateCategorySectionProps) => {
   });
 
   const onSubmit = useCallback((values: z.infer<typeof createCategoryFormSchema>) => {
-    console.log(values);
+    startTransition(async () => {
+      mutateAsync({
+        body: values,
+      })
+        .then(() => {
+          refetch();
+          hideCreateCategorySection();
+        })
+        .catch(() => {
+          refetch();
+        });
+    });
   }, []);
 
   if (!isShowCreateCategorySection) {

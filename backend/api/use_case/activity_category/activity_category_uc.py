@@ -55,3 +55,12 @@ def edit_by_id(ctx: Context, activity_category_id: str, payload: EditActivityCat
     activity_category = ActivityCategoryRepository.edit_by_id(
         activity_category_id, payload)
     return activity_category
+
+
+@usecase(
+    only_authenticated=True,
+)
+def delete_by_id(ctx: Context, activity_category_id: str):
+    activity_category = ActivityCategoryRepository.delete_by_id(
+        activity_category_id)
+    return activity_category

@@ -46,7 +46,6 @@ const withRoleGuard = <P extends object>(WrappedComponent: ComponentType<P>, opt
     const pathname = usePathname();
 
     useEffect(() => {
-      console.log("withRoleGuard");
       // const isStudentPath = pathname.startsWith(STUDENT_ROUTE_PREFIX);
       // const isStaffPath = pathname.startsWith(STAFF_ROUTE_PREFIX);
 

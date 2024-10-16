@@ -54,7 +54,8 @@ def handle(
 ):
     def decorator(
         handleFn: Callable[
-            Concatenate[RequestWithContext, PathParams], APIResponse | ErrorResponse
+            Concatenate[RequestWithContext,
+                        PathParams], APIResponse | ErrorResponse
         ]
     ):
         # transform the a request without context to a request with context
@@ -127,7 +128,8 @@ def handle(
                 if not result:
 
                     return ErrorResponse.fromException(
-                        PermissionDenied("Permission denied for unknown reason")
+                        PermissionDenied(
+                            "Permission denied for unknown reason")
                     )
 
             # serializer
@@ -144,7 +146,8 @@ def handle(
                     if query_serializer:
                         data = query_serializer(data=request.GET.dict())
                         if not data.is_valid():
-                            raise ValidationException(data.error_messages.__str__())
+                            raise ValidationException(
+                                data.error_messages.__str__())
                         _req.ctx.store["QUERY"] = data.validated_data
                         _req.ctx.store["QUERY_serializer"] = data
                     if (
@@ -154,25 +157,29 @@ def handle(
                     ):
                         data = body_serializer(data=_req.data)
                         if not data.is_valid():
-                            raise ValidationException(data.error_messages.__str__())
+                            raise ValidationException(
+                                data.error_messages.__str__())
                         _req.ctx.store["BODY"] = data.validated_data
                         _req.ctx.store["BODY_serializer"] = data
                     if post_serializer and request.method == "POST":
                         data = post_serializer(data=_req.data)
                         if not data.is_valid():
-                            raise ValidationException(data.error_messages.__str__())
+                            raise ValidationException(
+                                data.error_messages.__str__())
                         _req.ctx.store["BODY"] = data.validated_data
                         _req.ctx.store["BODY_serializer"] = data
                     if patch_serializer and request.method == "PATCH":
                         data = patch_serializer(data=_req.data)
                         if not data.is_valid():
-                            raise ValidationException(data.error_messages.__str__())
+                            raise ValidationException(
+                                data.error_messages.__str__())
                         _req.ctx.store["BODY"] = data.validated_data
                         _req.ctx.store["BODY_serializer"] = data
                     if put_serializer and request.method == "PUT":
                         data = put_serializer(data=_req.data)
                         if not data.is_valid():
-                            raise ValidationException(data.error_messages.__str__())
+                            raise ValidationException(
+                                data.error_messages.__str__())
                         _req.ctx.store["BODY"] = data.validated_data
                         _req.ctx.store["BODY_serializer"] = data
 
@@ -185,7 +192,7 @@ def handle(
                     )
             try:
                 # execute the handle function
-                print("lol")
+
                 return handleFn(_req, *args, **kwargs)
 
             except StackableException as e:

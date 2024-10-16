@@ -21,6 +21,10 @@ import { useEffect, useMemo, useState } from "react";
 import { getTHFormattedDateTime } from "@/libs/datetime";
 import EditCategoryDialog from "@/components/dialog/EditCategoryDialog";
 import CreateCategorySection from "@/components/activity/CreateCategorySection";
+import { getApiService } from "@/libs/tsr-react-query";
+import { QUERY_KEYS } from "@/constants";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import { useMutation } from "@tanstack/react-query";
 
 const ManageActivityCategoryPage = () => {
   const {
@@ -32,7 +36,12 @@ const ManageActivityCategoryPage = () => {
   } = useActivityCategoryContext();
   const [filteredActivities, setFilteredActivities] = useState<Activity[]>([]);
 
-  const allActivities = useMemo(() => ACTIVITIES, [ACTIVITIES]);
+  const { isLoading, isFetching, data, refetch } =
+    getApiService().activityCategory.getAllActivityCategory.useQuery({
+      queryKey: QUERY_KEYS.activityCategory.getAllActivityCategory,
+    });
+
+  const allCategories = useMemo(() => data?.body.result, [data]);
 
   const activityCategoryColumns: ColumnDef<ActivityCategory>[] = [
     {
@@ -129,7 +138,7 @@ const ManageActivityCategoryPage = () => {
               variant="outline"
               size="icon"
               className="rounded-full"
-              onClick={() => deleteCategoryById(row.original.id)}
+              onClick={() => deleteCategoryById(row.original.id, refetch)}
             >
               <Trash className="h-4 w-4" />
             </Button>
@@ -184,13 +193,14 @@ const ManageActivityCategoryPage = () => {
     },
   ];
 
-  useEffect(() => {
-    if (selectedCategory) {
-      setFilteredActivities(
-        allActivities.filter((activity) => activity.category.id === selectedCategory.id)
-      );
-    }
-  }, [selectedCategory]);
+  // useEffect(() => {
+  //   if (selectedCategory && allActivities) {
+  //     const filtered = allActivities.filter((activity) => activity.categoryId === selectedCategory.id);
+  //     setFilteredActivities(filtered);
+  //   }
+  // }, [selectedCategory]);
+
+  if (isLoading || isFetching) return <LoadingSpinner loading />;
 
   return (
     <div className="p-10">
@@ -203,11 +213,13 @@ const ManageActivityCategoryPage = () => {
       </div>
 
       <div className="mt-8">
-        <CreateCategorySection refetch={() => {}} />
+        <CreateCategorySection refetch={refetch} />
       </div>
 
       <div className="mt-8">
-        <ActivityCategoryDataTable columns={activityCategoryColumns} data={CATEGORIES} />
+        {allCategories && (
+          <ActivityCategoryDataTable columns={activityCategoryColumns} data={allCategories} />
+        )}
       </div>
 
       <div className="flex flex-row items-center justify-between mt-8">
@@ -219,15 +231,16 @@ const ManageActivityCategoryPage = () => {
           </SelectTrigger>
 
           <SelectContent>
-            {CATEGORIES.map((category) => (
-              <SelectItem
-                key={category.id + ""}
-                onClick={() => setSelectedCategory(category)}
-                value={category.id + ""}
-              >
-                {category.handle}: {category.name}
-              </SelectItem>
-            ))}
+            {allCategories &&
+              allCategories.map((category) => (
+                <SelectItem
+                  key={category.id + ""}
+                  onClick={() => setSelectedCategory(category)}
+                  value={category.id + ""}
+                >
+                  {category.handle}: {category.name}
+                </SelectItem>
+              ))}
           </SelectContent>
         </Select>
       </div>
@@ -237,7 +250,7 @@ const ManageActivityCategoryPage = () => {
       </div>
 
       <div>
-        <EditCategoryDialog refetch={() => {}} />
+        <EditCategoryDialog refetch={refetch} />
       </div>
     </div>
   );

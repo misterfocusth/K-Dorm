@@ -76,3 +76,14 @@ class ActivityCategoryRepository:
             raise NotFoundException("ActivityCategory not found")
         except Exception as e:
             raise e
+
+    @staticmethod
+    def delete_by_id(activity_category_id: str):
+        try:
+            activity_category = ActivityCategory.objects.get(
+                id=activity_category_id)
+            activity_category.delete()
+        except ActivityCategory.DoesNotExist:
+            raise NotFoundException("ActivityCategory not found")
+        except Exception as e:
+            raise e
