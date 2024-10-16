@@ -61,7 +61,7 @@ const StudentNavbar = () => {
           icon={<CircleUser className="w-7 h-7" />}
           label="ฉัน"
           onClick={() => router.push(BOTTOM_NAVBAR_PATHS[5])}
-          isActive={currentActiveBottomNavbarIndex === 5}
+          isActive={currentActiveBottomNavbarIndex === 5 || currentActiveBottomNavbarIndex === 6}
         />
       </div>
     );
@@ -82,8 +82,9 @@ type NavbarItemProps = {
 const NavbarItem = ({ icon, label, onClick, isActive }: NavbarItemProps) => {
   return (
     <div
-      className={`flex flex-col gap-1 items-center justify-center ${isActive ? "opacity-100 text-primary" : "opacity-35"
-        }`}
+      className={`flex flex-col gap-1 items-center justify-center ${
+        isActive ? "opacity-100 text-primary" : "opacity-35"
+      }`}
       onClick={onClick}
     >
       {icon}
