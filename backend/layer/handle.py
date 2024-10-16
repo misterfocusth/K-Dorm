@@ -15,7 +15,7 @@ from typing import (
 from rest_framework import serializers
 
 from api.use_case.auth import is_staff
-from backend.exception.unknown_exception import UnknownException
+from exception.unknown_exception import UnknownException
 from exception.auth.base import AuthenticationFailure
 from exception.application_logic.client.validation import ValidationException
 from exception.auth.unauthenticated import UnauthenticatedException
