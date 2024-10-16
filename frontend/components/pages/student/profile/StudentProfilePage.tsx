@@ -88,4 +88,7 @@ const StudentProfilePage = () => {
   );
 };
 
-export default withRoleGuard(StudentProfilePage, ["STUDENT"]);
+export default withRoleGuard(StudentProfilePage, {
+  requiredRoles: ["STUDENT"],
+  onUnauthorizedRedirect: "/student/login",
+});

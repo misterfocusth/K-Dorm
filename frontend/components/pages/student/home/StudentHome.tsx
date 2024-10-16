@@ -64,4 +64,7 @@ const StudentHome = () => {
   );
 };
 
-export default withRoleGuard(StudentHome, ["STUDENT"]);
+export default withRoleGuard(StudentHome, {
+  requiredRoles: ["STUDENT"],
+  onUnauthorizedRedirect: "/student/login",
+});
