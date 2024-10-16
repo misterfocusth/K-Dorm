@@ -6,6 +6,8 @@ from django.urls import path
 from api.views.building import building_list_view
 from api.views.room import room_detail_view, room_list_view
 from api.views.building import building_detail_view
+from backend.api.use_case.recruitment_wave import recruitment_wave_uc
+from backend.api.views.recruitmenet_wave import recruitment_wave_list_view
 
 urlpatterns = [
     # Tasks API Route
@@ -39,6 +41,12 @@ urlpatterns += [
 urlpatterns += [
     path("staff/room", room_list_view.view),
     path("room/<str:room_id>", room_detail_view.view),
+]
+
+# RECRUITMENT WAVE URLS
+urlpatterns += [
+    path("recruitment-wave", recruitment_wave_list_view.view),
+    path("recruitment-wave/<str:id>", recruitment_wave_list_view.view),
 ]
 
 # ACCOUNT URLS
