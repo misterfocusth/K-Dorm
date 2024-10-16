@@ -1,7 +1,7 @@
 import ImageGallery from "@/components/ImageGallery";
 import MaintenanceTicketDetail from "@/components/maintenance/MaintenanceTicketDetail";
 import { Button } from "@/components/ui/button";
-import { useMaintenanceTicketContext } from "@/contexts/MaintenanceTicketContext";
+import { useMaintenanceTicketContext } from "@/providers/MaintenanceTicketProvider";
 import { useMaintenanceTicketMutation } from "@/hooks/mutation/useMaintenanceTicketMutation";
 import { Account, MaintenanceTicket } from "@/types";
 import { useCallback, useMemo, useState } from "react";

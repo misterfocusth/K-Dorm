@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import MaintenanceHistoryList from "@/components/student/list/MaintenanceHistoryList";
 import ManageMaintenanceTicket from "@/components/staff/maintenance/ManageMaintenanceTicket";
-import { useMaintenanceTicketContext } from "@/contexts/MaintenanceTicketContext";
+import { useMaintenanceTicketContext } from "@/providers/MaintenanceTicketProvider";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { QUERY_KEYS } from "@/constants";
@@ -143,4 +143,4 @@ const StaffMaintenancePage = () => {
   );
 };
 
-export default withRoleGuard(StaffMaintenancePage, ["STAFF", "MAINTENANCE_STAFF"]);
+export default withRoleGuard(StaffMaintenancePage, { requiredRoles: ["STAFF", "MAINTENANCE_STAFF"] });

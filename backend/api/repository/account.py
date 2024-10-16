@@ -18,7 +18,7 @@ class AccountRepository:
         return account
 
     @staticmethod
-    def create_new_account(email: str, first_name: str, last_name: str) -> Account | None:
+    def create(email: str, first_name: str, last_name: str) -> Account | None:
         account = Account.objects.create(
             email=email,
             firstName=first_name,
@@ -29,20 +29,8 @@ class AccountRepository:
         return account
 
     @staticmethod
-    def create_new_student_account(student_id: str, account: Account) -> Student | None:
-        student = Student.objects.create(
-            studentId=student_id,
-            account=account
-        )
-        student.save()
-
-        return student
-
-    @staticmethod
     def create_new_staff_account(account: Account) -> Staff | None:
-        staff = Staff.objects.create(
-            account=account
-        )
+        staff = Staff.objects.create(account=account)
         staff.save()
 
         return staff

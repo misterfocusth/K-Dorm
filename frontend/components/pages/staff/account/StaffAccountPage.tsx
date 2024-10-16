@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useManageStaffAccountContext } from "@/contexts/ManageStaffAccountContext";
+import { useManageStaffAccountContext } from "@/providers/ManageStaffAccountProvider";
 import { Account } from "@/types";
 import { UserPlusIcon } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -246,4 +246,4 @@ const StaffAccountPage = () => {
   );
 };
 
-export default withRoleGuard(StaffAccountPage, ["STAFF"]);
+export default withRoleGuard(StaffAccountPage, { requiredRoles: ["STAFF"] });

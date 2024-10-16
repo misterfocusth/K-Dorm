@@ -8,8 +8,8 @@ import StudentResidenceCard from "@/components/student/Card/StudentResidenceCard
 import StudentHomeMenu from "@/components/student/menu/StudentHomeMenu";
 
 // Contexts
-import { AuthContext } from "@/contexts/AuthContext";
-import { NavbarContext } from "@/contexts/NavbarContext";
+import { AuthContext } from "@/providers/AuthProvider";
+import { NavbarContext } from "@/providers/NavbarProvider";
 
 // React
 import { useContext, useEffect } from "react";
@@ -64,4 +64,7 @@ const StudentHome = () => {
   );
 };
 
-export default withRoleGuard(StudentHome, ["STUDENT"]);
+export default withRoleGuard(StudentHome, {
+  requiredRoles: ["STUDENT"],
+  onUnauthorizedRedirect: "/student/login",
+});

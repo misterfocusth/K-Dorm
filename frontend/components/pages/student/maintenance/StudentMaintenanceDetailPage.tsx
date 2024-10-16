@@ -10,7 +10,7 @@ import MaintenanceTicketDetail from "@/components/maintenance/MaintenanceTicketD
 import { QUERY_KEYS } from "@/constants";
 
 // Context
-import { NavbarContext } from "@/contexts/NavbarContext";
+import { NavbarContext } from "@/providers/NavbarProvider";
 import { getApiService } from "@/libs/tsr-react-query";
 
 // Icons
@@ -63,9 +63,8 @@ const StudentMaintenanceDetailPage = ({ id }: StudentMaintenanceDetailPageProps)
         </div>
 
         <div
-          className={`rounded-full p-2 text-white ${
-            maintenanceTicket.isResolved ? "bg-[#84CC16]" : "bg-[#9E9E9E]"
-          }`}
+          className={`rounded-full p-2 text-white ${maintenanceTicket.isResolved ? "bg-[#84CC16]" : "bg-[#9E9E9E]"
+            }`}
         >
           {maintenanceTicket.isResolved ? (
             <CheckCircle2 strokeWidth={3} className=" w-16 h-16" />
@@ -86,4 +85,4 @@ const StudentMaintenanceDetailPage = ({ id }: StudentMaintenanceDetailPageProps)
   );
 };
 
-export default withRoleGuard(StudentMaintenanceDetailPage, ["STUDENT"]);
+export default withRoleGuard(StudentMaintenanceDetailPage, { requiredRoles: ["STUDENT"] });

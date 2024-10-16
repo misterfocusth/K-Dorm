@@ -6,9 +6,9 @@ from domain.models import Student, Staff, MaintenanceStaff, SecurityStaff, Accou
 
 
 def get_serializer_class(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         return CreateSerializer
-    elif request.method == 'PUT':
+    elif request.method == "PUT":
         return UpdateSerializer
     return AccountSerializer
 
@@ -26,8 +26,7 @@ class CreateSerializer(serializers.Serializer):
 
     def validate_email(self, value):
         if Account.objects.filter(email=value).exists():
-            raise serializers.ValidationError(
-                "Staff with this ID already exists.")
+            raise serializers.ValidationError("Staff with this ID already exists.")
         else:
             return value
 
@@ -43,25 +42,25 @@ class UpdateSerializer(serializers.Serializer):
 class StaffSerializer(serializers.ModelSerializer):
     class Meta:
         model = Staff
-        fields = '__all__'
+        fields = "__all__"
 
 
 class SecurityStaffSerializer(serializers.ModelSerializer):
     class Meta:
         model = SecurityStaff
-        fields = '__all__'
+        fields = "__all__"
 
 
 class MaintenanceStaffSerializer(serializers.ModelSerializer):
     class Meta:
         model = MaintenanceStaff
-        fields = '__all__'
+        fields = "__all__"
 
 
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
-        fields = '__all__'
+        fields = "__all__"
 
     staff = StaffSerializer()
     maintenanceStaff = MaintenanceStaffSerializer()
@@ -71,14 +70,14 @@ class AccountSerializer(serializers.ModelSerializer):
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = '__all__'
+        fields = "__all__"
 
     account = AccountSerializer()
 
 
-class MaintenanceStaffWithAccoutSerializer(serializers.ModelSerializer):
+class _nested_maintenanceStaffWithAccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = MaintenanceStaff
-        fields = '__all__'
+        fields = "__all__"
 
     account = AccountSerializer()

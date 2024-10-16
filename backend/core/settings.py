@@ -74,9 +74,12 @@ try:
         firebaseAdminConfig = json.load(f)
 
     creds = firebase_admin.credentials.Certificate(firebaseAdminConfig)
-    default_app = firebase_admin.initialize_app(creds, {
-        "storageBucket": get_env('FIREBASE_STORAGE_BUCKET'),
-    })
+    default_app = firebase_admin.initialize_app(
+        creds,
+        {
+            "storageBucket": get_env("FIREBASE_STORAGE_BUCKET"),
+        },
+    )
 except Exception:
     raise Exception(
         "Firebase configuration credentials not found. Please add the configuration to the environment variables."

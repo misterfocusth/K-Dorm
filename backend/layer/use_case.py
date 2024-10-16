@@ -28,7 +28,8 @@ PermissionChecker = Callable[Concatenate[Context, P], bool]
 
 
 def usecase(
-    permissionChecker: Optional[PermissionChecker] = None,
+    only_authenticated: Optional[bool] = False,
+    permission_checker: Optional[PermissionChecker] = None,
 ) -> Callable[
     [Callable[Concatenate[Context, P], R]],
     Callable[Concatenate[RequestWithContext, P], R],
@@ -39,10 +40,16 @@ def usecase(
         def wrapper(
             request: RequestWithContext, *args: P.args, **kwargs: P.kwargs
         ) -> R:
+            # check authentication
+            if only_authenticated and (
+                request.ctx.user is None or request.ctx.user.uid is None
+            ):
+                raise PermissionDenied("Permission denied, user is not authenticated")
+
             # # check permission
-            if permissionChecker:
+            if permission_checker:
                 try:
-                    result = permissionChecker(request.ctx, *args, **kwargs)
+                    result = permission_checker(request.ctx, *args, **kwargs)
                 except PermissionDenied as e:
                     raise PermissionDenied("Permission denied, reason: " + e.message)
                 except StackableException as e:

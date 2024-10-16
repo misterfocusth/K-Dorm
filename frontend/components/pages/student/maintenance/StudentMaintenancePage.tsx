@@ -1,7 +1,7 @@
 "use client";
 
 // Context
-import { NavbarContext } from "@/contexts/NavbarContext";
+import { NavbarContext } from "@/providers/NavbarProvider";
 
 // React
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
@@ -149,4 +149,4 @@ const StudentMaintenancePage = () => {
   );
 };
 
-export default withRoleGuard(StudentMaintenancePage, ["STUDENT"]);
+export default withRoleGuard(StudentMaintenancePage, { requiredRoles: ["STUDENT"] });

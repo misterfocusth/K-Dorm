@@ -1,13 +1,13 @@
 "use client";
 
 import StaffAccountPage from "@/components/pages/staff/account/StaffAccountPage";
-import { ManageStaffAccountContextProvider } from "@/contexts/ManageStaffAccountContext";
+import { ManageStaffAccountProvider } from "@/providers/ManageStaffAccountProvider";
 
 const Page = () => {
   return (
-    <ManageStaffAccountContextProvider>
+    <ManageStaffAccountProvider>
       <StaffAccountPage />
-    </ManageStaffAccountContextProvider>
+    </ManageStaffAccountProvider>
   );
 };
 

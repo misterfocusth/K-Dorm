@@ -1,6 +1,6 @@
 import { LogOut } from "lucide-react";
 import { Button } from "./ui/button";
-import { useAuthContext } from "@/contexts/AuthContext";
+import { useAuthContext } from "@/providers/AuthProvider";
 import { useCallback } from "react";
 
 const StaffRightMenu = () => {

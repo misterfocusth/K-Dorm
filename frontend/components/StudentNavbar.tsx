@@ -2,7 +2,7 @@
 import { BOTTOM_NAVBAR_PATHS } from "@/config/navbar";
 
 // Context
-import { NavbarContext } from "@/contexts/NavbarContext";
+import { NavbarContext } from "@/providers/NavbarProvider";
 
 // Icons
 import { Building, CircleUser, House, QrCode, ReceiptText, Wrench } from "lucide-react";
@@ -82,9 +82,8 @@ type NavbarItemProps = {
 const NavbarItem = ({ icon, label, onClick, isActive }: NavbarItemProps) => {
   return (
     <div
-      className={`flex flex-col gap-1 items-center justify-center ${
-        isActive ? "opacity-100 text-primary" : "opacity-35"
-      }`}
+      className={`flex flex-col gap-1 items-center justify-center ${isActive ? "opacity-100 text-primary" : "opacity-35"
+        }`}
       onClick={onClick}
     >
       {icon}

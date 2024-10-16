@@ -11,4 +11,4 @@ const StaffHome = () => {
   );
 };
 
-export default withRoleGuard(StaffHome, [...STAFF_ROLES]);
+export default withRoleGuard(StaffHome, { requiredRoles: [...STAFF_ROLES] });

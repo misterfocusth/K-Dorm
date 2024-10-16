@@ -16,7 +16,7 @@ from utils.token import get_session_id_token
 
 
 @usecase()
-def get_user_from_session_token(ctx: Context, request: Request):
+def get_user_from_request(ctx: Context, request: Request):
 
     session_id_token_cookie = request.COOKIES.get("session_id_token")
     session_id_token_auth_header = request.headers.get("Authorization")
