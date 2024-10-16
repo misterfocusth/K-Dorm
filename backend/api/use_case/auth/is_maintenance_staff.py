@@ -1,9 +1,9 @@
-from backend.api.repository import maintenance_repository
-from backend.api.repository.maintenance_staff_repository import (
+from api.repository import maintenance_repository
+from api.repository.maintenance_staff_repository import (
     MaintenanceStaffRepository,
 )
-from backend.interfaces.context import Context
-from backend.layer.use_case import usecase
+from interfaces.context import Context
+from layer.use_case import usecase
 
 
 @usecase()

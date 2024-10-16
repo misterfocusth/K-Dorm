@@ -1,7 +1,7 @@
 from django.db import transaction
 
 from api.repository.building_repository import BuildingRepository
-from backend.exception.application_logic.client.not_found import NotFoundException
+from exception.application_logic.client.not_found import NotFoundException
 from interfaces.context import Context
 from interfaces.request_with_context import RequestWithContext
 from layer.handle import handle

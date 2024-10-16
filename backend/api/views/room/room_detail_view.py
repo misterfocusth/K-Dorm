@@ -1,14 +1,14 @@
 from rest_framework.decorators import api_view
 from rest_framework import serializers
-from backend.api.use_case.room import room_uc
-from backend.domain.models import Room
-from backend.exception.application_logic.server.Illegal_operation import (
+from api.use_case.room import room_uc
+from domain.models import Room
+from exception.application_logic.server.Illegal_operation import (
     IllegalOperationException,
 )
-from backend.exception.application_logic.server.base import UnexpectedException
-from backend.interfaces.api_response import APIResponse
-from backend.interfaces.request_with_context import RequestWithContext
-from backend.layer.handle import handle
+from exception.application_logic.server.base import UnexpectedException
+from interfaces.api_response import APIResponse
+from interfaces.request_with_context import RequestWithContext
+from layer.handle import handle
 
 
 class EditRoomPayloadSerializer(serializers.ModelSerializer):

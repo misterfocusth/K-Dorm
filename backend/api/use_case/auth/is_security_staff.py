@@ -1,6 +1,6 @@
-from backend.api.repository.staff_repository import StaffRepository
-from backend.interfaces.context import Context
-from backend.layer.use_case import usecase
+from api.repository.staff_repository import StaffRepository
+from interfaces.context import Context
+from layer.use_case import usecase
 
 
 @usecase()

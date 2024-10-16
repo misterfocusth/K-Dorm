@@ -1,5 +1,5 @@
 from api.repository.room_repository import RoomRepository
-from backend.exception.unknown_exception import UnknownException
+from exception.unknown_exception import UnknownException
 from interfaces.context import Context
 from interfaces.request_with_context import RequestWithContext
 from layer.handle import handle
