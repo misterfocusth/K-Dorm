@@ -3,14 +3,14 @@ import rest_framework
 
 from rest_framework import serializers
 from rest_framework.decorators import api_view
-from backend.api.use_case.recruitment_wave import recruitment_wave_uc
-from backend.domain.models import RecruitmentWave
-from backend.exception.application_logic.server.Illegal_operation import (
+from api.use_case.recruitment_wave import recruitment_wave_uc
+from domain.models import RecruitmentWave
+from exception.application_logic.server.Illegal_operation import (
     IllegalOperationException,
 )
-from backend.interfaces.api_response import APIResponse
-from backend.interfaces.request_with_context import RequestWithContext
-from backend.serializers.utils import serialize_unwrap
+from interfaces.api_response import APIResponse
+from interfaces.request_with_context import RequestWithContext
+from serializers.utils import serialize_unwrap
 from layer.handle import handle
 
 
@@ -49,7 +49,7 @@ def view(request: RequestWithContext):
             request,
             name=payload["name"],
             year=payload["year"],
-            announcement_text=payload["announcementText"],
+            announcement_text=payload.get("announcementText"),
         )
 
         response = serialize_unwrap(recruitment_wave, _recruitment_wave_serializer)

@@ -8,6 +8,7 @@ import { maintenanceTicketContract } from "./maintenance";
 import { staffAccountContract } from "./account";
 import { buildingContract } from "./building";
 import { roomContract } from "./room";
+import { recruitmentWaveContract } from "./recruitmentWave";
 
 const c = initContract();
 
@@ -19,4 +20,5 @@ export const contract = c.router({
 	account: staffAccountContract,
 	building: buildingContract,
 	room: roomContract,
+	recruimentWave: recruitmentWaveContract,
 });

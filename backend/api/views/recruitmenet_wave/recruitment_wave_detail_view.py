@@ -1,15 +1,15 @@
 from rest_framework import serializers
 from rest_framework.decorators import api_view
-from backend.api.repository import recruitment_wave_repository
-from backend.api.use_case.recruitment_wave import recruitment_wave_uc
-from backend.domain.models import RecruitmentWave
-from backend.exception.application_logic.server.Illegal_operation import (
+from api.repository import recruitment_wave_repository
+from api.use_case.recruitment_wave import recruitment_wave_uc
+from domain.models import RecruitmentWave
+from exception.application_logic.server.Illegal_operation import (
     IllegalOperationException,
 )
-from backend.interfaces.api_response import APIResponse
-from backend.interfaces.request_with_context import RequestWithContext
-from backend.layer.handle import handle
-from backend.serializers.utils import serialize_unwrap
+from interfaces.api_response import APIResponse
+from interfaces.request_with_context import RequestWithContext
+from layer.handle import handle
+from serializers.utils import serialize_unwrap
 
 
 class EditRecruitmentWavePayloadSerializer(serializers.Serializer):

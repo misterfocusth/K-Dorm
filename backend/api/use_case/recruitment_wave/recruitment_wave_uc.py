@@ -1,9 +1,9 @@
 from typing import NotRequired, Optional, TypedDict
-from backend.api.repository.recruitment_wave_repository import RecruitmentWaveRepository
-from backend.domain.models import RecruitmentWave
-from backend.exception.application_logic.client.not_found import NotFoundException
-from backend.interfaces.context import Context
-from backend.layer.use_case import usecase
+from api.repository.recruitment_wave_repository import RecruitmentWaveRepository
+from domain.models import RecruitmentWave
+from exception.application_logic.client.not_found import NotFoundException
+from interfaces.context import Context
+from layer.use_case import usecase
 
 
 @usecase(only_authenticated=True)
