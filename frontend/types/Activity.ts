@@ -12,6 +12,7 @@ export type Activity = {
 };
 
 export type ActivityCategory = {
+  id: number;
   handle: string;
   name: string;
   visibleToStudents: boolean;
@@ -21,6 +22,7 @@ export type ActivityCategory = {
 
 export const CATEGORIES: ActivityCategory[] = [
   {
+    id: 1,
     handle: "ENTER_CHECKIN",
     name: "เข้าหอพัก",
     visibleToStudents: true,
@@ -28,6 +30,7 @@ export const CATEGORIES: ActivityCategory[] = [
     visibleToSecurityStaffs: true,
   },
   {
+    id: 2,
     handle: "EXIT_CHECKIN",
     name: "ออกหอพัก",
     visibleToStudents: true,
@@ -35,6 +38,7 @@ export const CATEGORIES: ActivityCategory[] = [
     visibleToSecurityStaffs: true,
   },
   {
+    id: 3,
     handle: "ACTIVITY",
     name: "กิจกรรม",
     visibleToStudents: true,
@@ -42,6 +46,7 @@ export const CATEGORIES: ActivityCategory[] = [
     visibleToSecurityStaffs: true,
   },
   {
+    id: 4,
     handle: "PROHIBITED",
     name: "การประพฤติมิชอบ",
     visibleToStudents: true,
@@ -49,6 +54,7 @@ export const CATEGORIES: ActivityCategory[] = [
     visibleToSecurityStaffs: true,
   },
   {
+    id: 5,
     handle: "VOLUNTEER",
     name: "กิจกรรมอาสาสมัคร",
     visibleToStudents: true,

@@ -1,5 +1,3 @@
-"use client";
-
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 
 import {
@@ -10,15 +8,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useMaintenanceTicketContext } from "@/providers/MaintenanceTicketProvider";
-import { useActivityCategoryContext } from "@/providers/ActivityCategoryProvider";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-const DataTable = <TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) => {
+const ActivityCategoryDataTable = <TData, TValue>({
+  columns,
+  data,
+}: DataTableProps<TData, TValue>) => {
   const table = useReactTable({
     data,
     columns,
@@ -67,4 +66,4 @@ const DataTable = <TData, TValue>({ columns, data }: DataTableProps<TData, TValu
   );
 };
 
-export default DataTable;
+export default ActivityCategoryDataTable;

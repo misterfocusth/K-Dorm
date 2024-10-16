@@ -23,7 +23,8 @@ const PATHS = [
   STAFF_ROUTE_PREFIX + "/building",
   STAFF_ROUTE_PREFIX + "/maintenance",
   STAFF_ROUTE_PREFIX + "/activity",
-  STAFF_ROUTE_PREFIX + "/activiy/live",
+  STAFF_ROUTE_PREFIX + "/activity/category",
+  STAFF_ROUTE_PREFIX + "/activity/live",
 ];
 
 const StaffLeftMenu = () => {
