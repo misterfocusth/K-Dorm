@@ -1,8 +1,19 @@
 "use client";
 
 import withRoleGuard from "@/components/hoc/withRoleGuard";
+import StudentActivityItem from "@/components/student/activity/StudentActivityItem";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useNavbarContext } from "@/providers/NavbarProvider";
+import { ACTIVITIES } from "@/types/Activity";
 import { ChevronLeft, Info } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -115,7 +126,33 @@ const StudentActivityPage = () => {
         </div>
       </div>
 
-      <div className="bg-white absolute top-[90%] w-full rounded-t-3xl p-6 px-8">Content</div>
+      <div className="bg-white absolute top-[90%] w-full rounded-t-3xl p-6 ">
+        <div className="flex flex-row items-center justify-between">
+          <p className="font-bold flex-1">ประวัติย้อนหลัง</p>
+
+          <Select onValueChange={() => {}}>
+            <SelectTrigger className="flex-1">
+              <SelectValue placeholder="สถานะ" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="1">ทั้งหมด</SelectItem>
+                <SelectItem value="2">ซ่อมแล้ว</SelectItem>
+                <SelectItem value="3">ยังไม่ซ่อม</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="mt-8 pb-24 flex flex-col">
+          {ACTIVITIES.map((activity, index) => (
+            <div key={index}>
+              <StudentActivityItem activity={activity} />
+              <Separator className="my-4" />
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
