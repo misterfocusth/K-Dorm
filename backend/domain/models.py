@@ -125,6 +125,9 @@ class Building(MyBaseModel):
 
     name = models.CharField(max_length=255, unique=True)
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class Room(MyBaseModel):
     class Meta(MyBaseModel.Meta):
@@ -136,6 +139,9 @@ class Room(MyBaseModel):
     building = models.ForeignKey(
         "Building", on_delete=models.CASCADE, related_name="rooms"
     )
+
+    def __str__(self) -> str:
+        return f"{self.building.name} - {self.floor} - {self.name}"
 
 
 class Residence(MyBaseModel):

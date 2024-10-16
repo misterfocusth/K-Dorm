@@ -15,6 +15,7 @@ from typing import (
 from rest_framework import serializers
 
 from api.use_case.auth import is_staff
+from exception.unknown_exception import UnknownException
 from exception.auth.base import AuthenticationFailure
 from exception.application_logic.client.validation import ValidationException
 from exception.auth.unauthenticated import UnauthenticatedException
@@ -41,7 +42,7 @@ class SerializerConfig(TypedDict):
 
 PathParams = ParamSpec("PathParams")
 
-ROLE = Literal["STUDENT", "STAFF", "maintenance_STAFF", "SECURITY_STAFF"]
+ROLE = Literal["STUDENT", "STAFF", "MAINTENANCE_STAFF", "SECURITY_STAFF"]
 
 """
     handle function decorator, places above the view function to handle the request
@@ -107,28 +108,23 @@ def handle(
                         unauthticated = UnauthenticatedException(
                             "User's request not met any role required"
                         )
-                        return ErrorResponse(
-                            status=unauthticated.error_status,
-                            error=unauthticated.error_code,
-                            message=unauthticated.message,
-                        )
+                        return ErrorResponse.fromException(unauthticated)
 
             # check permission
             if permission_checker:
                 try:
                     result = permission_checker(_req)
                 except PermissionDenied as e:
-                    return ErrorResponse(e.message, e.error_code, status=e.error_status)
+                    return ErrorResponse.fromException(e)
                 except Exception as e:
-                    return ErrorResponse(
-                        status=500, error="Internal Server Error", message=str(e)
+                    return ErrorResponse.fromException(
+                        UnknownException("Something went wrong")
                     )
 
                 if not result:
-                    return ErrorResponse(
-                        status=403,
-                        error="Forbidden",
-                        message="Permission denied for unknown reason",
+
+                    return ErrorResponse.fromException(
+                        PermissionDenied("Permission denied for unknown reason")
                     )
 
             # serializer
@@ -191,18 +187,15 @@ def handle(
             try:
                 # execute the handle function
                 return handleFn(_req, *args, **kwargs)
-
             except StackableException as e:
                 print("========STACKABLE EXCEPTION========")
                 print(e.error_code)
                 print(e.message)
-                return ErrorResponse(
-                    status=e.error_status, error=e.error_code, message=e.message
-                )
+                return ErrorResponse.fromException(e)
             except Exception as e:
                 print("========UNKNOWN EXCEPTION========")
                 print(e)
-                exception = UncaughtException(
+                exception = UnknownException(
                     message="Uncaught exception, internal server error"
                 )
                 return ErrorResponse.fromException(exception)
