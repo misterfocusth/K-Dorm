@@ -29,6 +29,7 @@ class MaintenanceRepository:
 
     @staticmethod
     def get_maintenance_ticket_by_student(user: Account):
+        print(user.uid)
         return MaintenanceTicket.objects.filter(student__account=user).all()
 
     @staticmethod
@@ -45,7 +46,8 @@ class MaintenanceRepository:
     @staticmethod
     def update_maintenance_ticker_by_id(id: str, data: UpdateMaintenanceTicketPayload):
         try:
-            maintenance_ticket = MaintenanceTicket.objects.filter(id=id).first()
+            maintenance_ticket = MaintenanceTicket.objects.filter(
+                id=id).first()
 
             if maintenance_ticket == None:
                 raise MaintenanceTicket.DoesNotExist

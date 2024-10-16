@@ -57,14 +57,16 @@ def student_maintenance_ticket(
     request: RequestWithContext,
 ) -> APIResponse | ErrorResponse:
     if request.method == "POST":
-
-        result = maintenance_uc.create_ticket(request, request.ctx.store["BODY"])
-        serialized_data = MaintenanceSerializer(data=result).validated_data
+        print("student_maintenance_ticket_detail", "PUT")
+        files = request.FILES.getlist("files")  # type: ignore
+        result = maintenance_uc.create_ticket(
+            request, request.ctx.store["BODY"], files)
+        serialized_data = serialize(data=result)
         return APIResponse(status=status.HTTP_200_OK, data=serialized_data)
 
     if request.method == "GET":
         result = maintenance_uc.get_student_maintenance_tickets(request)
-        serialized_data = MaintenanceSerializer(data=result, many=True).validated_data
+        serialized_data = serialize(data=result, many=True)
         return APIResponse(status=status.HTTP_200_OK, data=serialized_data)
 
     raise IllegalOperationException()
@@ -103,14 +105,15 @@ def student_maintenance_ticket_detail(
     if request.method == "GET":
         result = maintenance_uc.get_maintenance_ticket_by_id(request, pk)
         if result is not None:
-            serialized_data = UpdateSerializer(data=result).validated_data
+            serialized_data = serialize(data=result, many=False)
             return APIResponse(status=status.HTTP_200_OK, data=serialized_data)
         else:
             raise NotFoundException(
                 message="Maintenance ticket with id {} not found".format(pk)
             )
     elif request.method == "PUT":
-        result = maintenance_uc.update_details(request, pk, request.ctx.store["BODY"])
+        result = maintenance_uc.update_details(
+            request, pk, request.ctx.store["BODY"])
         serialized_data = MaintenanceSerializer(data=result)
         return APIResponse(stsatus=status.HTTP_200_OK, data=serialized_data.data)
     raise IllegalOperationException()

@@ -21,21 +21,24 @@ import { usePathname, useRouter } from "next/navigation";
 import { ComponentType, useEffect } from "react";
 
 interface Options {
-  requiredRoles: Role[],
+  requiredRoles: Role[];
 
   isPublic?: boolean;
   onUnauthorizedRedirect?: string;
   onAuthorizedRedirect?: string;
 }
 
-const withRoleGuard = <P extends object>(
-  WrappedComponent: ComponentType<P>,
-  options: Options
-) => {
+const withRoleGuard = <P extends object>(WrappedComponent: ComponentType<P>, options: Options) => {
+  const {
+    requiredRoles,
+    isPublic,
+    onUnauthorizedRedirect: _unauthorizedRedirectURL,
+    onAuthorizedRedirect,
+  } = options;
 
-  const { requiredRoles, isPublic, onUnauthorizedRedirect: _unauthorizedRedirectURL, onAuthorizedRedirect } = options
-
-  const onUnauthorizedRedirect = _unauthorizedRedirectURL || (requiredRoles.includes("STUDENT") ? STUDENT_LOGIN_ROUTE : STAFF_LOGIN_ROUTE)
+  const onUnauthorizedRedirect =
+    _unauthorizedRedirectURL ||
+    (requiredRoles.includes("STUDENT") ? STUDENT_LOGIN_ROUTE : STAFF_LOGIN_ROUTE);
 
   const ProtectedComponent = (props: P) => {
     const { currentUser, role } = useAuthContext();
@@ -52,14 +55,14 @@ const withRoleGuard = <P extends object>(
 
       let redirectPath: undefined | string = "";
 
-      if (isPublic) return
+      if (isPublic) return;
 
       if (isLoggedIn) {
-        redirectPath = onAuthorizedRedirect
+        redirectPath = onAuthorizedRedirect;
       }
 
-      if (role && requiredRoles.length && !requiredRoles.includes(role)) {
-        redirectPath = onUnauthorizedRedirect
+      if (!role || !requiredRoles.length || !requiredRoles.includes(role)) {
+        redirectPath = onUnauthorizedRedirect;
       }
 
       // Redirect to home page if user is already logged in
@@ -95,6 +98,5 @@ const withRoleGuard = <P extends object>(
 
   return ProtectedComponent;
 };
-
 
 export default withRoleGuard;
