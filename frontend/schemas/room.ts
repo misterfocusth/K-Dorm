@@ -5,5 +5,4 @@ export const roomSchema = baseSchema.extend({
 	id: z.string(),
 	name: z.string(),
 	floor: z.string(),
-	building: z.string(),
 });

@@ -55,7 +55,6 @@ def get_current_user(request: RequestWithContext):
     account = auth_uc.get_user_from_request(request, request)
     serializer = AuthUserSerializer(account)
     user_data = serializer.data
-    print(user_data)
     role = account_utils.get_user_role(user_data)
     return APIResponse(
         status=status.HTTP_200_OK, data={"user": user_data, "role": role}

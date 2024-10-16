@@ -88,4 +88,24 @@ const TableCaption = React.forwardRef<
 ));
 TableCaption.displayName = "TableCaption";
 
-export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption };
+const TableLoading: React.FC<React.PropsWithChildren> = ({ children }) => {
+  return (
+    <div className='min-w-full h-full min-h-16 border rounded-lg grid place-items-center text-lg font-medium text-gray-600 text-center'>
+      <span>กำลังโหลดข้อมูล</span>
+    </div>
+  )
+}
+
+const TableEmpty: React.FC<React.PropsWithChildren> = ({ children }) => {
+  return (
+    <div className='w-full h-full min-h-16 border rounded-lg grid place-items-center text-lg font-medium text-gray-600 text-center'>
+      <span>ไม่พบข้อมูล</span>
+    </div>
+  )
+}
+
+export {
+  Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption
+  , TableLoading, TableEmpty
+};
+

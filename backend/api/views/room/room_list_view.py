@@ -8,16 +8,24 @@ from interfaces.request_with_context import RequestWithContext
 from layer.handle import handle
 
 
-class CreateRoomPayloadSerializer(serializers.ModelSerializer):
+class _nested_CreateRoomPayloadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
         fields = ["floor", "name", "building_id"]
 
 
-class CreateRoomResponseSerializer(serializers.ModelSerializer):
+class CreateRoomPayloadSerializer(serializers.Serializer):
+    rooms = _nested_CreateRoomPayloadSerializer(many=True)
+
+
+class _nested_CreateRoomPayloadResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
-        fields = ["id", "floor", "name", "building_id"]
+        fields = ["floor", "name", "building_id", "id"]
+
+
+class CreateRoomResponseSerializer(serializers.ModelSerializer):
+    rooms = _nested_CreateRoomPayloadResponseSerializer(many=True)
 
 
 @api_view(["POST"])
@@ -29,15 +37,10 @@ class CreateRoomResponseSerializer(serializers.ModelSerializer):
 def view(request: RequestWithContext):
     payload = request.ctx.store["BODY"]
 
-    room = room_uc.create(
-        request,
-        floor=payload["floor"],
-        name=payload["name"],
-        building_id=payload["building_id"],
-    )
+    to_create_rooms = payload["rooms"]
 
-    response = CreateRoomResponseSerializer(room)
-    if not response.is_valid():
-        raise UnexpectedException("Response is not valid")
+    rooms = room_uc.createMany(request, to_create_rooms)
 
-    return APIResponse(response.validated_data, status=201)
+    response = CreateRoomResponseSerializer(rooms)
+
+    return APIResponse(response.data, status=201)

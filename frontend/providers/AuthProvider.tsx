@@ -123,7 +123,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       return userDataResult.result;
     } catch (error) {
       console.error("Error getting user session", error);
-      toast.error("เกิดข้อผิิดพลาดในการเข้าสู่ระบบ กรุณาตรวจสอบอีเมลที่ใช้อีกครั้งหนึ่ง");
+      toast.error("เกิดข้อผิดพลาดในการเข้าสู่ระบบ กรุณาตรวจสอบอีเมลที่ใช้อีกครั้งหนึ่ง");
       await removeSession();
     }
   }, []);
@@ -140,7 +140,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       await handleUserAuthentication(uid, sessionIdToken);
     } catch (error) {
       console.error("Error signing in with Google", error);
-      toast.error("เกิดข้อผิิดพลาดในการเข้าสู่ระบบ กรุณาตรวจสอบอีเมลที่ใช้อีกครั้งหนึ่ง");
+      toast.error("เกิดข้อผิดพลาดในการเข้าสู่ระบบ กรุณาตรวจสอบอีเมลที่ใช้อีกครั้งหนึ่ง");
       throw error;
     } finally {
       setIsLoading(false);
