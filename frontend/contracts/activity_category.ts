@@ -31,7 +31,13 @@ export const activityCategoryContract = c.router({
   editActivityCategoryById: {
     method: "PUT",
     path: "/staff/activity_category/:id",
-    body: c.type<EditActivityCategory>(),
+    body: z.object({
+      handle: z.string(),
+      name: z.string(),
+      visibleToStudents: z.boolean(),
+      visibleToStaffs: z.boolean(),
+      visibleToSecurityStaffs: z.boolean(),
+    }),
     responses: {
       200: c.type<Response<EditActivityCategory>>(),
       400: c.type<ErrorResponse<{ code: string; message: string }>>(),

@@ -36,6 +36,7 @@ import { getApiService } from "@/libs/tsr-react-query";
 import { useStaffAccountMutation } from "@/hooks/mutation/useStaffAccountMutation";
 import { Loader2 } from "lucide-react";
 import { useActivityCategoryContext } from "@/providers/ActivityCategoryProvider";
+import { useMutation } from "@tanstack/react-query";
 
 const editCategoryFormSchema = z.object({
   handle: z.string().min(1, {
@@ -55,10 +56,13 @@ type EditCategoryDialogProps = {
 
 const EditCategoryDialog = ({ refetch }: EditCategoryDialogProps) => {
   const [isPending, startTransition] = useTransition();
-  const { mutateAsync } = useStaffAccountMutation();
 
   const { selectedCategory, isShowEditCategoryModal, hideEditCategoryModal } =
     useActivityCategoryContext();
+
+  const { mutateAsync } = useMutation({
+    mutationFn: getApiService().activityCategory.editActivityCategoryById.mutate,
+  });
 
   const form = useForm<z.infer<typeof editCategoryFormSchema>>({
     resolver: zodResolver(editCategoryFormSchema),
@@ -71,11 +75,22 @@ const EditCategoryDialog = ({ refetch }: EditCategoryDialogProps) => {
     },
   });
 
-  const onSubmit = useCallback(async (values: z.infer<typeof editCategoryFormSchema>) => {
-    console.log(values);
-  }, []);
-
-  //   if (!isShowEditCategoryModal || !selectedCategory) return null;
+  const onSubmit = useCallback(
+    async (values: z.infer<typeof editCategoryFormSchema>) => {
+      console.log(selectedCategory);
+      startTransition(async () => {
+        await mutateAsync({
+          body: values,
+          params: {
+            id: selectedCategory?.id + "" || "",
+          },
+        });
+        refetch();
+        hideEditCategoryModal();
+      });
+    },
+    [selectedCategory]
+  );
 
   return (
     <Dialog

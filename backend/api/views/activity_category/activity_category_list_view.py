@@ -34,6 +34,7 @@ class CreateActivityCategoryPayloadSerializer(serializers.Serializer):
 
 
 class EditActivityCategoryPayloadSerializer(serializers.Serializer):
+    handle = serializers.CharField(required=False)
     name = serializers.CharField(required=False)
     visibleToStudents = serializers.BooleanField(required=False)
     visibleToStaffs = serializers.BooleanField(required=False)
@@ -51,7 +52,7 @@ def view(request: RequestWithContext):
     if request.method == "POST":
         payload = request.ctx.store["BODY"]
         activity = activity_category_uc.create(request, payload)
-        response = serialize_unwrap(activity, ActivitySerializer)
+        response = serialize_unwrap(activity, ActivityCategorySerializer)
         return APIResponse(response)
 
     if request.method == "GET":
@@ -60,28 +61,28 @@ def view(request: RequestWithContext):
             activity_categories, ActivityCategorySerializer, many=True)
         return APIResponse(response)
 
-    # if request.method == "PUT":
-    #     payload = request.ctx.store["PUT"]
-    #     activity = activity_category_uc.edit_by_id(
-    #         request, activity_category_id=activity_category_id, payload=payload)
-    #     response = serialize_unwrap(activity, ActivitySerializer)
-    #     return APIResponse(response)
-
     raise IllegalOperationException("Method not allowed")
 
 
-@api_view(["DELETE"])
+@api_view(["DELETE", "PUT"])
 @handle(
     only_authenticated=True,
     only_role=["STAFF"],
-    serializer_config={"BODY": CreateActivityCategoryPayloadSerializer,
-                       "PUT": EditActivityCategoryPayloadSerializer},
+    serializer_config={"PUT": EditActivityCategoryPayloadSerializer},
 )
 def detail_view(request: RequestWithContext, activity_category_id: str):
     if request.method == "DELETE":
         activity = activity_category_uc.delete_by_id(
             request, activity_category_id)
-        response = serialize_unwrap(activity, ActivitySerializer)
+        response = serialize_unwrap(activity, ActivityCategorySerializer)
+        return APIResponse(response)
+
+    if request.method == "PUT":
+        payload = request.ctx.store["BODY"]
+        print(payload)
+        activity = activity_category_uc.edit_by_id(
+            request, activity_category_id=activity_category_id, payload=payload)
+        response = serialize_unwrap(activity, ActivityCategorySerializer)
         return APIResponse(response)
 
     raise IllegalOperationException("Method not allowed")

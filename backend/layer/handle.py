@@ -178,6 +178,9 @@ def handle(
                     if put_serializer and request.method == "PUT":
                         data = put_serializer(data=_req.data)
                         if not data.is_valid():
+                            print("NOT VALID")
+                            print(data.error_messages)
+
                             raise ValidationException(
                                 data.error_messages.__str__())
                         _req.ctx.store["BODY"] = data.validated_data
