@@ -1,6 +1,7 @@
 import { getTHFormattedDateTime } from "@/libs/datetime";
 import { Activity } from "@/types/Activity";
 import { CheckCircle2, ChevronRight, CircleX, HandHeart, ScrollText } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 
 type StudentActivityItemProps = {
@@ -8,6 +9,8 @@ type StudentActivityItemProps = {
 };
 
 const StudentActivityItem = ({ activity }: StudentActivityItemProps) => {
+  const router = useRouter();
+
   const getActivityIcon = useCallback((category: string) => {
     if (category === "ENTER_CHECKIN" || category === "EXIT_CHECKIN") {
       return <CheckCircle2 className="w-12 h-12 text-[#F97316]" />;
@@ -23,7 +26,10 @@ const StudentActivityItem = ({ activity }: StudentActivityItemProps) => {
   }, []);
 
   return (
-    <div className="flex flex-row items-center p-2 justify-between px-0">
+    <div
+      className="flex flex-row items-center p-2 justify-between px-0"
+      onClick={() => router.push("/student/activity/" + activity.id)}
+    >
       <div className="flex flex-row items-center gap-6">
         <div className="bg-gray-100 rounded-full p-2 w-14 h-14 flex items-center justify-center">
           {getActivityIcon(activity.category.handle)}
