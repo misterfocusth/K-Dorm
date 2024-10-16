@@ -43,7 +43,8 @@ def view(request: RequestWithContext):
         return APIResponse(response.validated_data)
 
     elif request.method == "POST":
-        building = building_uc.create(request, name=request.ctx.store["BODY"]["name"])
+        building = building_uc.create(
+            request, name=request.ctx.store["BODY"]["name"])
 
         response = GetBuildingResponseSerializer(building)
         if not response.is_valid():

@@ -29,7 +29,7 @@ const MaintenanceTicketDetail: FC<MaintenanceTicketDetailProps> = ({
     [maintenanceTicket]
   );
 
-  if (!maintenanceTicket || !maintenanceStaffAccounts) return null;
+  if (!maintenanceTicket || (staffView && !maintenanceStaffAccounts)) return null;
 
   return (
     <div className="flex flex-col gap-4">
@@ -71,7 +71,7 @@ const MaintenanceTicketDetail: FC<MaintenanceTicketDetailProps> = ({
           <p className="flex-1 text-gray-400">เจ้าหน้าที่ผู้รับผิดชอบ</p>
 
           <div className="flex-1">
-            {onSelectStaff && (
+            {staffView && maintenanceStaffAccounts && onSelectStaff && (
               <MaintenanceStaffSelect
                 onSelectStaff={onSelectStaff}
                 maintenanceStaffAccounts={maintenanceStaffAccounts}

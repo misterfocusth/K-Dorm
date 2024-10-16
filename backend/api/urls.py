@@ -23,7 +23,8 @@ urlpatterns += [
 # MAINTENANCE URLS
 urlpatterns += [
     path("student/maintenance", maintenance.student_maintenance_ticket),
-    path("student/maintenance/<str:pk>", maintenance.student_maintenance_ticket_detail),
+    path("student/maintenance/<str:pk>",
+         maintenance.student_maintenance_ticket_detail),
     path("staff/maintenance", maintenance.staff_maintenance_tickets),
 ]
 

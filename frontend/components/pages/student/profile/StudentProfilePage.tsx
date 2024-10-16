@@ -14,8 +14,11 @@ import Image from "next/image";
 
 // React
 import { useCallback, useContext, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const StudentProfilePage = () => {
+  const router = useRouter();
+
   const { logout, currentUser } = useContext(AuthContext);
   const { setShowHeaderNavbar, resetNavbarContext, setShowBottomNavbar } =
     useContext(NavbarContext);
@@ -24,7 +27,7 @@ const StudentProfilePage = () => {
   const handleLogout = useCallback(async () => {
     await logout();
     resetNavbarContext();
-  }, [logout]);
+  }, [logout, resetNavbarContext]);
 
   useEffect(() => {
     setShowBottomNavbar(true);
@@ -76,7 +79,7 @@ const StudentProfilePage = () => {
           </div>
 
           <div className="w-full flex flex-col gap-4 mt-36">
-            <Button onClick={handleLogout}>ดูประวัติกิจกรรมของฉัน</Button>
+            <Button onClick={() => router.push("/student/activity")}>ดูประวัติกิจกรรมของฉัน</Button>
 
             <Button variant={"destructive"} onClick={handleLogout}>
               ออกจากระบบ

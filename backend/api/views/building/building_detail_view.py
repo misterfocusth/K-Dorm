@@ -65,6 +65,7 @@ def view(request: RequestWithContext, building_id: str):
         return APIResponse(building)
 
     if not is_staff:
-        raise UnauthorizedActionException("User must be staff to perform this action")
+        raise UnauthorizedActionException(
+            "User must be staff to perform this action")
 
     raise IllegalOperationException("Method not allowed")

@@ -122,10 +122,9 @@ def handle(
                     )
 
                 if not result:
-                    return ErrorResponse(
-                        status=403,
-                        error="Forbidden",
-                        message="Permission denied for unknown reason",
+
+                    return ErrorResponse.fromException(
+                        PermissionDenied("Permission denied for unknown reason")
                     )
 
             # serializer
@@ -135,6 +134,9 @@ def handle(
                 post_serializer = serializer_config.get("POST")
                 patch_serializer = serializer_config.get("PATCH")
                 put_serializer = serializer_config.get("PUT")
+
+                SAFE_METHODS = ["GET", "HEAD", "OPTIONS"]
+
                 try:
                     if query_serializer:
                         data = query_serializer(data=request.GET.dict())
@@ -144,7 +146,11 @@ def handle(
                             )
                         _req.ctx.store["QUERY"] = data.validated_data
                         _req.ctx.store["QUERY_serializer"] = data
-                    if body_serializer and request.data is not None:
+                    if (
+                        body_serializer
+                        and request.data is not None
+                        and request.method not in SAFE_METHODS
+                    ):
                         data = body_serializer(data=_req.data)
                         if not data.is_valid():
                             raise ValidationException(

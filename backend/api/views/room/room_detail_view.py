@@ -2,6 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework import serializers
 from api.use_case.room import room_uc
 from domain.models import Building, Room
+from domain.models import Room
 from exception.application_logic.server.Illegal_operation import (
     IllegalOperationException,
 )

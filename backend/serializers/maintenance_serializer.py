@@ -23,7 +23,8 @@ class MaintenanceSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     files = FileSerializer(many=True, read_only=True)
-    assignedBy = StudentSerializer(many=False, read_only=True, source="student")
+    assignedBy = StudentSerializer(
+        many=False, read_only=True, source="student")
     assignedTo = _nested_maintenanceStaffWithAccountSerializer(
         many=False, read_only=True, source="maintenanceStaff"
     )

@@ -5,4 +5,5 @@ export const BOTTOM_NAVBAR_PATHS = [
   "/student/billing",
   "/student/maintenance",
   "/student/profile",
+  "/student/activity",
 ];
