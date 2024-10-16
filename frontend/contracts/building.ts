@@ -9,7 +9,7 @@ const c = initContract();
 export const buildingContract = c.router({
 	getAll: {
 		method: "GET",
-		path: "/staff/buildings",
+		path: "/staff/building",
 		responses: {
 			200: c.type<Response<GetAllBuildingsSchema>>(),
 			400: c.type<ErrorResponse<GetAllBuildingsErrorCode>>(),
@@ -17,7 +17,7 @@ export const buildingContract = c.router({
 	},
 	get: {
 		method: "GET",
-		path: "/staff/buildings/:id",
+		path: "/building/:id",
 		pathParams: z.object({
 			id: z.string(),
 		}),
@@ -28,7 +28,7 @@ export const buildingContract = c.router({
 	},
 	create: {
 		method: "POST",
-		path: "/staff/buildings",
+		path: "/staff/building",
 		body: z.object({
 			name: z.string(),
 		}),
@@ -39,7 +39,7 @@ export const buildingContract = c.router({
 	},
 	edit: {
 		method: "PATCH",
-		path: "/staff/buildings/:id",
+		path: "/building/:id",
 		body: z.object({
 			name: z.string(),
 		}),
@@ -50,7 +50,7 @@ export const buildingContract = c.router({
 	},
 	delete: {
 		method: "DELETE",
-		path: "/staff/buildings/:id",
+		path: "/building/:id",
 		pathParams: z.object({
 			id: z.string(),
 		}),
@@ -61,7 +61,11 @@ export const buildingContract = c.router({
 	},
 });
 
-const getAllBuildingsSchema = buildingSchema.array();
+const getAllBuildingsSchema = buildingSchema
+	.extend({
+		roomCount: z.number(),
+	})
+	.array();
 type GetAllBuildingsSchema = z.infer<typeof getAllBuildingsSchema>;
 
 type GetAllBuildingsErrorCode = "";

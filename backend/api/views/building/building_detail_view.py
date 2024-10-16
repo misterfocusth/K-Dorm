@@ -1,17 +1,17 @@
 from rest_framework import serializers
 from rest_framework.decorators import api_view
 
-from backend.api.use_case.auth import auth_uc
-from backend.api.use_case.building import building_uc
-from backend.domain.models import Building, Room
-from backend.exception.application_logic.server.Illegal_operation import (
+from api.use_case.auth import auth_uc
+from api.use_case.building import building_uc
+from domain.models import Building, Room
+from exception.application_logic.server.Illegal_operation import (
     IllegalOperationException,
 )
-from backend.exception.auth.unauthenticated import UnauthenticatedException
-from backend.exception.permission.unauthorized_action import UnauthorizedActionException
-from backend.interfaces.api_response import APIResponse
-from backend.interfaces.request_with_context import RequestWithContext
-from backend.layer.handle import handle
+from exception.auth.unauthenticated import UnauthenticatedException
+from exception.permission.unauthorized_action import UnauthorizedActionException
+from interfaces.api_response import APIResponse
+from interfaces.request_with_context import RequestWithContext
+from layer.handle import handle
 
 
 class _nested_rooms_GetBuildingResponseSerializer(serializers.ModelSerializer):

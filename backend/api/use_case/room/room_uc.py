@@ -1,5 +1,8 @@
+from typing import List, Optional, TypedDict
 from api.repository.room_repository import RoomRepository
-from backend.exception.unknown_exception import UnknownException
+from domain.models import Room
+from exception.application_logic.client.not_found import NotFoundException
+from exception.unknown_exception import UnknownException
 from interfaces.context import Context
 from interfaces.request_with_context import RequestWithContext
 from layer.handle import handle
@@ -28,6 +31,28 @@ def create(ctx: Context, floor: int, name: str, building_id: str):
     return room
 
 
+class CreateRoomPayload(TypedDict):
+    floor: int
+    name: str
+    building_id: str
+
+
+@usecase(
+    only_authenticated=True,
+)
+def createMany(ctx: Context, rooms: List[CreateRoomPayload]):
+
+    new_rooms: List[Room] = []
+
+    for room in rooms:
+        new_room = RoomRepository.create(
+            room["floor"], room["name"], room["building_id"]
+        )
+        new_rooms.append(new_room)
+
+    return new_rooms
+
+
 @usecase()
 def get_by_id(ctx: Context, id: str):
     room = RoomRepository.get_by_id(id)
@@ -35,12 +60,25 @@ def get_by_id(ctx: Context, id: str):
 
 
 @usecase(only_authenticated=True)
-def edit(ctx: Context, id: str, floor: int, name: str):
-    room = RoomRepository.get_by_id(id)
+def edit(
+    ctx: Context,
+    room_id: str,
+    floor: Optional[int],
+    name: Optional[str],
+    building_id: Optional[str],
+):
+    room = RoomRepository.get_by_id(room_id)
     if room is None:
         raise UnknownException("Room not found")
-    room.floor = floor
-    room.name = name
+    if floor is not None:
+        room.floor = floor
+    if name is not None:
+        room.name = name
+    if building_id is not None:
+        building = RoomRepository.get_by_id(building_id)
+        if building is None:
+            raise NotFoundException("Building not found")
+        room.building.id = building_id
     room.save()
     return room
 

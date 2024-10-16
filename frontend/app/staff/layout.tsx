@@ -24,10 +24,10 @@ const StaffLayout = ({
   }, [pathname]);
 
   return (
-    <main className={"h-[100dvh]"}>
-      <div className="h-full flex flex-row">
+    <main className={"h-[100dvh] overflow-y-scroll"}>
+      <div className="h-auto flex flex-row">
         {shouldShowMenu && (
-          <div className="w-[19%] h-full">
+          <div className="min-w-64 h-full">
             <StaffLeftMenu />
           </div>
         )}
