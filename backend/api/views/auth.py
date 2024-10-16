@@ -3,8 +3,6 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework import serializers
 
-# Exceptions
-from rest_framework.exceptions import AuthenticationFailed
 
 # Use-Cases
 
@@ -20,9 +18,7 @@ from serializers.account_serializer import (
 )
 from interfaces.request_with_context import RequestWithContext
 from layer.handle import handle
-from api.repository.account import AccountRepository
 from interfaces.api_response import APIResponse
-from interfaces.error_response import ErrorResponse
 
 
 # Utils
@@ -56,9 +52,10 @@ class AuthUserSerializer(serializers.ModelSerializer):
 @api_view(["GET"])
 @handle()
 def get_current_user(request: RequestWithContext):
-    auth_uc.get_user_from_request(request, request)
+    account = auth_uc.get_user_from_request(request, request)
     serializer = AuthUserSerializer(account)
     user_data = serializer.data
+    print(user_data)
     role = account_utils.get_user_role(user_data)
     return APIResponse(
         status=status.HTTP_200_OK, data={"user": user_data, "role": role}

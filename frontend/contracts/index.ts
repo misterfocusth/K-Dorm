@@ -10,9 +10,9 @@ import { staffAccountContract } from "./account";
 const c = initContract();
 
 export const contract = c.router({
-  task: taskContract,
-  identificationKey: identificationKeyContract,
-  authentication: authenticationContract,
-  maintenance: maintenanceTicketContract,
-  account: staffAccountContract,
+	task: taskContract,
+	identificationKey: identificationKeyContract,
+	authentication: authenticationContract,
+	maintenance: maintenanceTicketContract,
+	account: staffAccountContract,
 });
