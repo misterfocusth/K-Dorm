@@ -33,7 +33,7 @@ class GetBuildingResponseSerializer(serializers.ModelSerializer):
     only_authenticated=True,
     only_role=["STAFF"],
 )
-def view(request: RequestWithContext):
+def staff_view(request: RequestWithContext):
     if request.method == "GET":
         buildings = building_uc.get_list(request)
 

@@ -5,6 +5,7 @@ import { DeleteIcon, EditIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useRenderModal } from '@/providers/ModalProvider'
 import { MutateBuildingModal } from './MutateBuildingModal'
+import Link from 'next/link'
 
 interface Building {
     id: number
@@ -77,9 +78,11 @@ const Row: React.FC<RowProps> = ({ id, name, roomCount }) => {
             <TableCell className='w-[280px] justify-end items-center flex gap-x-4'>
                 <EditIcon className='cursor-pointer' onClick={open} />
                 <DeleteIcon />
-                <Button>
-                    จัดห้องพักในตึก
-                </Button>
+                <Link href={`/staff/building/${id}`}>
+                    <Button>
+                        จัดห้องพักในตึก
+                    </Button>
+                </Link>
             </TableCell>
         </TableRow>
     )

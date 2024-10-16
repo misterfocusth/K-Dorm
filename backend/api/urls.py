@@ -3,8 +3,9 @@ import api.views.maintenance as maintenance
 import api.views.account as account
 from django.urls import path
 
-from api.views.building import building_detail_view, building_list_view
+from api.views.building import building_list_view
 from api.views.room import room_detail_view, room_list_view
+from api.views.building import building_detail_view
 
 urlpatterns = [
     # Tasks API Route
@@ -23,14 +24,14 @@ urlpatterns += [
 # MAINTENANCE URLS
 urlpatterns += [
     path("student/maintenance", maintenance.student_maintenance_ticket),
-    path("student/maintenance/<str:pk>",
-         maintenance.student_maintenance_ticket_detail),
+    path("student/maintenance/<str:pk>", maintenance.student_maintenance_ticket_detail),
     path("staff/maintenance", maintenance.staff_maintenance_tickets),
 ]
 
 # BUILDING URLS
 urlpatterns += [
-    path("staff/building", building_list_view.view),
+    path("staff/building", building_list_view.staff_view),
+    path("staff/building/<str:building_id>", building_detail_view.staff_view),
     path("building/<str:building_id>", building_detail_view.view),
 ]
 

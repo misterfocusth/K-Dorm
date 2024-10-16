@@ -1,4 +1,3 @@
-from api.repository.residence_repository import get_by_id
 from domain.models import Building
 from exception.application_logic.client.not_found import NotFoundException
 

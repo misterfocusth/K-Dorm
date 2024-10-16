@@ -3,6 +3,11 @@ from rest_framework.decorators import api_view
 
 from api.use_case.auth import auth_uc
 from api.use_case.building import building_uc
+from api.repository.residence_repository import ResidenceRepository
+from api.repository.room_repository import RoomRepository
+from api.use_case.residence import residence_uc
+from api.use_case.room import room_uc
+from exception.application_logic.client.not_found import NotFoundException
 from serializers.utils import serialize_unwrap
 from domain.models import Building, Room
 from exception.application_logic.server.Illegal_operation import (
@@ -18,13 +23,15 @@ from layer.handle import handle
 class _nested_rooms_GetBuildingResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
-        fields = ["id", "floor", "name"]
+        fields = ["id", "floor", "name", "is_occupied"]
+
+    is_occupied = serializers.BooleanField()
 
 
-class GetBuildingResponseSerializer(serializers.ModelSerializer):
+class GetBuildingWithRoomsResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Building
-        fields = ["id", "name"]
+        fields = ["id", "name", "rooms"]
 
     rooms = _nested_rooms_GetBuildingResponseSerializer(many=True)
 
@@ -33,7 +40,7 @@ class EditBuildingSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=255)
 
 
-class BuildingResponseSerializer(serializers.ModelSerializer):
+class GetBuildingInfoResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Building
         fields = ["id", "name"]
@@ -44,7 +51,7 @@ class BuildingResponseSerializer(serializers.ModelSerializer):
     serializer_config={"BODY": EditBuildingSerializer},
     only_authenticated=True,
 )
-def view(request: RequestWithContext, building_id: str):
+def staff_view(request: RequestWithContext, building_id: str):
 
     user = request.ctx.user
     if user == None:
@@ -53,11 +60,23 @@ def view(request: RequestWithContext, building_id: str):
     if user.uid == None:
         raise UnauthenticatedException("User not authenticated")
 
-    # GET
+    # Get all rooms
     if request.method == "GET":
         building = building_uc.get_by_id(request, building_id)
 
-        response = serialize_unwrap(building, BuildingResponseSerializer)
+        if building == None:
+            raise NotFoundException("Invalid building id")
+
+        rooms = room_uc.get_by_building_id(request, building_id)
+
+        for room in rooms:
+            residences = residence_uc.get_current_by_room_id(request, room_id=room.pk)
+            room.is_occupied = len(residences) > 0  # type: ignore
+
+        response = serialize_unwrap(
+            {"id": building.pk, "name": building.name, "rooms": rooms},
+            GetBuildingWithRoomsResponseSerializer,
+        )
 
         return APIResponse(response)
 
@@ -68,7 +87,7 @@ def view(request: RequestWithContext, building_id: str):
         payload = request.ctx.store["BODY"]
         building = building_uc.edit(request, building_id, name=payload["name"])
 
-        response = serialize_unwrap(building, BuildingResponseSerializer)
+        response = serialize_unwrap(building, GetBuildingInfoResponseSerializer)
 
         return APIResponse(response)
 
@@ -82,3 +101,16 @@ def view(request: RequestWithContext, building_id: str):
         raise UnauthorizedActionException("User must be staff to perform this action")
 
     raise IllegalOperationException("Method not allowed")
+
+
+@api_view(["GET"])
+@handle(only_authenticated=True)
+def view(request: RequestWithContext, building_id: str):
+
+    building = building_uc.get_by_id(request, building_id)
+    if building == None:
+        raise NotFoundException("Invalid building id")
+
+    response = serialize_unwrap(building, GetBuildingInfoResponseSerializer)
+
+    return APIResponse(response)
