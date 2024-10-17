@@ -6,6 +6,7 @@ import {
   HomeIcon,
   NotebookPen,
   SquareLibrary,
+  UserIcon,
   UserRoundPlus,
   Wrench,
 } from "lucide-react";
@@ -17,13 +18,15 @@ import Image from "next/image";
 
 const PATHS = [
   STAFF_ROUTE_PREFIX + "/home",
+  STAFF_ROUTE_PREFIX + "/student",
   STAFF_ROUTE_PREFIX + "/account",
   STAFF_ROUTE_PREFIX + "/recruit-wave",
   STAFF_ROUTE_PREFIX + "/residences",
   STAFF_ROUTE_PREFIX + "/building",
   STAFF_ROUTE_PREFIX + "/maintenance",
   STAFF_ROUTE_PREFIX + "/activity",
-  STAFF_ROUTE_PREFIX + "/activiy/live",
+  STAFF_ROUTE_PREFIX + "/activity/category",
+  STAFF_ROUTE_PREFIX + "/activity/live",
 ];
 
 const StaffLeftMenu = () => {
@@ -36,7 +39,7 @@ const StaffLeftMenu = () => {
     else setSelectedMenuIndex(0);
   }, [pathname]);
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
   return (
     <div className="py-8 px-4 bg-orange-50 h-full border">
       <div className="flex flex-row items-center gap-4 ">
@@ -66,32 +69,37 @@ const StaffLeftMenu = () => {
 
       <div className="flex flex-col gap-4 ">
         <p className="text-sm text-[#9E9E9E] ml-4">การจัดการ</p>
-
         <MenuItem
-          Icon={<CircleUser className="w-6 h-6" />}
+          Icon={<UserIcon className="w-6 h-6" />}
           isSelected={selectedMenuIndex === 1}
           path={PATHS[1]}
+          label="นักศึกษา"
+        />
+        <MenuItem
+          Icon={<CircleUser className="w-6 h-6" />}
+          isSelected={selectedMenuIndex === 2}
+          path={PATHS[2]}
           label="บัญชีการเข้าสู่ระบบ"
         />
 
         <MenuItem
           Icon={<UserRoundPlus className="w-6 h-6" />}
-          isSelected={selectedMenuIndex === 2}
-          path={PATHS[2]}
+          isSelected={selectedMenuIndex === 3}
+          path={PATHS[3]}
           label="รอบรับสมัคร"
         />
 
         <MenuItem
           Icon={<Building className="w-6 h-6" />}
-          isSelected={selectedMenuIndex === 3}
-          path={PATHS[3]}
+          isSelected={selectedMenuIndex === 4}
+          path={PATHS[4]}
           label="การพักอยู่อาศัย"
         />
 
         <MenuItem
           Icon={<Building2 className="w-6 h-6" />}
-          isSelected={selectedMenuIndex === 4}
-          path={PATHS[4]}
+          isSelected={selectedMenuIndex === 5}
+          path={PATHS[5]}
           label="จัดการตึก"
         />
       </div>
@@ -103,8 +111,8 @@ const StaffLeftMenu = () => {
 
         <MenuItem
           Icon={<Wrench className="w-6 h-6" />}
-          isSelected={selectedMenuIndex === 5}
-          path={PATHS[5]}
+          isSelected={selectedMenuIndex === 6}
+          path={PATHS[6]}
           label="การแจ้งซ่อม"
         />
       </div>
@@ -116,22 +124,22 @@ const StaffLeftMenu = () => {
 
         <MenuItem
           Icon={<NotebookPen className="w-6 h-6" />}
-          isSelected={selectedMenuIndex === 6}
-          path={PATHS[6]}
+          isSelected={selectedMenuIndex === 7}
+          path={PATHS[7]}
           label="ดูและบันทึกกิจกรรม"
         />
 
         <MenuItem
           Icon={<SquareLibrary className="w-6 h-6" />}
-          isSelected={selectedMenuIndex === 7}
-          path={PATHS[7]}
+          isSelected={selectedMenuIndex === 8}
+          path={PATHS[8]}
           label="หมวดหมู่กิจกรรม"
         />
 
         <MenuItem
           Icon={<Eye className="w-6 h-6" />}
-          isSelected={selectedMenuIndex === 8}
-          path={PATHS[8]}
+          isSelected={selectedMenuIndex === 9}
+          path={PATHS[9]}
           label="ดูอัปเดทกิจกรรมแบบสด"
         />
       </div>
@@ -155,9 +163,8 @@ const MenuItem: FC<MenuItemProps> = ({ isSelected, path, label, Icon }) => {
 
   return (
     <div
-      className={`flex flex-row gap-3 items-center px-4 py-2 rounded-3xl cursor-pointer hover:bg-orange-300 ${
-        isSelected && "bg-orange-300"
-      }`}
+      className={`flex flex-row gap-3 items-center px-4 py-2 rounded-3xl cursor-pointer hover:bg-orange-300 ${isSelected && "bg-orange-300"
+        }`}
       onClick={() => router.push(path)}
     >
       {Icon}

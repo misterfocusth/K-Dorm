@@ -78,7 +78,7 @@ const StudentProfilePage = () => {
             </div>
           </div>
 
-          <div className="w-full flex flex-col gap-4 mt-36">
+          <div className="w-full flex flex-col gap-4 mt-28">
             <Button onClick={() => router.push("/student/activity")}>ดูประวัติกิจกรรมของฉัน</Button>
 
             <Button variant={"destructive"} onClick={handleLogout}>

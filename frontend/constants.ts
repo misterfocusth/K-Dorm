@@ -23,4 +23,7 @@ export const QUERY_KEYS = {
     getAllStaffAccounts: ["account", "getAllStaffAccounts"],
     getStaffAccountById: ["account", "getStaffAccountById"],
   },
+  activityCategory: {
+    getAllActivityCategory: ["activityCategory", "getAllActivityCategory"],
+  },
 };

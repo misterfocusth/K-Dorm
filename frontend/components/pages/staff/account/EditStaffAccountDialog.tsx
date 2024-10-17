@@ -72,10 +72,10 @@ const EditStaffAccountDialog = ({ refetch }: EditStaffAccountDialogProps) => {
       type: !selectedStaffAccount
         ? "STAFF"
         : selectedStaffAccount.staff
-          ? "STAFF"
-          : selectedStaffAccount.maintenanceStaff
-            ? "MAINTENANCE_STAFF"
-            : "SECURITY_STAFF",
+        ? "STAFF"
+        : selectedStaffAccount.maintenanceStaff
+        ? "MAINTENANCE_STAFF"
+        : "SECURITY_STAFF",
       isDisabled: !selectedStaffAccount?.isDisabled,
     },
   });
@@ -93,7 +93,6 @@ const EditStaffAccountDialog = ({ refetch }: EditStaffAccountDialogProps) => {
         });
 
         if (result.body) {
-          console.log(result.body);
           form.reset();
           hideEditStaffAccountDialog();
           refetch();

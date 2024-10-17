@@ -14,7 +14,7 @@ export const roomContract = c.router({
 	get: {
 		method: "GET",
 		path: "/room/:id",
-		query: z.object({
+		pathParams: z.object({
 			id: z.string(),
 		}),
 		responses: {

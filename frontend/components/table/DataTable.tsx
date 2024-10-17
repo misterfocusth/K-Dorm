@@ -10,6 +10,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useMaintenanceTicketContext } from "@/providers/MaintenanceTicketProvider";
+import { useActivityCategoryContext } from "@/providers/ActivityCategoryProvider";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
