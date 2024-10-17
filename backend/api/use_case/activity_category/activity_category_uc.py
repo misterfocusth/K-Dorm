@@ -1,4 +1,3 @@
-from time import clock_getres
 from typing import List, Optional, TypedDict
 from api.repository.room_repository import RoomRepository
 from domain.models import Room
