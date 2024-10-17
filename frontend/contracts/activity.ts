@@ -47,4 +47,16 @@ export const activityContract = c.router({
     },
     summary: "Create a student activity",
   },
+  getByActivityId: {
+    method: "GET",
+    path: "/student/acc/:activityId",
+    pathParams: z.object({
+      activityId: z.string(),
+    }),
+    responses: {
+      200: c.type<Response<CreateStudentActivity>>(),
+      400: c.type<ErrorResponse>(),
+    },
+    summary: "Get activity by id",
+  },
 });

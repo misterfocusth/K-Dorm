@@ -1,10 +1,12 @@
 "use client";
 
 import ActivityDetail from "@/components/activity/ActivityDetail";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import { getApiService } from "@/libs/tsr-react-query";
 import { useNavbarContext } from "@/providers/NavbarProvider";
 import { ACTIVITIES } from "@/types/Activity";
 import { CheckCircle2, CircleX, HandHeart, ScrollText } from "lucide-react";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type StudentActivityDetailPageProps = {
   id: string;
@@ -12,7 +14,24 @@ type StudentActivityDetailPageProps = {
 
 const StudentActivityDetailPage = ({ id }: StudentActivityDetailPageProps) => {
   const { setHeaderNavbarTitle, setShowBottomNavbar, setShowHeaderNavbar } = useNavbarContext();
-  const activity = ACTIVITIES.find((activity) => activity.id === Number(id));
+
+  const { isLoading, isFetching, data } = getApiService().activity.getByActivityId.useQuery({
+    queryData: {
+      params: {
+        activityId: id,
+      },
+    },
+    queryKey: ["GET ACTIVITY BY ID"],
+    enabled: !!id,
+  });
+
+  const [activity, setActivity] = useState(data?.body.result);
+
+  useEffect(() => {
+    if (data?.body.result) {
+      setActivity(data.body.result);
+    }
+  }, [data?.body.result]);
 
   useEffect(() => {
     setHeaderNavbarTitle("รายละเอียดประวัติกิจกรรม");
@@ -21,14 +40,19 @@ const StudentActivityDetailPage = ({ id }: StudentActivityDetailPageProps) => {
   }, []);
 
   const getSubtitle = useCallback(() => {
-    if (
-      activity?.category.handle === "ENTER_CHECKIN" ||
-      activity?.category.handle === "EXIT_CHECKIN"
-    ) {
+    if (!activity) return "";
+
+    const one = activity.categories.find(
+      (category: any) => category.handle === "ENTER_CHECKIN" || category.handle === "EXIT_CHECKIN"
+    );
+    const two = activity.categories.find((category: any) => category.handle === "ACTIVITY");
+    const three = activity.categories.find((category: any) => category.handle === "PROHIBITED");
+
+    if (one) {
       return "บันทึกเวลาเข้า - ออกหอพักสำเร็จ";
-    } else if (activity?.category.handle === "ACTIVITY") {
+    } else if (two) {
       return "บันทึกการเข้าร่วมกิจกรรม";
-    } else if (activity?.category.handle === "VOLUNTEER") {
+    } else if (three) {
       return "บันทึกกิจกรรมจิตอาสา";
     } else {
       return "บันทึกกิจกรรมสำเร็จ";
@@ -36,19 +60,29 @@ const StudentActivityDetailPage = ({ id }: StudentActivityDetailPageProps) => {
   }, [activity]);
 
   const getActivityIcon = useCallback(() => {
-    const category = activity?.category.handle;
-    if (category === "ENTER_CHECKIN" || category === "EXIT_CHECKIN") {
+    if (!activity) return null;
+
+    const one = activity.categories.find(
+      (category: any) => category.handle === "ENTER_CHECKIN" || category.handle === "EXIT_CHECKIN"
+    );
+    const two = activity.categories.find((category: any) => category.handle === "ACTIVITY");
+    const three = activity.categories.find((category: any) => category.handle === "PROHIBITED");
+    const four = activity.categories.find((category: any) => category.handle === "VOLUNTEER");
+
+    if (one) {
       return <CheckCircle2 strokeWidth={2} className=" w-16 h-16 text-white" />;
-    } else if (category === "ACTIVITY") {
+    } else if (two) {
       return <ScrollText strokeWidth={2} className=" w-16 h-16 text-white" />;
-    } else if (category === "PROHIBITED") {
+    } else if (three) {
       return <CircleX strokeWidth={2} className=" w-16 h-16 text-white" />;
-    } else if (category === "VOLUNTEER") {
+    } else if (four) {
       return <HandHeart strokeWidth={2} className=" w-16 h-16 text-white" />;
     } else {
       return <CheckCircle2 strokeWidth={2} className=" w-16 h-16 text-white" />;
     }
-  }, [activity?.category.handle]);
+  }, [activity?.categories]);
+
+  if (isLoading || isFetching) return <LoadingSpinner loading />;
 
   return (
     <div className="p-6">

@@ -59,6 +59,8 @@ urlpatterns += [
 
 # ACTIVITY URLS
 urlpatterns += [
+    path('student/acc/<str:activity_id>',
+         activity_list_view.with_activity_id_view),
     path("staff/activity", activity_list_view.view),
     path('student/activity', activity_list_view.with_student_id_view),
     path('staff/activity/<str:activity_id>', activity_list_view.view),

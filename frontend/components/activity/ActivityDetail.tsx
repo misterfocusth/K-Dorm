@@ -11,6 +11,15 @@ const ActivityDetail = ({ activity }: ActivityDetailProps) => {
 
   return (
     <div className="rounded-3xl p-6 w-full shadow-lg  mt-8">
+      <div className="flex flex-row items-center gap-4 mb-4">
+        {activity.categories.map((category, index) => {
+          return (
+            <div className="p-2 px-4 bg-orange-300 rounded-full w-fit">
+              <p>{category.name}</p>
+            </div>
+          );
+        })}
+      </div>
       <div className="flex flex-col gap-4">
         {activity.earnedVolunteerHours && (
           <div className="flex flex-row justify-between font-semibold text-xl">

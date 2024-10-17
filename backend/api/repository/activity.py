@@ -55,7 +55,7 @@ class ActivityRepository():
         return activity
 
     @staticmethod
-    def get_by_id(activity_id: str):
+    def get_by_id(activity_id: int):
         try:
             activity = Activity.objects.get(id=activity_id)
             return activity

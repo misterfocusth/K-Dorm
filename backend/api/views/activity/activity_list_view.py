@@ -74,3 +74,16 @@ def with_student_id_view(request: RequestWithContext, student_id: str):
         return APIResponse(response)
 
     raise IllegalOperationException("Method not allowed")
+
+
+@api_view(["GET", "POST"])
+@handle(only_authenticated=True, only_role=["STAFF", "STUDENT"])
+def with_activity_id_view(request: RequestWithContext, activity_id: str):
+    if request.method == "GET":
+        activity = activity_uc.get_by_id(request, int(activity_id))
+        response = serialize_unwrap(activity, ActivitySerializer)
+        return APIResponse(response)
+    elif request.method == "POST":
+        raise IllegalOperationException("Method not allowed")
+
+    raise IllegalOperationException("Method not allowed")

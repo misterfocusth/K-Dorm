@@ -45,3 +45,11 @@ def create(ctx: Context, payload: CreateActivityPayload):
         payload["studentId"]
     )
     return activity
+
+
+@usecase(only_authenticated=True)
+def get_by_id(ctx: Context, activity_id: int):
+    activity = ActivityRepository.get_by_id(activity_id=activity_id)
+    if activity is None:
+        raise NotFoundException("Activity not found")
+    return activity

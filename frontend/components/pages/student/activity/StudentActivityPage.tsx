@@ -1,6 +1,7 @@
 "use client";
 
 import withRoleGuard from "@/components/hoc/withRoleGuard";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import StudentActivityItem from "@/components/student/activity/StudentActivityItem";
 import {
   Select,
@@ -12,22 +13,68 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { getApiService } from "@/libs/tsr-react-query";
+import { useAuthContext } from "@/providers/AuthProvider";
 import { useNavbarContext } from "@/providers/NavbarProvider";
-import { ACTIVITIES } from "@/types/Activity";
 import { ChevronLeft, Info } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const StudentActivityPage = () => {
   const router = useRouter();
 
+  const { currentUser } = useAuthContext();
   const { setShowBottomNavbar, setShowHeaderNavbar } = useNavbarContext();
+
+  const { isLoading, isFetching, data } = getApiService().activity.getAllActivityByStudent.useQuery(
+    {
+      queryData: {
+        params: {
+          studentId: currentUser?.student.studentId,
+        },
+      },
+      queryKey: ["GET ALL STUDENT CATEGORY ACTIVITY"],
+      enabled: !!currentUser?.student.studentId,
+    }
+  );
+
+  const [acc, setAcc] = useState(data?.body.result);
 
   useEffect(() => {
     setShowBottomNavbar(true);
     setShowHeaderNavbar(false);
   });
+
+  const [volunteerCount, activityCount, prohibitedCount] = useMemo(() => {
+    const studentActivities = acc;
+
+    if (!studentActivities) return [0, 0, 0];
+
+    let volunteerCount = 0;
+    let activityCount = 0;
+    let prohibitedCount = 0;
+
+    for (const studentActivity of studentActivities) {
+      for (const category of studentActivity.categories) {
+        if (category.name === "VOLUNTEER" && studentActivity.earnedVolunteerHours) {
+          volunteerCount += studentActivity.earnedVolunteerHours;
+        }
+        if (category.name === "ACTIVITY") activityCount++;
+        if (category.name === "PROHIBITED") prohibitedCount++;
+      }
+    }
+    return [volunteerCount, activityCount, prohibitedCount];
+  }, [acc]);
+
+  useEffect(() => {
+    console.log(data);
+    if (data?.body.result) {
+      setAcc(data.body.result);
+    }
+  }, [data?.body.result]);
+
+  if (isLoading || isFetching) return <LoadingSpinner loading />;
 
   return (
     <div className="bg-gradient-to-b from-orange-50 to-orange-200 bg-opacity-50 relative">
@@ -74,7 +121,7 @@ const StudentActivityPage = () => {
             </div>
           </div>
 
-          <p className="text-lg font-semibold">99 ชั่วโมง</p>
+          <p className="text-lg font-semibold">{volunteerCount} ชั่วโมง</p>
         </div>
 
         <div className="w-full flex flex-row items-center justify-between bg-white p-4 rounded-2xl mt-4">
@@ -98,7 +145,7 @@ const StudentActivityPage = () => {
             </div>
           </div>
 
-          <p className="text-lg font-semibold">99 กิจกรรม</p>
+          <p className="text-lg font-semibold">{activityCount} กิจกรรม</p>
         </div>
 
         <div className="w-full flex flex-row items-center justify-between bg-white p-4 rounded-2xl mt-4">
@@ -122,7 +169,7 @@ const StudentActivityPage = () => {
             </div>
           </div>
 
-          <p className="text-lg font-semibold">99 ครั้ง</p>
+          <p className="text-lg font-semibold">{prohibitedCount} ครั้ง</p>
         </div>
       </div>
 
@@ -145,12 +192,13 @@ const StudentActivityPage = () => {
         </div>
 
         <div className="mt-8 pb-24 flex flex-col">
-          {ACTIVITIES.map((activity, index) => (
-            <div key={index}>
-              <StudentActivityItem activity={activity} />
-              <Separator className="my-4" />
-            </div>
-          ))}
+          {acc &&
+            acc.map((activity, index) => (
+              <div key={index}>
+                <StudentActivityItem activity={activity} />
+                <Separator className="my-4" />
+              </div>
+            ))}
         </div>
       </div>
     </div>
