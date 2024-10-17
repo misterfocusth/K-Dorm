@@ -1,4 +1,3 @@
-from time import clock_getres
 from rest_framework import serializers
 from rest_framework.decorators import api_view
 
