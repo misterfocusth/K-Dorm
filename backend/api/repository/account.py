@@ -37,10 +37,21 @@ class AccountRepository:
 
     @staticmethod
     def get_all_staff_accounts():
-        staff_accounts = Account.objects.filter(student__isnull=True).all()
+        staff_accounts = Account.objects.filter(staff__isnull=True).all()
         return staff_accounts
+
+    @staticmethod
+    def get_all_student_accounts():
+        student_accounts = Account.objects.filter(student__isnull=False).all()
+        return student_accounts
 
     @staticmethod
     def get_account_by_email(email: str) -> Account | None:
         account = Account.objects.filter(email=email).first()
+        return account
+
+    @staticmethod
+    def delete_account_by_id(id: int) -> Account | None:
+        account = Account.objects.get(id=id)
+        account.delete()
         return account

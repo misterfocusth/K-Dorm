@@ -77,3 +77,16 @@ class StudentRepository:
             return StudentRepository.edit_by_pk(student.pk, payload)
         except Student.DoesNotExist:
             raise NotFoundException("Edit target is not found")
+
+    @staticmethod
+    def get_all() -> list[Student]:
+        return list(Student.objects.all())
+
+    @staticmethod
+    def delete_by_pk(pk: str) -> Student:
+        try:
+            student = Student.objects.get(id=pk)
+            student.delete()
+            return student
+        except Student.DoesNotExist:
+            raise NotFoundException("Delete target is not found")

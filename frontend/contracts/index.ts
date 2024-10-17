@@ -8,19 +8,22 @@ import { maintenanceTicketContract } from "./maintenance";
 import { staffAccountContract } from "./account";
 import { buildingContract } from "./building";
 import { roomContract } from "./room";
+import { recruitmentWaveContract } from "./recruitmentWave";
 import { activityCategoryContract } from "./activity_category";
-import { activityContract } from "./activity";
+import { studentContract } from "./student";
 
 const c = initContract();
 
 export const contract = c.router({
-  task: taskContract,
-  identificationKey: identificationKeyContract,
-  authentication: authenticationContract,
-  maintenance: maintenanceTicketContract,
-  account: staffAccountContract,
-  building: buildingContract,
-  room: roomContract,
-  activityCategory: activityCategoryContract,
+	task: taskContract,
+	identificationKey: identificationKeyContract,
+	authentication: authenticationContract,
+	maintenance: maintenanceTicketContract,
+	account: staffAccountContract,
+	building: buildingContract,
+	room: roomContract,
+	activityCategory: activityCategoryContract,
+	recruimentWave: recruitmentWaveContract,
+	student: studentContract,
   activity: activityContract,
 });
