@@ -26,4 +26,8 @@ export const QUERY_KEYS = {
   activityCategory: {
     getAllActivityCategory: ["activityCategory", "getAllActivityCategory"],
   },
+  activity: {
+    getAllActivityByStudent: ["activity", "getAllActivityByStudent"],
+    createStudentActivity: ["activity", "createStudentActivity"],
+  },
 };

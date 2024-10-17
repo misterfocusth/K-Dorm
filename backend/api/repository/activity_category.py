@@ -87,3 +87,14 @@ class ActivityCategoryRepository:
             raise NotFoundException("ActivityCategory not found")
         except Exception as e:
             raise e
+
+    @staticmethod
+    def get_by_id(activity_category_id: str) -> ActivityCategory:
+        try:
+            activity_category = ActivityCategory.objects.get(
+                id=activity_category_id)
+            return activity_category
+        except ActivityCategory.DoesNotExist:
+            raise NotFoundException("ActivityCategory not found")
+        except Exception as e:
+            raise e

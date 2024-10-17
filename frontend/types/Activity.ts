@@ -8,7 +8,7 @@ export type Activity = {
   location: string;
   earnedVolunteerHours?: number;
   student: Student;
-  category: ActivityCategory;
+  categories: ActivityCategory[];
 };
 
 export type ActivityCategory = {
@@ -81,7 +81,7 @@ export const ACTIVITIES: Activity[] = [
     date: "2021-09-01T00:00:00Z",
     location: "หอพัก",
     student: STUDENT,
-    category: CATEGORIES[0],
+    categories: [CATEGORIES[0]],
   },
   {
     id: 2,
@@ -89,7 +89,7 @@ export const ACTIVITIES: Activity[] = [
     date: "2021-09-01T00:00:00Z",
     location: "หอพัก",
     student: STUDENT,
-    category: CATEGORIES[1],
+    categories: [CATEGORIES[1]],
   },
   {
     id: 3,
@@ -97,7 +97,7 @@ export const ACTIVITIES: Activity[] = [
     date: "2021-09-01T00:00:00Z",
     location: "กิจกรรมทำบุญวันเข้าพรรณษา",
     student: STUDENT,
-    category: CATEGORIES[2],
+    categories: [CATEGORIES[2]],
   },
   {
     id: 4,
@@ -105,7 +105,7 @@ export const ACTIVITIES: Activity[] = [
     date: "2021-09-01T00:00:00Z",
     location: "หอพัก",
     student: STUDENT,
-    category: CATEGORIES[3],
+    categories: [CATEGORIES[3]],
   },
   {
     id: 5,
@@ -113,7 +113,7 @@ export const ACTIVITIES: Activity[] = [
     date: "2021-09-01T00:00:00Z",
     location: "คณะเทคโนโลยีสารสนเทศ สจล.",
     student: STUDENT,
-    category: CATEGORIES[4],
+    categories: [CATEGORIES[4]],
     earnedVolunteerHours: 5,
   },
 ];

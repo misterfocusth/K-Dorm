@@ -129,15 +129,15 @@ const StaffLeftMenu = () => {
           label="หมวดหมู่กิจกรรม"
         />
 
-        <MenuItem
+        {/* <MenuItem
           Icon={<Eye className="w-6 h-6" />}
           isSelected={selectedMenuIndex === 8}
           path={PATHS[8]}
           label="ดูอัปเดทกิจกรรมแบบสด"
-        />
+        /> */}
       </div>
 
-      <Separator className="my-8 bg-gray-300" />
+      <Separator className="mt-8 bg-gray-300" />
     </div>
   );
 };

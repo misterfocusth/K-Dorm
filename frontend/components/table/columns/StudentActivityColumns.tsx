@@ -21,6 +21,13 @@ const studentActivityColumns: ColumnDef<Activity>[] = [
     header: "สถานที่",
   },
   {
+    accessorKey: "categories",
+    header: "ประเภทกิจกรรม",
+    cell: ({ row }) => {
+      return row.original.categories.map((category: ActivityCategory) => category.name).join(", ");
+    },
+  },
+  {
     accessorKey: "date",
     header: "วันที่",
     cell: ({ row }) => {

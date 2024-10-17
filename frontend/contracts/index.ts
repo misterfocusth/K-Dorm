@@ -9,6 +9,7 @@ import { staffAccountContract } from "./account";
 import { buildingContract } from "./building";
 import { roomContract } from "./room";
 import { activityCategoryContract } from "./activity_category";
+import { activityContract } from "./activity";
 
 const c = initContract();
 
@@ -21,4 +22,5 @@ export const contract = c.router({
   building: buildingContract,
   room: roomContract,
   activityCategory: activityCategoryContract,
+  activity: activityContract,
 });

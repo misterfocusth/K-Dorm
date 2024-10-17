@@ -7,6 +7,7 @@ from api.views.building import building_list_view
 from api.views.room import room_detail_view, room_list_view
 from api.views.building import building_detail_view
 from api.views.activity_category import activity_category_list_view
+from api.views.activity import activity_list_view
 
 urlpatterns = [
     # Tasks API Route
@@ -54,4 +55,13 @@ urlpatterns += [
     path("staff/activity_category/<str:activity_category_id>",
          activity_category_list_view.detail_view),
     path("staff/activity_category", activity_category_list_view.view)
+]
+
+# ACTIVITY URLS
+urlpatterns += [
+    path("staff/activity", activity_list_view.view),
+    path('student/activity', activity_list_view.with_student_id_view),
+    path('staff/activity/<str:activity_id>', activity_list_view.view),
+    path('student/activity/<str:student_id>',
+         activity_list_view.with_student_id_view)
 ]
