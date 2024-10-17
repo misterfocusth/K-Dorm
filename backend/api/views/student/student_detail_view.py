@@ -20,13 +20,21 @@ from interfaces.request_with_context import RequestWithContext
 class _nested_studentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = ["studentId", "isOnBoarded"]
+        fields = ["studentId", "isOnBoarded", "id"]
 
 
 class GetInfoResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
-        fields = ["email", "firstName", "lastName", "uid", "isDisabled"]
+        fields = [
+            "email",
+            "firstName",
+            "lastName",
+            "uid",
+            "isDisabled",
+            "student",
+            "id",
+        ]
 
     student = _nested_studentSerializer()
 

@@ -1,3 +1,4 @@
+from urllib.parse import urlsplit
 import api.views.auth as auth_views
 import api.views.maintenance as maintenance
 import api.views.account as account
@@ -9,6 +10,7 @@ from api.views.building import building_detail_view
 from api.views.recruitmenet_wave import recruitment_wave_list_view
 from api.views.recruitmenet_wave import recruitment_wave_detail_view
 from api.views.activity_category import activity_category_list_view
+from api.views.student import student_detail_view, student_list_view
 
 urlpatterns = [
     # Tasks API Route
@@ -54,6 +56,12 @@ urlpatterns += [
 urlpatterns += [
     path("staff/account", account.staff_account),
     path("staff/account/<int:id>", account.edit_staff_account),
+]
+
+# STUDENT URLS
+urlpatterns += [
+    path("student", student_list_view.view),
+    path("student/<str:pk>", student_detail_view.view),
 ]
 
 # ACTIVITY CATEGORY URLS

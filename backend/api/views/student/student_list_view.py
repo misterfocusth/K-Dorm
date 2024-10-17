@@ -1,9 +1,10 @@
+from typing import List
 from urllib import response
 from rest_framework.decorators import api_view
 
 from api.use_case.auth import auth_uc
 from api.use_case.student import student_uc
-from api.views.student.details import GetInfoResponseSerializer
+from api.views.student.student_detail_view import GetInfoResponseSerializer
 from exception.auth.unauthenticated import UnauthenticatedException
 from exception.application_logic.server.Illegal_operation import (
     IllegalOperationException,
@@ -29,24 +30,37 @@ class CreateStudentSerializerPayload(serializers.Serializer):
 
 
 class _studentSerializer(serializers.ModelSerializer):
-    class Meta(models.Student.Meta):
-        fields = ["studentId", "isOnBoarded"]
+    class Meta:
+        model = models.Student
+        fields = ["studentId", "isOnBoarded", "id"]
 
 
-class CreateStudentSerializerResponse(serializers.ModelSerializer):
+class _nested_CreateStudentResponse(serializers.ModelSerializer):
 
     student = _studentSerializer()
 
     class Meta:
-        model = models.Student
-        fields = ["email", "firstName", "lastName", "uid", "isDisabled"]
+        model = models.Account
+        fields = [
+            "id",
+            "email",
+            "firstName",
+            "lastName",
+            "uid",
+            "isDisabled",
+            "student",
+        ]
+
+
+class CreateStudentSerializerResponse(serializers.Serializer):
+    students = _nested_CreateStudentResponse(many=True)
 
 
 class GetAllResponseSerializer(serializers.Serializer):
     students = GetInfoResponseSerializer(many=True)
 
 
-@api_view(["GET"])
+@api_view(["GET", "POST"])
 @handle(
     only_role=["STAFF"],
     only_authenticated=True,
@@ -61,9 +75,9 @@ def view(request: RequestWithContext):
     is_staff = auth_uc.is_staff(request, user.pk)
 
     if request.method == "GET" and is_staff:
-        student = student_uc.get_all(request)
+        accounts = student_uc.get_students_as_account(request)
 
-        response = serialize_unwrap(student, GetInfoResponseSerializer)
+        response = serialize_unwrap({"students": accounts}, GetAllResponseSerializer)
 
         return APIResponse(response, status=200)
 
@@ -72,7 +86,9 @@ def view(request: RequestWithContext):
             request, payloads=request.ctx.store["BODY"]["students"]
         )
 
-        response = serialize_unwrap(accounts, CreateStudentSerializerResponse)
+        response = serialize_unwrap(
+            {"students": accounts}, CreateStudentSerializerResponse
+        )
 
         return APIResponse(response, status=201)
 
